@@ -20,6 +20,13 @@ data/raw/*.sqlite
 # Cognee local store
 .cognee_data/
 
+# Phase 1 generated reports (run scripts locally)
+outputs/reports/*.csv
+outputs/reports/*.json
+
+# Jupyter
+.ipynb_checkpoints/
+
 # IDE
 .idea/
 .vscode/

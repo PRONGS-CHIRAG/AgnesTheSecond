@@ -2,7 +2,7 @@
 
 Evidence-grounded **raw material substitution** and **sourcing consolidation** for CPG procurement: ingest BOM and supplier data from SQLite, reason about substitutes with explicit uncertainty, and recommend consolidation with evidence trails (see [plan.md](plan.md)).
 
-This repository is a hackathon MVP scaffold. Phase 0 provides environment setup and connectivity checks only.
+This repository is a hackathon MVP scaffold. **Phase 0** covers environment setup and connectivity checks; **Phase 1** adds schema + overlap analysis (no LLM).
 
 ## Prerequisites
 
@@ -36,6 +36,21 @@ Expected `smoke_db` row counts (challenge DB): Company 61, Product 1025, BOM 149
 
 `smoke_gemini` and `smoke_cognee` require a valid `AGNES_GEMINI_API_KEY` and network access (first Cognee run may download embedding models).
 
+## Phase 1 (data understanding)
+
+From the repository root (with `data/raw/db.sqlite` present):
+
+```bash
+uv run python scripts/phase1_schema.py
+uv run python scripts/phase1_overlap.py
+```
+
+Writes JSON/CSV under `outputs/reports/` (gitignored). Optional: open `notebooks/01_data_understanding.ipynb` or execute it with:
+
+```bash
+uv run jupyter nbconvert --to notebook --execute notebooks/01_data_understanding.ipynb --output /tmp/01_out.ipynb
+```
+
 ## Project docs
 
 - [plan.md](plan.md) — execution blueprint
@@ -46,4 +61,6 @@ Expected `smoke_db` row counts (challenge DB): Company 61, Product 1025, BOM 149
 
 - `src/agnes/` — Python package (data loader, retrieval, graph, future modules)
 - `data/raw/` — SQLite challenge database (not committed; copy from `hackathon-tumai/`)
-- `scripts/` — smoke scripts for DB, Gemini, Cognee
+- `scripts/` — Phase 0 smoke scripts; Phase 1 `phase1_schema.py` / `phase1_overlap.py`
+- `notebooks/` — exploratory notebooks
+- `outputs/reports/` — generated Phase 1 artifacts (not committed)
