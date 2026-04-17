@@ -339,3 +339,30 @@ project/
 ├─ docker-compose.yml (if used)
 ├─ README.md
 └─ CLAUDE.md
+
+---
+
+## Current Build State
+
+### Phase 0: Complete
+
+**Package manager:** `uv` with `pyproject.toml` (Python 3.11+). Run `uv sync --extra dev` to install.
+
+**What was built:**
+
+- `src/agnes/` Python package (editable install via `uv`):
+  - `config/settings.py` — Pydantic v2 `BaseSettings`, `AGNES_` env prefix, reads `.env`
+  - `data/db_loader.py` — `get_engine()` + `ping()` (returns row counts for 6 core tables)
+  - `retrieval/google_cloud_client.py` — Gemini API ping via `google-genai` SDK
+  - `graph/cognee_client.py` — Cognee `add + cognify` smoke with local store (LiteLLM Gemini, FastEmbed `BAAI/bge-small-en-v1.5`)
+  - `utils/logging.py` — structlog setup
+  - Empty placeholder packages: `models/`, `canonicalization/`, `substitutes/`, `reasoning/`, `optimization/`, `ui/`
+- `scripts/smoke_db.py`, `smoke_gemini.py`, `smoke_cognee.py` — one-liner JSON output, exit 0/1
+- `tests/test_smoke.py` — import + settings tests (no network required)
+- `data/raw/db.sqlite` — copied from `hackathon-tumai/db.sqlite` (gitignored)
+- `.env.example` — all `AGNES_` keys documented
+- `README.md` — setup and verify steps
+
+**Confirmed DB row counts:** Company 61 / Product 1025 / BOM 149 / BOM\_Component 1528 / Supplier 40 / Supplier\_Product 1633.
+
+**Next phase:** Phase 1 — schema inspection, BOM relational queries, repeated raw-material analysis, overlap reports.
