@@ -6,9 +6,25 @@ and the existing OpenAI chat agent for intelligence.
 """
 
 import re
+import json
+from datetime import datetime
 from flask import Blueprint, jsonify, request, send_from_directory
 import os
 from chat.agent import run_agent
+
+SESSION_LOG_PATH = os.path.join(os.path.dirname(__file__), 'session_log.json')
+
+
+def _load_session_log():
+    if os.path.exists(SESSION_LOG_PATH):
+        with open(SESSION_LOG_PATH, 'r') as f:
+            return json.load(f)
+    return []
+
+
+def _save_session_log(log):
+    with open(SESSION_LOG_PATH, 'w') as f:
+        json.dump(log, f, indent=2)
 
 cube_bp = Blueprint('cube', __name__, url_prefix='/cube')
 
@@ -134,4 +150,10 @@ def voice_chat():
     enhanced_message = _preprocess_transcription(user_message)
 
     result = run_agent(enhanced_message, conv_history, api_key=key, voice_mode=True)
+
+    log = _load_session_log()
+    log.append({"role": "user", "content": user_message, "timestamp": datetime.utcnow().isoformat() + "Z"})
+    log.append({"role": "assistant", "content": result["reply"], "timestamp": datetime.utcnow().isoformat() + "Z"})
+    _save_session_log(log)
+
     return jsonify({"reply": result["reply"], "steps": result["steps"]})
