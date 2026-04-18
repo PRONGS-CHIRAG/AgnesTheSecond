@@ -37,5 +37,6 @@ from orders.routes import orders_bp
 app.register_blueprint(orders_bp)
 
 if __name__ == '__main__':
+    # Local dev only — production uses gunicorn (see Procfile).
     port = int(os.environ.get('PORT', 5050))
     app.run(debug=True, threaded=True, host='0.0.0.0', port=port)
