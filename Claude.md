@@ -356,7 +356,7 @@ project/
   - `retrieval/google_cloud_client.py` — Gemini API ping via `google-genai` SDK
   - `graph/cognee_client.py` — Cognee `add + cognify` smoke with local store (LiteLLM Gemini, FastEmbed `BAAI/bge-small-en-v1.5`)
   - `utils/logging.py` — structlog setup
-  - `models/` — entity + report Pydantic models (Phase 1); still-empty: `canonicalization/`, `substitutes/`, `reasoning/`, `optimization/`, `ui/`
+  - `models/` — entity + report + canonical + graph Pydantic models (Phases 1–3); still-empty: `substitutes/`, `reasoning/`, `optimization/`, `ui/`
 - `scripts/smoke_db.py`, `smoke_gemini.py`, `smoke_cognee.py` — one-liner JSON output, exit 0/1
 - `tests/test_smoke.py` — import + settings tests (no network required)
 - `data/raw/db.sqlite` — copied from `hackathon-tumai/db.sqlite` (gitignored)
@@ -382,4 +382,108 @@ project/
 
 **Data note:** In this SQLite, each raw `Product.Id` appears in BOMs for finished goods from **one company only** (`n_companies` == 1 everywhere); cross-company overlap is a Phase 2 canonicalization concern. Supplier fan-out is meaningful: many raws have 2 suppliers (`fragmented`).
 
-**Next phase:** Phase 2 — normalize / canonicalize raw material names and build substitute-oriented clusters.
+### Phase 2: Complete
+
+**Purpose:** Deterministic SKU parse + `canonical_key` for every raw-material `Product` row; one batched Gemini structured call per uncached canonical key to assign `ingredient_family` and `functional_role` from a fixed taxonomy; versioned cache at `.cache/phase2_family_role.json` (keyed by `TAXONOMY_VERSION`, currently `v1`).
+
+**What was built:**
+
+- `src/agnes/canonicalization/taxonomy.py` — `FAMILIES`, `ROLES`, `TAXONOMY_VERSION`
+- `src/agnes/canonicalization/text_cleaning.py` — `parse_sku`, `normalize_name`, `canonical_key`
+- `src/agnes/canonicalization/canonicalizer.py` — `build_canonical_materials(engine)` over raw materials only
+- `src/agnes/canonicalization/role_classifier.py` — `assign_family_role`, `count_cache_hits`, `.cache/phase2_family_role.json` read/write
+- `src/agnes/models/canonical.py` — `CanonicalMaterial`, `FamilyRoleAssignment`, `FamilyRoleBatchResponse`, `CanonicalRegistry`
+- `src/agnes/retrieval/gemini_structured.py` — `generate_structured` (JSON + Pydantic schema, one retry on validation failure, `StructuredOutputError`)
+- `prompts/family_role.md` — taxonomy-constrained prompt template (no long prompts in Python)
+- `scripts/phase2_canonicalize.py` → `outputs/reports/canonical_registry.json`, `canonical_registry.csv` (gitignored like other reports)
+- `tests/test_text_cleaning.py`, `tests/test_canonicalizer.py` (876 raw rows), `tests/test_role_classifier.py` (cache-only, monkeypatched Gemini)
+
+**Coverage model (registry):** `coverage` counts `assigned` (no `llm_error` in `missing_info`), `unassigned` (parse ok but batch/LLM fallback), `parse_failed` (`parse_ok=False`).
+
+### Phase 3: Complete
+
+**Purpose:** Deterministic knowledge graph from `CanonicalRegistry` + SQLite: typed `KGNode` / `KGEdge`, ingest into Cognee dataset `agnes_kg_v1` (`GRAPH_SCHEMA_VERSION`), and a pure-Python `MaterialGraphIndex` for Phase 4 queries (no Cognee read path required).
+
+**What was built:**
+
+- `src/agnes/graph/schema.py` — `NodeKind`, `EdgeKind`, `GRAPH_SCHEMA_VERSION`, `DATASET_NAME`
+- `src/agnes/models/graph.py` — `KGNode`, `KGEdge`, `GraphIngestReport`, query ref types
+- `src/agnes/graph/builder.py` — `build_graph_payload`, `count_by_kind`
+- `src/agnes/graph/cognee_ingest.py` — `ingest_graph` (batched JSONL via `cognee.add` + `cognify`; optional `--reset` empties existing dataset by name)
+- `src/agnes/graph/queries.py` — `MaterialGraphIndex`, `suppliers_for_material`, `materials_in_family`, `companies_using_family`, `neighbors_of_material`
+- `src/agnes/graph/cognee_client.py` — public `configure_cognee()` (shared with ingest)
+- `scripts/phase3_graph_ingest.py` → `outputs/reports/graph_ingest_report.json` (gitignored); `scripts/phase3_graph_query.py` — canned queries over the in-memory index
+- `tests/test_graph_builder.py`, `tests/test_graph_queries.py`
+
+**Idempotence:** Stable node ids (`Company:<id>`, `CanonicalMaterial:<canonical_key>`, etc.); re-running `build_graph_payload` with the same inputs yields identical sorted node/edge lists. Cognee store lives under `.cognee_data/` (gitignored).
+
+**Next phase:** Phase 4 — substitute candidate generation using `MaterialGraphIndex` + embeddings.
+### Phase 4: Complete
+
+**Purpose:** For any raw material (or `CanonicalMaterial`), produce a deterministic, multi-signal ranked list of substitute candidates over the Phase 2 `CanonicalRegistry` and the Phase 3 `MaterialGraphIndex`. Signals are combined through an explainable weighted composite score (`SUBSTITUTES_SCHEMA_VERSION = "v1"`); no free-form LLM reasoning is used in the ranking loop.
+
+**Design rules:**
+
+- Deterministic first, LLM later: graph + lexical filters prune; embeddings only rerank; LLM context reasoning is deferred to Phase 6.
+- Family-scoped by default: candidates drawn from within the target's `IngredientFamily` (with `FunctionalRole` tracked as a feature); cross-family searches require `--cross-family` or `AGNES_PHASE4_CROSS_FAMILY_DEFAULT=true`.
+- Stable cache: embeddings cached on disk at `.cache/phase4_embeddings.json`, keyed by `(model, canonical_key)`; reruns are idempotent and network-free once warm.
+- No Cognee read path — operates entirely on `CanonicalRegistry` + in-memory `MaterialGraphIndex` + SQLite.
+
+**What was built:**
+
+- `src/agnes/models/substitutes.py` — `CandidateFeatures`, `SubstituteCandidate`, `TargetDiagnostics`, `SubstituteCandidateReport` (Pydantic, frozen, `extra="forbid"`)
+- `src/agnes/substitutes/features.py` — pure signal functions: `lexical_sim` (Jaccard on canonical-key tokens), `family_match`, `role_match`, `supplier_overlap`, `co_company_overlap`, `compute_features` (also records `missing_signals`)
+- `src/agnes/substitutes/embeddings.py` — `GeminiEmbeddingClient` with `google-genai` backend, on-disk JSON cache, batched `get_batch`, and an `EmbeddingBackend` Protocol for tests
+- `src/agnes/substitutes/scoring.py` — `DEFAULT_WEIGHTS` (`family=0.30`, `role=0.15`, `embed=0.35`, `lexical=0.10`, `supplier_overlap=0.10`), `score_candidate` with `MISSING_SIGNAL_PENALTY=0.05` and `[0,1]` clamp
+- `src/agnes/substitutes/candidate_generator.py` — `generate_candidates(target_key, registry, graph_index, embeddings, *, top_k, min_score, cross_family, weights)` returning `(list[SubstituteCandidate], TargetDiagnostics)` with structured logs
+- `scripts/phase4_candidates.py` → `outputs/reports/substitute_candidates.json` + `substitute_candidates.csv` (gitignored); CLI flags `--target/--all/--top-k/--min-score/--cross-family/--dry-run/--no-cache`
+- `src/agnes/config/settings.py` — new keys `phase4_top_k`, `phase4_min_score`, `phase4_weights` (JSON), `phase4_embedding_model`, `phase4_cross_family_default`; `.env.example` updated with `AGNES_PHASE4_*`
+- `tests/test_features.py`, `tests/test_scoring.py`, `tests/test_candidate_generator.py` — unit + end-to-end coverage (stubbed embedding backend, no network)
+
+**Coverage model (report):**
+
+- `with_candidates`: at least one in-family candidate scored above `min_score`.
+- `without_candidates`: `reason ∈ {no_family, singleton_family, all_below_threshold}`.
+- Per-target diagnostics: `n_pool`, `n_after_filter`, `n_returned`, `best_score`.
+
+**Idempotence:** Feature functions are pure on `(CanonicalRegistry, MaterialGraphIndex)`; embedding cache is content-keyed by `(model, canonical_key)`; given the same inputs, weights, and model id the ranked list is byte-stable (asserted in tests).
+
+**Observability:** Structured logs per target (`phase4_target_start`, `phase4_pool_filtered`, `phase4_target_ok`, `phase4_target_empty` with reason) plus a final run summary printed to stdout.
+
+**Next phase:** Phase 5 — external evidence enrichment for top-N `SubstituteCandidate`s (public sources, provenance-tracked claims).
+
+### Phase 5: Complete
+
+**Purpose:** Enrich the top Phase 4 `SubstituteCandidate`s with citation-backed external evidence using Gemini with the `google_search` grounding tool. Each (source, candidate) pair yields a typed `SubstituteEvidence` with up to six structured `EvidenceClaim`s (`functional_equivalence`, `certification`, `regulatory`, `typical_suppliers`, `quality_sensory`, `price_availability`), each carrying `polarity`, `confidence`, `citations[]`, and `grounding_strength` (`grounded` vs `parametric`). `EVIDENCE_SCHEMA_VERSION = "v1"`.
+
+**Design rules:**
+
+- Deterministic plumbing + grounded extraction: selector, cache, aggregation are pure; only the grounded LLM call is non-deterministic.
+- Reuses existing stack: `google-genai` + `types.Tool(google_search=...)`. No new dependencies. The Gemini API does not allow `google_search` and `response_schema` together, so the adapter asks the model to return raw JSON in the prompt and parses + Pydantic-validates with one retry.
+- Provenance first: every claim carries `citations: list[CitationRef]`; claims without citations are kept but flagged `grounding_strength="parametric"`. The prompt forbids inventing URLs.
+- Explicit budgets: `--top-sources`, `--per-source`, `--max-total` default-low; when `max_total` is tripped the run records `partial=True` without mutating the cache for unseen pairs.
+- Disk cache at `.cache/phase5_evidence.json` keyed by `(source_key, candidate_key, gemini_model, EVIDENCE_SCHEMA_VERSION)`; reruns are idempotent and network-free once warm.
+- No Cognee write path in Phase 5 (evidence is persisted into memory in Phase 6/7 once LLM verdicts exist).
+
+**What was built:**
+
+- `src/agnes/models/evidence.py` — `CitationRef`, `EvidenceClaim`, `SubstituteEvidence`, `SubstituteEvidenceLLM`, `EvidenceReport`, `EVIDENCE_SCHEMA_VERSION` (all `extra="forbid"`, frozen where safe)
+- `src/agnes/retrieval/gemini_grounded.py` — `GroundedBackend` Protocol, `GoogleGroundedBackend` (real SDK), `GroundedLLM` (parses JSON from free-text grounded response, one retry, raises `GroundedExtractionError`), `parse_citations` (handles both Pydantic-like and dict grounding metadata, dedupes by URL, stamps `retrieved_at`)
+- `src/agnes/evidence/enricher.py` — `select_pairs` (best-score-first source order, per-source truncation, optional single-source filter), `EvidenceCache` (JSON on disk, schema-versioned keys), `load_prompt_template` / `render_prompt` (`string.Template` with `$var` placeholders), `enrich_pairs` (budget, cache, failure counting, structured logs)
+- `prompts/evidence_extraction.md` — taxonomy-constrained, rich-claim prompt template that instructs the model to cite primary sources and never fabricate URLs
+- `scripts/phase5_evidence.py` → `outputs/reports/substitute_evidence.json` + `substitute_evidence.csv` (one row per claim for spreadsheet review); CLI flags `--top-sources/--per-source/--max-total/--source/--model/--prompt/--cache-path/--no-cache/--dry-run`
+- `src/agnes/config/settings.py` — new keys `phase5_top_sources` (5), `phase5_per_source` (3), `phase5_max_total` (25), `phase5_grounded_model` (`gemini-2.5-flash`); `.env.example` updated with `AGNES_PHASE5_*`
+- `tests/test_evidence_models.py`, `tests/test_enricher_selector.py`, `tests/test_enricher.py`, `tests/test_gemini_grounded.py` — schema round-trips, selector ordering, offline end-to-end enrichment with stub backend (asserts cache hit on rerun, `partial=True` at budget, `any_contradictions` derivation, failure counting), and grounded adapter JSON/citation parsing + retry behavior
+
+**Coverage model (report):**
+
+- `n_pairs`: pairs selected by `select_pairs`.
+- `n_cache_hits` / `n_api_calls`: disjoint; `n_failures` counts pairs where grounded extraction failed after retries (report still emitted without an item for that pair).
+- `partial`: `True` iff `max_total` tripped before all uncached pairs were processed.
+- Per item: `n_citations` (sum across claims), `any_contradictions` (any claim with `polarity="contradicts"`).
+
+**Idempotence:** Pure `select_pairs`; `EvidenceCache` keyed by `(source, candidate, model, schema_version)`. Given the same Phase 4 report, template, and model id, the second run returns `n_api_calls=0` and `n_cache_hits=n_pairs` (asserted in tests).
+
+**Observability:** Structured logs per pair (`phase5_pair_start`, `phase5_cache_hit`, `phase5_grounded_call`, `phase5_pair_ok`, `phase5_pair_failed`, `phase5_budget_exhausted`) plus a single-line run summary on stdout. No PII or secrets in logs.
+
+**Next phase:** Phase 6 — context and compliance reasoning over `SubstituteEvidence` to produce typed `SubstituteAssessment` verdicts with `recommendation_class`, `missing_information`, and uncertainty surfacing.

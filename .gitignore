@@ -20,7 +20,10 @@ data/raw/*.sqlite
 # Cognee local store
 .cognee_data/
 
-# Phase 1 generated reports (run scripts locally)
+# Pipeline caches (Phase 2 family/role, Phase 4 embeddings, Phase 5 evidence)
+.cache/
+
+# Generated reports (run scripts locally)
 outputs/reports/*.csv
 outputs/reports/*.json
 
