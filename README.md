@@ -131,50 +131,21 @@ blueprint adds `Conversation`, `ConversationMessage`, `Order`, and
 
 ## Quick start
 
-### Prerequisites
-
-- Python 3.11+
-- An OpenAI API key (for Chat, Cube, and Orders)
-- macOS or Linux (the commands below use bash/zsh)
-
-### Install
+Requires Python 3.11+ and an `OPENAI_API_KEY` for the LLM-backed
+surfaces (Chat, Cube, Orders).
 
 ```bash
 git clone https://github.com/PRONGS-CHIRAG/AgnesTheSecond.git
 cd AgnesTheSecond/taim
-python -m venv .venv
-source .venv/bin/activate
+python -m venv .venv && source .venv/bin/activate
 pip install flask flask-cors sqlalchemy openai reportlab
+
+python generate_mock_data.py          # one-time, seeds mock procurement data
+OPENAI_API_KEY=sk-... python app.py
 ```
 
-### Generate the mock procurement tables (one-time)
-
-```bash
-python generate_mock_data.py
-```
-
-### Run
-
-```bash
-export OPENAI_API_KEY=sk-...
-python app.py
-```
-
-The app starts at **http://localhost:5050**:
-
-- `/` — Chat
-- `/explorer/` — Data Explorer
-- `/agnes/` — Insights dashboard
-- `/cube/` — Voice Cube
-- `/orders/…` — Order generation API (called by the chat UI)
-
-The chat UI displays full-width by default; the right-hand purchase-order
-panel appears automatically when the user issues an order command in
-conversation (for example, *"order 500 kg of vitamin C from Prinova,
-deliver by May 15"*).
-
-> **Note on port 5050.** macOS AirPlay Receiver binds port 5000 by
-> default; the app intentionally runs on 5050 to avoid conflict.
+The server binds to `0.0.0.0:5050` (port 5000 is avoided to sidestep
+macOS AirPlay Receiver).
 
 ---
 
