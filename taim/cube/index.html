@@ -501,6 +501,78 @@
     transition: all .2s;
   }
   .modal .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  /* ── Order Popup ─────────────────────────────── */
+  .order-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,.55); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center;
+    animation: orderFadeIn .15s ease;
+  }
+  .order-overlay.show { display: flex; }
+  @keyframes orderFadeIn { from{opacity:0} to{opacity:1} }
+  .order-panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; min-width: 420px; max-width: 700px;
+    width: 92vw; max-height: 85vh; display: flex; flex-direction: column;
+    box-shadow: 0 12px 40px rgba(0,0,0,.5);
+    animation: orderSlideUp .2s ease;
+  }
+  @keyframes orderSlideUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+  .order-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 24px; border-bottom: 1px solid var(--border);
+  }
+  .order-header h3 { font-size: 15px; margin: 0; display: flex; align-items: center; gap: 10px; }
+  .order-header .po-badge {
+    font-size: 11px; padding: 3px 10px; border-radius: 6px;
+    background: rgba(0,212,170,.1); color: var(--accent2); font-weight: 600;
+  }
+  .order-header .order-close {
+    background: none; border: none; color: var(--text2); font-size: 18px;
+    cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: all .15s;
+  }
+  .order-header .order-close:hover { color: var(--text); background: var(--surface2); }
+  .order-body { overflow-y: auto; padding: 0; flex: 1; }
+  .order-body iframe {
+    width: 100%; height: 65vh; border: none; border-radius: 0;
+    background: #fff;
+  }
+  .order-body .order-loading {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 12px; padding: 60px 20px;
+    color: var(--text2); font-size: 13px;
+  }
+  .order-body .order-loading .spinner {
+    width: 32px; height: 32px; border: 3px solid var(--border);
+    border-top-color: var(--accent); border-radius: 50%;
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .order-body .order-error {
+    padding: 40px 24px; text-align: center; color: var(--text2);
+  }
+  .order-body .order-error .glyph { font-size: 32px; margin-bottom: 12px; }
+  .order-body .order-error h4 { color: var(--text); margin-bottom: 8px; }
+  .order-warnings {
+    display: none; padding: 12px 24px; font-size: 12px;
+    background: rgba(245,158,11,.06); color: #f59e0b;
+    border-top: 1px solid rgba(245,158,11,.15); line-height: 1.6;
+  }
+  .order-footer {
+    display: flex; align-items: center; justify-content: flex-end;
+    gap: 10px; padding: 12px 24px; border-top: 1px solid var(--border);
+  }
+  .order-footer button {
+    padding: 8px 18px; border-radius: 8px; font-size: 12px;
+    font-weight: 600; cursor: pointer; border: 1px solid var(--border);
+    background: var(--surface2); color: var(--text); font-family: 'Sora', sans-serif;
+    transition: all .15s;
+  }
+  .order-footer button:hover { border-color: var(--accent); background: var(--surface); }
+  .order-footer button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .order-footer button:disabled { opacity: .35; cursor: default; }
 </style>
 </head>
 <body>
@@ -605,6 +677,24 @@
     <div class="btn-row">
       <button class="btn" onclick="closeModal('elevenModal')">Cancel</button>
       <button class="btn primary" onclick="saveElevenKey()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Order Popup ─────────────────────────────── -->
+<div class="order-overlay" id="orderOverlay">
+  <div class="order-panel">
+    <div class="order-header">
+      <h3>📋 Purchase Order <span class="po-badge" id="orderPoBadge"></span></h3>
+      <button class="order-close" onclick="closeOrderPopup()">✕</button>
+    </div>
+    <div class="order-body" id="orderBody">
+      <div class="order-loading"><div class="spinner"></div><div>Drafting purchase order…</div></div>
+    </div>
+    <div class="order-warnings" id="orderWarnings"></div>
+    <div class="order-footer">
+      <button onclick="closeOrderPopup()">Close</button>
+      <button class="primary" id="orderDownloadBtn" disabled onclick="downloadCubeOrder()">⬇ Download PDF</button>
     </div>
   </div>
 </div>
@@ -925,6 +1015,28 @@ async function processMessage(text) {
   transcriptEl.className = 'transcript user-speech';
   transcriptEl.textContent = '"' + text + '"';
 
+  conversationHistory.push({ role: 'user', content: text });
+  saveConversationHistory();
+  persistCubeMessage('user', text);
+
+  // ── Fast-path: order intent → skip agent, go straight to order ──
+  if (detectsOrderIntent(text)) {
+    clearInterval(thinkingTimer); thinkingTimer = null;
+    const orderReply = 'Sure! I\'m preparing your purchase order now. One moment.';
+    conversationHistory.push({ role: 'assistant', content: orderReply });
+    saveConversationHistory();
+    persistCubeMessage('assistant', orderReply);
+    addTranscriptMsg('assistant', orderReply);
+    transcriptEl.className = 'transcript';
+    transcriptEl.textContent = orderReply;
+    setCubeState('speaking');
+    await speakWithElevenLabs(orderReply);
+    isBusy = false;
+    generateCubeOrder();
+    if (convoMode) setTimeout(() => startListening(), 300);
+    return;
+  }
+
   // Thinking with live timer
   setCubeState('thinking');
   const t0 = Date.now();
@@ -932,9 +1044,6 @@ async function processMessage(text) {
     const sec = Math.round((Date.now() - t0) / 1000);
     statusLabel.textContent = 'THINKING \u00b7 ' + sec + 's';
   }, 500);
-
-  conversationHistory.push({ role: 'user', content: text });
-  saveConversationHistory();
 
   try {
     currentAbort = new AbortController();
@@ -954,8 +1063,10 @@ async function processMessage(text) {
     if (data.error) throw new Error(data.error);
 
     const reply = data.reply;
+
     conversationHistory.push({ role: 'assistant', content: reply });
     saveConversationHistory();
+    persistCubeMessage('assistant', reply);
     const voiceText = stripMarkdown(reply);
 
     // Add Agnes reply to transcript panel
@@ -1102,11 +1213,155 @@ function speakBrowser(text) {
 })();
 
 // ══════════════════════════════════════════════════
+//  Order System — Session + Persist + Generate
+// ══════════════════════════════════════════════════
+function getCubeSessionId() {
+  let sid = sessionStorage.getItem('agnes_cube_session_id');
+  if (!sid) {
+    sid = (crypto.randomUUID && crypto.randomUUID()) ||
+          ('csid-' + Date.now() + '-' + Math.random().toString(16).slice(2, 10));
+    sessionStorage.setItem('agnes_cube_session_id', sid);
+  }
+  return sid;
+}
+
+function persistCubeMessage(role, content) {
+  try {
+    fetch('/orders/save_message', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        session_id: getCubeSessionId(),
+        role, content, source: 'cube',
+      }),
+      keepalive: true,
+    }).catch(() => {});
+  } catch (e) { /* swallow */ }
+}
+
+const ORDER_INTENT_PATTERNS = [
+  /\bplace\s+(an?\s+)?(order|po|purchase[\s-]?order)\b/i,
+  /\bcreate\s+(an?\s+)?(order|po|purchase[\s-]?order)\b/i,
+  /\b(send|issue|draft|generate|make)\s+(an?\s+)?(order|po|purchase[\s-]?order)\b/i,
+  /^\s*(please\s+)?order\b\s+(?!.*\?\s*$)/i,
+  /\bi[' ]?(d|would)\s+like\s+to\s+(order|buy|purchase)\b/i,
+  /\bi\s+want\s+to\s+(order|buy|purchase)\b/i,
+  /\bplease\s+(order|buy|purchase)\b/i,
+  /\b(buy|purchase|procure)\s+\d+/i,
+  /\b(buy|purchase|procure|order)\s+\w+\s+\d+/i,
+  /\b(buy|purchase|order)\s+(those|them|that|these|the)\b/i,
+  /\border\s+\d+/i,
+  /\byes,?\s+(place|create|send)\s+(the|that)\s+(order|po)\b/i,
+  /\bgo\s+ahead.{0,20}\b(order|po|purchase)\b/i,
+];
+
+function detectsOrderIntent(text) {
+  if (!text) return false;
+  return ORDER_INTENT_PATTERNS.some(rx => rx.test(text));
+}
+
+let cubeOrderId = null;
+let cubeOrderInFlight = false;
+
+function openOrderPopup() {
+  document.getElementById('orderOverlay').classList.add('show');
+}
+function closeOrderPopup() {
+  document.getElementById('orderOverlay').classList.remove('show');
+}
+
+function showCubeOrderLoading() {
+  openOrderPopup();
+  document.getElementById('orderBody').innerHTML =
+    '<div class="order-loading"><div class="spinner"></div><div>Drafting purchase order…</div></div>';
+  document.getElementById('orderPoBadge').textContent = '';
+  document.getElementById('orderDownloadBtn').disabled = true;
+  document.getElementById('orderWarnings').style.display = 'none';
+}
+
+function showCubeOrderError(msg) {
+  openOrderPopup();
+  document.getElementById('orderBody').innerHTML =
+    '<div class="order-error"><div class="glyph">⚠️</div><h4>Could not generate order</h4><p>' +
+    (msg || 'Unknown error').replace(/</g, '&lt;') + '</p></div>';
+}
+
+function renderCubeOrderPdf(orderId, poNumber, draft) {
+  cubeOrderId = orderId;
+  openOrderPopup();
+  const ts = Date.now();
+  document.getElementById('orderBody').innerHTML =
+    '<iframe src="/orders/pdf/' + orderId + '?t=' + ts + '#toolbar=0&navpanes=0"></iframe>';
+  document.getElementById('orderPoBadge').textContent = poNumber;
+  document.getElementById('orderDownloadBtn').disabled = false;
+
+  const warn = document.getElementById('orderWarnings');
+  const warnings = (draft && draft.warnings) || [];
+  if (warnings.length) {
+    warn.innerHTML = '<strong>Review before sending:</strong><br>' +
+      warnings.map(w => '• ' + w.replace(/</g, '&lt;')).join('<br>');
+    warn.style.display = 'block';
+  } else {
+    warn.style.display = 'none';
+  }
+}
+
+async function generateCubeOrder() {
+  if (cubeOrderInFlight) return;
+  if (conversationHistory.length === 0) {
+    showCubeOrderError('Chat with Agnes first — tell her what you want to order.');
+    return;
+  }
+  const key = getOpenAIKey();
+  if (!key) { openModal('keyModal'); return; }
+
+  cubeOrderInFlight = true;
+  showCubeOrderLoading();
+  try {
+    const resp = await fetch('/orders/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        session_id: getCubeSessionId(),
+        api_key: key,
+      }),
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok || !data.ok) {
+      showCubeOrderError(data.error || 'Server error (' + resp.status + ')');
+      return;
+    }
+    renderCubeOrderPdf(data.order_id, data.po_number, data.draft || {});
+  } catch (e) {
+    showCubeOrderError('Network error while drafting order.');
+  } finally {
+    cubeOrderInFlight = false;
+  }
+}
+
+function downloadCubeOrder() {
+  if (!cubeOrderId) return;
+  const a = document.createElement('a');
+  a.href = '/orders/pdf/' + cubeOrderId;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  a.click();
+}
+
+// ══════════════════════════════════════════════════
 //  Init
 // ══════════════════════════════════════════════════
 updateDots();
 loadConversationHistory();
 loadTranscript();
+document.getElementById('orderOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeOrderPopup();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && document.getElementById('orderOverlay').classList.contains('show')) {
+    closeOrderPopup();
+  }
+});
 </script>
 </body>
 </html>

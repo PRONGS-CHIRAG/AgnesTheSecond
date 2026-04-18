@@ -64,3 +64,6 @@ Desktop.ini
 
 # Node
 node_modules/
+
+
+*.pdf

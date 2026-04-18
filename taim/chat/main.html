@@ -1055,6 +1055,20 @@ async function sendMessage() {
   saveChatToSession();
   persistMessage('user', text);
 
+  // ── Fast-path: skip agent call for order intents ────────
+  if (detectsOrderIntent(text)) {
+    const fastReply = "Sure! I'm preparing your purchase order now. One moment…";
+    addMessage('assistant', fastReply);
+    conversationHistory.push({ role: 'assistant', content: fastReply });
+    saveChatToSession();
+    persistMessage('assistant', fastReply);
+    setTimeout(() => { generateOrder(); }, 100);
+    isBusy = false;
+    document.getElementById('sendBtn').disabled = false;
+    input.focus();
+    return;
+  }
+
   addThinking();
 
   try {
@@ -1082,13 +1096,6 @@ async function sendMessage() {
       conversationHistory.push({ role: 'assistant', content: reply });
       saveChatToSession();
       persistMessage('assistant', reply);
-
-      // Auto-trigger order drafting when the user's turn looks like an
-      // ordering command. Fires once the assistant has responded so the
-      // extractor has both sides of the exchange to work from.
-      if (detectsOrderIntent(text)) {
-        setTimeout(() => { generateOrder(); }, 100);
-      }
     }
   } catch (err) {
     removeThinking();
@@ -1113,6 +1120,8 @@ const ORDER_INTENT_PATTERNS = [
   /\bi\s+want\s+to\s+(order|buy|purchase)\b/i,
   /\bplease\s+(order|buy|purchase)\b/i,
   /\b(buy|purchase|procure)\s+\d+/i,                    // "buy 500kg"
+  /\b(buy|purchase|procure|order)\s+\w+\s+\d+/i,        // "buy those 40 units"
+  /\b(buy|purchase|order)\s+(those|them|that|these|the)\b/i, // "buy those", "order them"
   /\border\s+\d+/i,                                     // "order 500 kg"
   /\byes,?\s+(place|create|send)\s+(the|that)\s+(order|po)\b/i,
   /\bgo\s+ahead.{0,20}\b(order|po|purchase)\b/i,
