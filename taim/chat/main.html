@@ -24,7 +24,8 @@
     font-family: 'Sora', sans-serif;
     background: var(--bg);
     color: var(--text);
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
   }
@@ -82,17 +83,168 @@
   }
   .topnav .key-status .dot.ok { background: var(--accent2); }
 
+  /* ── Layout: chat full-width by default; split when order is drafted */
+  .app-split {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 0;
+    overflow: hidden;
+    transition: grid-template-columns 0.25s ease;
+  }
+  .app-split.with-order {
+    grid-template-columns: minmax(0, 1fr) 560px;
+  }
+  @media (max-width: 1100px) {
+    .app-split.with-order { grid-template-columns: minmax(0, 1fr) 440px; }
+  }
+  @media (max-width: 860px) {
+    .app-split.with-order { grid-template-columns: 1fr; }
+    .app-split.with-order .po-panel { display: none; }
+  }
+
   /* ── Chat Area ──────────────────────────────── */
   .chat-wrap {
     flex: 1;
     display: flex;
     flex-direction: column;
-    max-width: 900px;
     width: 100%;
+    max-width: 900px;
     margin: 0 auto;
-    padding: 24px 20px 0;
+    padding: 24px 24px 0;
     overflow: hidden;
+    min-width: 0;
+    min-height: 0;
   }
+  .app-split.with-order .chat-wrap {
+    max-width: none;
+    margin: 0;
+  }
+
+  /* ── PO / Order Panel (hidden until first order) ─ */
+  .po-panel {
+    display: none;
+    flex-direction: column;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    min-width: 0;
+    min-height: 0;
+  }
+  .app-split.with-order .po-panel {
+    display: flex;
+  }
+  .po-panel .po-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .po-head .po-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+  .po-head .po-sub {
+    font-size: 11px;
+    color: var(--text2);
+  }
+  .po-head .spacer { flex: 1; }
+  .po-btn {
+    font-family: 'Sora', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--accent2);
+    background: transparent;
+    color: var(--accent2);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .po-btn:hover { background: var(--accent2); color: var(--bg); }
+  .po-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .po-btn.secondary {
+    border-color: var(--border);
+    color: var(--text2);
+  }
+  .po-btn.secondary:hover {
+    background: var(--surface2);
+    color: var(--text);
+  }
+  .po-body {
+    flex: 1;
+    position: relative;
+    background: #2a2f3a;
+    overflow: hidden;
+    min-height: 0;
+  }
+  .po-empty {
+    position: absolute; inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+    color: var(--text2);
+  }
+  .po-empty .glyph {
+    font-size: 48px;
+    margin-bottom: 12px;
+    opacity: 0.6;
+  }
+  .po-empty h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .po-empty p {
+    font-size: 12px;
+    line-height: 1.5;
+    max-width: 280px;
+  }
+  .po-iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #2a2f3a;
+  }
+  .po-warnings {
+    padding: 10px 20px;
+    background: rgba(245, 158, 11, 0.08);
+    border-top: 1px solid rgba(245, 158, 11, 0.3);
+    color: #f59e0b;
+    font-size: 11px;
+    line-height: 1.55;
+    max-height: 160px;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  .po-warnings strong { color: #fbbf24; }
+  .po-loading {
+    position: absolute; inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent2);
+    font-size: 13px;
+    gap: 14px;
+  }
+  .po-loading .spinner {
+    width: 28px; height: 28px;
+    border: 3px solid rgba(0, 212, 170, 0.2);
+    border-top-color: var(--accent2);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
   .messages {
     flex: 1;
     overflow-y: auto;
@@ -317,6 +469,8 @@
     gap: 10px;
     padding: 16px 0 24px;
     align-items: flex-end;
+    flex-shrink: 0;
+    background: var(--bg);
   }
   .input-bar textarea {
     flex: 1;
@@ -485,26 +639,42 @@
   </div>
 </div>
 
-<!-- ── Chat ─────────────────────────────────────── -->
-<div class="chat-wrap">
-  <div class="messages" id="messages">
-    <div class="welcome" id="welcome">
-      <h2>Ask Agnes anything about your supply chain</h2>
-      <p>I can query the database, analyze BOMs, find ingredient substitutes, assess supplier risks, and more.</p>
-      <div class="suggestions">
-        <button onclick="askSuggestion(this)">Which ingredients are single-sourced?</button>
-        <button onclick="askSuggestion(this)">Find substitutes for glycerin</button>
-        <button onclick="askSuggestion(this)">Show the top 5 suppliers by product count</button>
-        <button onclick="askSuggestion(this)">What companies have the most complex BOMs?</button>
-        <button onclick="askSuggestion(this)">Analyze supply chain risks</button>
+<!-- ── Split: chat left, PO panel right ─────────── -->
+<div class="app-split">
+  <div class="chat-wrap">
+    <div class="messages" id="messages">
+      <div class="welcome" id="welcome">
+        <h2>Ask Agnes anything about your supply chain</h2>
+        <p>I can query the database, analyze BOMs, find ingredient substitutes, assess supplier risks, and more.</p>
+        <div class="suggestions">
+          <button onclick="askSuggestion(this)">Which ingredients are single-sourced?</button>
+          <button onclick="askSuggestion(this)">Find substitutes for glycerin</button>
+          <button onclick="askSuggestion(this)">Show the top 5 suppliers by product count</button>
+          <button onclick="askSuggestion(this)">What companies have the most complex BOMs?</button>
+          <button onclick="askSuggestion(this)">Analyze supply chain risks</button>
+        </div>
       </div>
     </div>
+    <div class="input-bar">
+      <textarea id="input" placeholder="Ask about ingredients, suppliers, BOMs, risks…" rows="1"
+                onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <button id="sendBtn" onclick="sendMessage()" title="Send">&#x27A4;</button>
+    </div>
   </div>
-  <div class="input-bar">
-    <textarea id="input" placeholder="Ask about ingredients, suppliers, BOMs, risks…" rows="1"
-              onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
-    <button id="sendBtn" onclick="sendMessage()" title="Send">&#x27A4;</button>
-  </div>
+
+  <!-- ── Right-panel: Purchase Order preview (hidden until first order) ── -->
+  <aside class="po-panel" id="poPanel">
+    <div class="po-head">
+      <div>
+        <div class="po-title">Purchase Order</div>
+        <div class="po-sub" id="poSub">Drafted from this conversation</div>
+      </div>
+      <div class="spacer"></div>
+      <button class="po-btn secondary" id="poDownloadBtn" onclick="downloadOrderPdf()" disabled title="Download PDF">Download</button>
+    </div>
+    <div class="po-body" id="poBody"></div>
+    <div class="po-warnings" id="poWarnings" style="display:none"></div>
+  </aside>
 </div>
 
 <!-- ── API Key Modal ──────────────────────────── -->
@@ -525,6 +695,32 @@
 let conversationHistory = [];
 let chatLog = [];
 let isBusy = false;
+let currentOrderId = null;
+
+function getSessionId() {
+  let sid = sessionStorage.getItem('agnes_session_id');
+  if (!sid) {
+    sid = (crypto.randomUUID && crypto.randomUUID()) ||
+          ('sid-' + Date.now() + '-' + Math.random().toString(16).slice(2, 10));
+    sessionStorage.setItem('agnes_session_id', sid);
+  }
+  return sid;
+}
+
+// Persist a single chat turn to the backend — fire-and-forget.
+function persistMessage(role, content) {
+  try {
+    fetch('/orders/save_message', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        session_id: getSessionId(),
+        role, content, source: 'chat',
+      }),
+      keepalive: true,
+    }).catch(() => {});
+  } catch (e) { /* swallow */ }
+}
 
 function saveChatToSession() {
   sessionStorage.setItem('agnes_chat_log', JSON.stringify(chatLog));
@@ -545,8 +741,10 @@ function loadChatFromSession() {
 function clearChat() {
   sessionStorage.removeItem('agnes_chat_log');
   sessionStorage.removeItem('agnes_chat_history');
+  sessionStorage.removeItem('agnes_session_id');
   conversationHistory = [];
   chatLog = [];
+  resetOrderPanel();
   const container = document.getElementById('messages');
   container.innerHTML = `
     <div class="welcome" id="welcome">
@@ -855,6 +1053,7 @@ async function sendMessage() {
   addMessage('user', text);
   conversationHistory.push({ role: 'user', content: text });
   saveChatToSession();
+  persistMessage('user', text);
 
   addThinking();
 
@@ -882,6 +1081,14 @@ async function sendMessage() {
       addMessage('assistant', reply, steps);
       conversationHistory.push({ role: 'assistant', content: reply });
       saveChatToSession();
+      persistMessage('assistant', reply);
+
+      // Auto-trigger order drafting when the user's turn looks like an
+      // ordering command. Fires once the assistant has responded so the
+      // extractor has both sides of the exchange to work from.
+      if (detectsOrderIntent(text)) {
+        setTimeout(() => { generateOrder(); }, 100);
+      }
     }
   } catch (err) {
     removeThinking();
@@ -893,10 +1100,141 @@ async function sendMessage() {
   input.focus();
 }
 
+// ── Auto-trigger detection ─────────────────────
+// Returns true when the user's turn contains an unambiguous order/buy
+// command. We deliberately keep this regex-based (not LLM) so the trigger
+// is deterministic and free.
+const ORDER_INTENT_PATTERNS = [
+  /\bplace\s+(an?\s+)?(order|po|purchase[\s-]?order)\b/i,
+  /\bcreate\s+(an?\s+)?(order|po|purchase[\s-]?order)\b/i,
+  /\b(send|issue|draft|generate|make)\s+(an?\s+)?(order|po|purchase[\s-]?order)\b/i,
+  /^\s*(please\s+)?order\b\s+(?!.*\?\s*$)/i,            // "order 500kg of X"
+  /\bi[' ]?(d|would)\s+like\s+to\s+(order|buy|purchase)\b/i,
+  /\bi\s+want\s+to\s+(order|buy|purchase)\b/i,
+  /\bplease\s+(order|buy|purchase)\b/i,
+  /\b(buy|purchase|procure)\s+\d+/i,                    // "buy 500kg"
+  /\border\s+\d+/i,                                     // "order 500 kg"
+  /\byes,?\s+(place|create|send)\s+(the|that)\s+(order|po)\b/i,
+  /\bgo\s+ahead.{0,20}\b(order|po|purchase)\b/i,
+];
+
+function detectsOrderIntent(text) {
+  if (!text) return false;
+  return ORDER_INTENT_PATTERNS.some((rx) => rx.test(text));
+}
+
+// ── Order Panel ────────────────────────────────
+function revealOrderPanel() {
+  document.querySelector('.app-split').classList.add('with-order');
+}
+
+function hideOrderPanel() {
+  document.querySelector('.app-split').classList.remove('with-order');
+}
+
+function resetOrderPanel() {
+  currentOrderId = null;
+  document.getElementById('poBody').innerHTML = '';
+  document.getElementById('poSub').textContent = 'Drafted from this conversation';
+  document.getElementById('poDownloadBtn').disabled = true;
+  const warn = document.getElementById('poWarnings');
+  warn.style.display = 'none';
+  warn.innerHTML = '';
+  hideOrderPanel();
+}
+
+function showOrderLoading() {
+  revealOrderPanel();
+  const body = document.getElementById('poBody');
+  body.innerHTML = `
+    <div class="po-loading">
+      <div class="spinner"></div>
+      <div>Drafting purchase order…</div>
+    </div>`;
+}
+
+function showOrderError(msg) {
+  revealOrderPanel();
+  const body = document.getElementById('poBody');
+  body.innerHTML = `
+    <div class="po-empty">
+      <div class="glyph">⚠️</div>
+      <h3>Could not generate order</h3>
+      <p>${(msg || 'Unknown error').replace(/</g, '&lt;')}</p>
+    </div>`;
+}
+
+function renderOrderPdf(orderId, poNumber, draft) {
+  currentOrderId = orderId;
+  revealOrderPanel();
+  const body = document.getElementById('poBody');
+  const ts = Date.now();
+  body.innerHTML = `<iframe class="po-iframe" src="/orders/pdf/${orderId}?t=${ts}#toolbar=0&navpanes=0"></iframe>`;
+  document.getElementById('poSub').textContent = `${poNumber}  ·  ${(draft.items || []).length} item(s)`;
+  document.getElementById('poDownloadBtn').disabled = false;
+
+  const warn = document.getElementById('poWarnings');
+  const warnings = draft.warnings || [];
+  if (warnings.length) {
+    warn.innerHTML = '<strong>Review before sending:</strong><br>' +
+      warnings.map(w => '• ' + w.replace(/</g, '&lt;')).join('<br>');
+    warn.style.display = 'block';
+  } else {
+    warn.style.display = 'none';
+  }
+}
+
+let orderInFlight = false;
+
+async function generateOrder() {
+  if (orderInFlight) return;
+  if (conversationHistory.length === 0) {
+    showOrderError('Chat with Agnes first — tell her what you want to order.');
+    return;
+  }
+  const key = getApiKey();
+  if (!key) {
+    openKeyModal();
+    return;
+  }
+  orderInFlight = true;
+  showOrderLoading();
+  try {
+    const resp = await fetch('/orders/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        session_id: getSessionId(),
+        api_key: key,
+      }),
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok || !data.ok) {
+      showOrderError(data.error || `Server error (${resp.status})`);
+      return;
+    }
+    renderOrderPdf(data.order_id, data.po_number, data.draft || {});
+  } catch (e) {
+    showOrderError('Network error while drafting order.');
+  } finally {
+    orderInFlight = false;
+  }
+}
+
+function downloadOrderPdf() {
+  if (!currentOrderId) return;
+  const a = document.createElement('a');
+  a.href = `/orders/pdf/${currentOrderId}`;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  a.click();
+}
+
 // ── Init ───────────────────────────────────────
 updateKeyStatus();
 loadChatFromSession();
 document.getElementById('input').focus();
+getSessionId();  // ensure session id exists on first load
 </script>
 </body>
 </html>
