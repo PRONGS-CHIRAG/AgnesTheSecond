@@ -1,0 +1,25 @@
+{
+  "graph_schema_version": "v1",
+  "taxonomy_version": "v1",
+  "dataset": "agnes_kg_v1",
+  "node_counts": {
+    "Company": 61,
+    "Supplier": 40,
+    "RawProduct": 5,
+    "CanonicalMaterial": 5,
+    "IngredientFamily": 16,
+    "FunctionalRole": 13
+  },
+  "edge_counts": {
+    "OWNS": 5,
+    "INSTANCE_OF": 5,
+    "OFFERS": 10,
+    "BELONGS_TO_FAMILY": 3,
+    "HAS_ROLE": 3,
+    "USED_BY": 5
+  },
+  "duration_ms": 28203,
+  "partial": false,
+  "cognee_version": "1.0.0",
+  "batches_written": 171
+}
