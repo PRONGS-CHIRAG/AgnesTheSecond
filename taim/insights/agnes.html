@@ -256,6 +256,11 @@ a:hover { text-decoration: underline; }
   color: var(--success);
   border-color: rgba(34,197,94,0.3);
 }
+.grade-badge.recommended {
+  background: rgba(34,197,94,0.12);
+  color: var(--success);
+  border-color: rgba(34,197,94,0.3);
+}
 .grade-badge.review_required {
   background: rgba(245,158,11,0.12);
   color: var(--warn);
@@ -880,25 +885,30 @@ const DIM_ORDER = [
   ['supplier_diversification', 'Supplier diversification'],
   ['switching_feasibility', 'Switching feasibility'],
 ];
+const SAFETY_DIMS = new Set([
+  'supplier_diversification', 'compliance_fit',
+  'compliance_compatibility', 'quality_assurance',
+  'mitigation_feasibility',
+]);
 function dimFillClass(key, value) {
-  if (key === 'supplier_diversification') {
+  if (SAFETY_DIMS.has(key)) {
     if (value < 0.30) return 'critical';
     if (value < 0.55) return 'warn';
     return 'good';
   }
-  if (key === 'compliance_fit') return value < 0.5 ? 'warn' : 'neutral';
   return '';
 }
-function renderTensionMatrix(dims) {
+function renderTensionMatrix(dims, labels) {
   if (!dims) return '';
+  const order = labels || DIM_ORDER;
   return `
     <div class="tension-matrix">
       <div class="tension-matrix-title">Prioritization Framework</div>
-      ${DIM_ORDER.map(([key, label]) => {
+      ${order.map(([key, label]) => {
         const v = Number(dims[key] || 0);
         const pct = Math.round(v * 100);
         const cls = dimFillClass(key, v);
-        const isKey = key === 'supplier_diversification';
+        const isKey = SAFETY_DIMS.has(key);
         return `
           <div class="dim-row">
             <div class="dim-label ${isKey ? 'key' : ''}">${label}${isKey ? ' ⚙' : ''}</div>
@@ -921,7 +931,7 @@ function renderRecs(recs) {
     return;
   }
   document.getElementById('recsList').innerHTML = recs.map(r => {
-    const hasFramework = r.type === 'consolidation' && r.dimensions;
+    const hasFramework = r.dimensions;
     const scorePill = hasFramework
       ? `<span class="final-score-pill">Score <strong>${Number(r.finalScore).toFixed(2)}</strong></span>`
       : '';
@@ -946,7 +956,7 @@ function renderRecs(recs) {
       </div>
       <div class="rec-detail">
         ${downgradeBanner}
-        ${renderTensionMatrix(r.dimensions)}
+        ${renderTensionMatrix(r.dimensions, r.dimensionLabels)}
         <div style="margin:10px 0;">
           <strong style="font-size:12px;color:var(--accent2);">Impact</strong>
           <div class="impact-chips">

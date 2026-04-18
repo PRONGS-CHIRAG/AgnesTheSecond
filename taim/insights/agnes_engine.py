@@ -48,6 +48,72 @@ GRADE_SAFE_THRESHOLD = 0.70
 GRADE_REJECT_THRESHOLD = 0.30
 DIVERSIFICATION_FLOOR = 0.30  # monopoly veto fires below this
 
+# Modifier tokens stripped when computing functional root of ingredient names
+MODIFIER_TOKENS = {
+    'organic', 'natural', 'artificial', 'non', 'gmo', 'pure',
+    'vegan', 'vegetable', 'grass', 'fed', 'from', 'concentrate',
+    'processed', 'with', 'alkali', 'dl', 'l', 'd', 'alpha',
+}
+
+# ── Scoring weights for risk mitigation recommendations ──
+RISK_WEIGHTS = {
+    'impact_severity': 0.30,
+    'evidence_strength': 0.25,
+    'mitigation_feasibility': 0.20,
+    'exposure_breadth': 0.15,
+    'urgency': 0.10,
+}
+
+# ── Scoring weights for substitution recommendations ──
+SUBSTITUTION_WEIGHTS = {
+    'similarity_score': 0.30,
+    'evidence_strength': 0.20,
+    'compliance_compatibility': 0.20,
+    'network_benefit': 0.15,
+    'switching_feasibility': 0.15,
+}
+
+# ── Scoring weights for cost optimization recommendations ──
+COST_WEIGHTS = {
+    'savings_magnitude': 0.30,
+    'evidence_strength': 0.20,
+    'quality_assurance': 0.25,
+    'supplier_reliability': 0.15,
+    'implementation_ease': 0.10,
+}
+
+# Ordered dimension labels per recommendation type (key → display label)
+DIMENSION_LABELS = {
+    'consolidation': [
+        ['consolidation_benefit', 'Consolidation leverage'],
+        ['evidence_confidence', 'Evidence confidence'],
+        ['compliance_fit', 'Compliance fit'],
+        ['supplier_diversification', 'Supplier diversification'],
+        ['switching_feasibility', 'Switching feasibility'],
+    ],
+    'risk_mitigation': [
+        ['impact_severity', 'Impact severity'],
+        ['evidence_strength', 'Evidence strength'],
+        ['mitigation_feasibility', 'Mitigation feasibility'],
+        ['exposure_breadth', 'Exposure breadth'],
+        ['urgency', 'Urgency'],
+    ],
+    'substitution': [
+        ['similarity_score', 'Ingredient similarity'],
+        ['evidence_strength', 'Evidence strength'],
+        ['compliance_compatibility', 'Compliance compatibility'],
+        ['network_benefit', 'Network benefit'],
+        ['switching_feasibility', 'Switching feasibility'],
+    ],
+    'cost_optimization': [
+        ['savings_magnitude', 'Savings magnitude'],
+        ['evidence_strength', 'Evidence strength'],
+        ['quality_assurance', 'Quality assurance'],
+        ['supplier_reliability', 'Supplier reliability'],
+        ['implementation_ease', 'Implementation ease'],
+    ],
+}
+
 # ────────────────────────────────────────────────────────────
 #  Ingredient Knowledge Base
 # ────────────────────────────────────────────────────────────
@@ -522,9 +588,7 @@ class AgnesEngine:
         for bn in names:
             tokens = _tokenize(bn)
             # Remove common modifiers to get the functional root
-            modifiers = {'organic', 'natural', 'artificial', 'non', 'gmo', 'pure',
-                         'vegan', 'vegetable', 'grass', 'fed', 'from', 'concentrate',
-                         'processed', 'with', 'alkali'}
+            modifiers = MODIFIER_TOKENS
             functional_tokens = tokens - modifiers
             # For each significant token, build a reverse index
             for t in functional_tokens:
@@ -565,6 +629,29 @@ class AgnesEngine:
                     total_suppliers.update(s['id'] for s in p['suppliers'])
                     for a in p['allergens']:
                         allergen_diff.add(a)
+                # ── Compute confidence from data ──
+                pair_sims = []
+                for i in range(len(cluster)):
+                    for j in range(i + 1, len(cluster)):
+                        pair_sims.append(_jaccard(_tokenize(cluster[i]),
+                                                  _tokenize(cluster[j])))
+                avg_sim = sum(pair_sims) / len(pair_sims) if pair_sims else 0.0
+                # Supplier overlap between cluster members
+                all_sup_ids = set()
+                shared_sup = None
+                for c in cluster:
+                    sids = set(s['id'] for s in self.ingredient_profiles[c]['suppliers'])
+                    if shared_sup is None:
+                        shared_sup = sids
+                    else:
+                        shared_sup &= sids
+                    all_sup_ids |= sids
+                sup_overlap = len(shared_sup or set()) / max(len(all_sup_ids), 1)
+                allerg_pen = 0.15 if allergen_diff else 0.0
+                variant_conf = self._clamp(
+                    avg_sim * 0.6 + 0.25 + sup_overlap * 0.15 - allerg_pen
+                )
+
                 variant_clusters.append({
                     'type': 'variant',
                     'members': cluster,
@@ -573,7 +660,7 @@ class AgnesEngine:
                     'totalCompanies': len(total_companies),
                     'totalSuppliers': len(total_suppliers),
                     'allergenConsiderations': list(allergen_diff),
-                    'confidence': 0.75,
+                    'confidence': round(variant_conf, 4),
                 })
                 for c in cluster:
                     used_in_variant.add(c)
@@ -599,6 +686,26 @@ class AgnesEngine:
                     p = self.ingredient_profiles[c]
                     total_companies.update(p['companyIds'])
                     total_suppliers.update(s['id'] for s in p['suppliers'])
+                # ── Computed confidence for functional group ──
+                all_sup_f = set()
+                shared_sup_f = None
+                group_allergens = set()
+                for c in sc:
+                    p = self.ingredient_profiles[c]
+                    sids = set(s['id'] for s in p['suppliers'])
+                    if shared_sup_f is None:
+                        shared_sup_f = sids
+                    else:
+                        shared_sup_f &= sids
+                    all_sup_f |= sids
+                    group_allergens.update(p.get('allergens', []))
+                sup_overlap_f = len(shared_sup_f or set()) / max(len(all_sup_f), 1)
+                allerg_pen_f = 0.12 * len(group_allergens)
+                func_conf = self._clamp(
+                    0.30 + 0.05 * min(len(sc), 4)
+                    + sup_overlap_f * 0.15 - allerg_pen_f
+                )
+
                 functional_groups.append({
                     'type': 'functional',
                     'members': sc,
@@ -606,8 +713,8 @@ class AgnesEngine:
                     'category': FUNCTIONAL_CATEGORIES.get(cat, {}).get('label', cat),
                     'totalCompanies': len(total_companies),
                     'totalSuppliers': len(total_suppliers),
-                    'allergenConsiderations': [],
-                    'confidence': 0.50,
+                    'allergenConsiderations': list(group_allergens),
+                    'confidence': round(func_conf, 4),
                 })
 
         self.substitution_groups = variant_clusters + functional_groups
@@ -624,9 +731,7 @@ class AgnesEngine:
         root_groups = defaultdict(list)
         for bn in members:
             tokens = _tokenize(bn)
-            modifiers = {'organic', 'natural', 'artificial', 'non', 'gmo', 'pure',
-                         'vegan', 'vegetable', 'grass', 'fed', 'from', 'concentrate',
-                         'dl', 'l', 'd', 'alpha'}
+            modifiers = MODIFIER_TOKENS
             sig_tokens = sorted(tokens - modifiers, key=lambda t: -len(t))
             # Use the longest significant token as root
             root = sig_tokens[0] if sig_tokens else bn
@@ -774,6 +879,319 @@ class AgnesEngine:
             'concentrationRiskDowngrade': concentration_risk_downgrade,
             'globalSupplierCount': global_supplier_count,
             'alternatesRemaining': alternates_remaining,
+        }
+
+    # ── Risk Scoring Dimensions ──────────────────
+
+    def _compute_risk_dimensions(self, risk):
+        """Compute 5-dimension scoring for a risk mitigation recommendation.
+
+        Dimensions:
+          impact_severity        — magnitude of damage if risk materializes
+          evidence_strength      — data backing the risk assessment
+          mitigation_feasibility — can we actually address this risk?
+          exposure_breadth       — fraction of the network affected
+          urgency                — time sensitivity
+        """
+        total_companies = max(len(self.companies), 1)
+        total_ingredients = max(len(self.ingredient_profiles), 1)
+
+        # ── impact_severity ──
+        if risk['type'] == 'single_source':
+            impact_severity = self._clamp(
+                risk['companiesAffected'] / total_companies * 1.5
+            )
+        elif risk['type'] == 'supplier_concentration':
+            impact_severity = self._clamp(
+                risk['soleIngredientCount'] / total_ingredients * 3.0
+            )
+        elif risk['type'] == 'critical_ingredient':
+            impact_severity = self._clamp(risk.get('ratio', 4) / 10.0)
+        elif risk['type'] == 'supplier_quality':
+            impact_severity = self._clamp(
+                1.0 - (risk.get('qualityScore', 50) / 100.0)
+            )
+        elif risk['type'] == 'price_volatility':
+            impact_severity = self._clamp(risk.get('volatility', 25) / 50.0)
+        else:
+            impact_severity = 0.5
+
+        # ── evidence_strength ──
+        bn = risk.get('baseName', '')
+        profile = self.ingredient_profiles.get(bn) if bn else None
+
+        if risk['type'] == 'supplier_quality':
+            evidence_strength = 0.90   # directly measured scores
+        elif risk['type'] == 'price_volatility':
+            oc = (profile['pricing']['orderCount']
+                  if profile and profile.get('pricing') else 0)
+            evidence_strength = self._clamp(0.40 + 0.06 * min(oc, 10))
+        elif risk['type'] in ('single_source', 'critical_ingredient'):
+            ev = 0.55
+            if profile and profile.get('pricing'):
+                ev += 0.25
+            if profile and any(
+                s['id'] in self.supplier_ratings
+                for s in profile.get('suppliers', [])
+            ):
+                ev += 0.15
+            evidence_strength = self._clamp(ev)
+        else:
+            evidence_strength = 0.60
+
+        # ── mitigation_feasibility ──
+        if risk['type'] == 'single_source':
+            alts = self._find_alternative_suppliers(bn)
+            mitigation_feasibility = self._clamp(
+                0.25 + 0.15 * min(len(alts), 4)
+            )
+        elif risk['type'] == 'supplier_quality':
+            prod_count = risk.get('productsAffected', 0)
+            mitigation_feasibility = self._clamp(
+                0.50 if prod_count <= 5 else 0.30
+            )
+        elif risk['type'] == 'price_volatility':
+            mitigation_feasibility = 0.55
+        else:
+            mitigation_feasibility = 0.45
+
+        # ── exposure_breadth ──
+        companies_affected = risk.get(
+            'companiesAffected', risk.get('companyCount', 0)
+        )
+        if not companies_affected and risk['type'] == 'supplier_quality':
+            sp_prods = self.supplier_to_products.get(
+                risk.get('supplierId', -1), []
+            )
+            cos = set()
+            for pid in sp_prods:
+                p = self.products.get(pid)
+                if p:
+                    cos.add(p['CompanyId'])
+            companies_affected = len(cos)
+        exposure_breadth = self._clamp(companies_affected / total_companies)
+
+        # ── urgency ──
+        if risk.get('severity') == 'high':
+            urgency = 0.85
+        elif risk.get('severity') == 'medium':
+            urgency = 0.55
+        else:
+            urgency = 0.30
+
+        dims = {
+            'impact_severity': round(self._clamp(impact_severity), 4),
+            'evidence_strength': round(self._clamp(evidence_strength), 4),
+            'mitigation_feasibility': round(self._clamp(mitigation_feasibility), 4),
+            'exposure_breadth': round(self._clamp(exposure_breadth), 4),
+            'urgency': round(self._clamp(urgency), 4),
+        }
+
+        final_score = self._clamp(
+            sum(RISK_WEIGHTS[k] * dims[k] for k in RISK_WEIGHTS)
+        )
+
+        if final_score >= GRADE_SAFE_THRESHOLD:
+            grade = 'recommended'
+        elif final_score <= GRADE_REJECT_THRESHOLD:
+            grade = 'not_recommended'
+        else:
+            grade = 'review_required'
+
+        return {
+            'dimensions': dims,
+            'finalScore': round(final_score, 4),
+            'grade': grade,
+        }
+
+    # ── Substitution Scoring Dimensions ────────
+
+    def _compute_substitution_dimensions(self, group, best_member, best_profile):
+        """Compute 5-dimension scoring for a substitution recommendation.
+
+        Dimensions:
+          similarity_score          — how similar are the ingredients?
+          evidence_strength         — data backing the substitution claim
+          compliance_compatibility  — allergen / quality-flag compatibility
+          network_benefit           — supply-chain improvement from standardising
+          switching_feasibility     — how easy to implement the switch
+        """
+        total_companies = max(len(self.companies), 1)
+        members = group['members']
+        member_profiles = [self.ingredient_profiles[m] for m in members]
+
+        # ── similarity_score ──
+        if group['type'] == 'variant':
+            pair_sims = []
+            for i in range(len(members)):
+                for j in range(i + 1, len(members)):
+                    pair_sims.append(
+                        _jaccard(_tokenize(members[i]), _tokenize(members[j]))
+                    )
+            avg_sim = sum(pair_sims) / len(pair_sims) if pair_sims else 0.0
+            cats = set(p['category'] for p in member_profiles)
+            similarity_score = self._clamp(
+                avg_sim + (0.10 if len(cats) == 1 else 0.0)
+            )
+        else:
+            similarity_score = self._clamp(
+                0.30 + 0.04 * min(len(members), 5)
+            )
+
+        # ── evidence_strength ──
+        ev = 0.35
+        has_pricing = sum(1 for p in member_profiles if p.get('pricing'))
+        ev += 0.25 * (has_pricing / len(member_profiles))
+        rated_sups = sum(
+            1 for p in member_profiles for s in p['suppliers']
+            if s['id'] in self.supplier_ratings
+        )
+        total_sups = max(
+            sum(len(p['suppliers']) for p in member_profiles), 1
+        )
+        ev += 0.20 * (rated_sups / total_sups)
+        if group['totalSuppliers'] >= 3:
+            ev += 0.10
+        if len(members) >= 3:
+            ev += 0.10
+        evidence_strength = self._clamp(ev)
+
+        # ── compliance_compatibility ──
+        allergen_count = len(group.get('allergenConsiderations', []))
+        member_flags = [
+            set(p.get('qualityFlags', [])) for p in member_profiles
+        ]
+        if member_flags and any(member_flags):
+            all_flags = set()
+            for f in member_flags:
+                all_flags |= f
+            common_flags = member_flags[0].copy()
+            for f in member_flags[1:]:
+                common_flags &= f
+            flag_agreement = (
+                len(common_flags) / max(len(all_flags), 1)
+            )
+        else:
+            flag_agreement = 1.0
+        compliance_compatibility = self._clamp(
+            0.65 + 0.35 * flag_agreement - 0.10 * allergen_count
+        )
+
+        # ── network_benefit ──
+        network_benefit = self._clamp(
+            0.25 * (group['totalCompanies'] / total_companies)
+            + 0.35 * self._clamp(group['totalSuppliers'] / 5.0)
+            + 0.40 * (best_profile['companyCount']
+                       / max(group['totalCompanies'], 1))
+        )
+
+        # ── switching_feasibility ──
+        best_share = (
+            best_profile['companyCount'] / max(group['totalCompanies'], 1)
+        )
+        type_bonus = 0.15 if group['type'] == 'variant' else 0.0
+        switching_feasibility = self._clamp(
+            0.30 + 0.50 * best_share + type_bonus
+        )
+
+        dims = {
+            'similarity_score': round(similarity_score, 4),
+            'evidence_strength': round(evidence_strength, 4),
+            'compliance_compatibility': round(compliance_compatibility, 4),
+            'network_benefit': round(network_benefit, 4),
+            'switching_feasibility': round(switching_feasibility, 4),
+        }
+
+        final_score = self._clamp(
+            sum(SUBSTITUTION_WEIGHTS[k] * dims[k]
+                for k in SUBSTITUTION_WEIGHTS)
+        )
+
+        if final_score >= GRADE_SAFE_THRESHOLD:
+            grade = 'recommended'
+        elif final_score <= GRADE_REJECT_THRESHOLD:
+            grade = 'not_recommended'
+        else:
+            grade = 'review_required'
+
+        return {
+            'dimensions': dims,
+            'finalScore': round(final_score, 4),
+            'grade': grade,
+        }
+
+    # ── Cost-Optimisation Scoring Dimensions ───
+
+    def _compute_cost_dimensions(self, profile, cheapest, most_expensive,
+                                  spread_pct, pricing):
+        """Compute 5-dimension scoring for a cost optimisation recommendation.
+
+        Dimensions:
+          savings_magnitude    — size of the cost-reduction opportunity
+          evidence_strength    — robustness of the price data
+          quality_assurance    — does the cheaper supplier maintain quality?
+          supplier_reliability — reliable delivery / on-time record
+          implementation_ease  — how actionable the switch is
+        """
+        # ── savings_magnitude ──
+        savings_magnitude = self._clamp(spread_pct / 50.0)
+
+        # ── evidence_strength ──
+        order_count = pricing.get('orderCount', 0)
+        ev = 0.25
+        ev += 0.25 * self._clamp(order_count / 20.0)
+        ev += 0.15 * (1.0 if cheapest.get('qualityScore') else 0.0)
+        ev += 0.15 * (1.0 if pricing.get('benchmark') else 0.0)
+        ev += 0.10 * self._clamp(
+            len(pricing.get('supplierPricing', [])) / 4.0
+        )
+        ev += 0.10 * self._clamp(cheapest.get('orderCount', 0) / 5.0)
+        evidence_strength = self._clamp(ev)
+
+        # ── quality_assurance ──
+        q = (cheapest.get('qualityScore') or 0) / 100.0
+        c = (cheapest.get('complianceScore') or 0) / 100.0
+        quality_assurance = self._clamp((q + c) / 2.0)
+
+        # ── supplier_reliability ──
+        rel = ((cheapest.get('reliabilityScore') or 0) / 100.0
+               if cheapest.get('reliabilityScore') else 0.0)
+        on_time = cheapest.get('onTimeRate', 0) / 100.0
+        supplier_reliability = self._clamp(0.5 * rel + 0.5 * on_time)
+
+        # ── implementation_ease ──
+        impl = 0.40
+        if cheapest.get('orderCount', 0) >= 3:
+            impl += 0.25
+        if pricing.get('benchmark'):
+            impl += 0.15
+        impl += 0.10 * self._clamp(profile['supplierCount'] / 4.0)
+        impl += 0.10 * self._clamp(profile['companyCount'] / 5.0)
+        implementation_ease = self._clamp(impl)
+
+        dims = {
+            'savings_magnitude': round(savings_magnitude, 4),
+            'evidence_strength': round(evidence_strength, 4),
+            'quality_assurance': round(quality_assurance, 4),
+            'supplier_reliability': round(supplier_reliability, 4),
+            'implementation_ease': round(implementation_ease, 4),
+        }
+
+        final_score = self._clamp(
+            sum(COST_WEIGHTS[k] * dims[k] for k in COST_WEIGHTS)
+        )
+
+        if final_score >= GRADE_SAFE_THRESHOLD:
+            grade = 'recommended'
+        elif final_score <= GRADE_REJECT_THRESHOLD:
+            grade = 'not_recommended'
+        else:
+            grade = 'review_required'
+
+        return {
+            'dimensions': dims,
+            'finalScore': round(final_score, 4),
+            'grade': grade,
         }
 
     # ── Consolidation Analysis ─────────────────
@@ -1118,7 +1536,7 @@ class AgnesEngine:
 
         # Recommendation Type 1: Consolidation plays
         # Ranked by the Prioritization Framework's final score, not raw impact.
-        for opp in self.consolidation_opportunities[:20]:
+        for opp in self.consolidation_opportunities[:30]:
             rec_id += 1
             grade = opp.get('grade', 'review_required')
             # Priority uses the framework grade first; falls back to volume heuristic
@@ -1167,6 +1585,7 @@ class AgnesEngine:
                 'grade': grade,
                 'finalScore': opp['finalScore'],
                 'dimensions': opp['prioritization']['dimensions'],
+                'dimensionLabels': DIMENSION_LABELS['consolidation'],
                 'concentrationRiskDowngrade': downgrade,
                 'title': title,
                 'summary': summary,
@@ -1182,137 +1601,315 @@ class AgnesEngine:
                 },
                 'evidence': opp['evidence'],
                 'caveats': self._build_caveats(opp['baseName']),
-                'confidence': 0.80 if opp['currentCoverage'] > opp['companyCount'] // 2 else 0.60,
+                'confidence': round(
+                    opp['prioritization']['dimensions']['evidence_confidence'], 2
+                ),
                 'baseName': opp['baseName'],
             })
 
         # Recommendation Type 2: Risk mitigation
         for risk in self.risk_items:
-            if risk['type'] == 'single_source':
+            if risk['type'] in ('single_source', 'supplier_quality'):
                 rec_id += 1
-                # Find potential alternative suppliers from substitution groups
-                alt_suppliers = self._find_alternative_suppliers(risk['baseName'])
+                bn = risk.get('baseName', '')
+                alt_suppliers = (
+                    self._find_alternative_suppliers(bn) if bn else []
+                )
+
+                # ── Compute framework dimensions ──
+                risk_fw = self._compute_risk_dimensions(risk)
+                dims = risk_fw['dimensions']
+
+                # Priority derived from framework grade
+                if risk_fw['grade'] == 'recommended':
+                    priority = 'high'
+                elif risk_fw['grade'] == 'review_required':
+                    priority = 'medium'
+                else:
+                    priority = 'low'
+
+                # Confidence = evidence-strength dimension
+                confidence = round(dims['evidence_strength'], 2)
+
+                # ── Rich evidence trail ──
+                evidence = [risk['description']]
+                if risk['type'] == 'single_source':
+                    evidence.append(
+                        f"Current sole supplier: {risk['supplierName']}"
+                    )
+                    evidence.append(
+                        f"Impact scope: {risk['companiesAffected']} companies, "
+                        f"{risk['productsAffected']} products affected"
+                    )
+                    if alt_suppliers:
+                        evidence.append(
+                            f"Alternative suppliers identified from related "
+                            f"ingredients: "
+                            f"{', '.join(s['name'] for s in alt_suppliers[:3])}"
+                        )
+                    else:
+                        evidence.append(
+                            "No alternative suppliers found in current "
+                            "database — external sourcing research recommended"
+                        )
+                elif risk['type'] == 'supplier_quality':
+                    evidence.append(
+                        f"Quality score: {risk['qualityScore']:.0f}/100, "
+                        f"Compliance: {risk['complianceScore']:.0f}/100, "
+                        f"Risk tier: {risk['riskTier']}"
+                    )
+                    evidence.append(
+                        f"Products affected: {risk['productsAffected']}"
+                    )
+                evidence.append(
+                    f"Framework score: {risk_fw['finalScore']:.2f} — "
+                    f"impact {dims['impact_severity']:.2f}, "
+                    f"evidence {dims['evidence_strength']:.2f}, "
+                    f"feasibility {dims['mitigation_feasibility']:.2f}, "
+                    f"exposure {dims['exposure_breadth']:.2f}, "
+                    f"urgency {dims['urgency']:.2f}"
+                )
+
+                title = (
+                    f"Qualify second supplier for {risk['ingredientName']}"
+                    if risk['type'] == 'single_source'
+                    else f"Address quality risk: {risk['supplierName']}"
+                )
+
                 recs.append({
                     'id': rec_id,
                     'type': 'risk_mitigation',
-                    'priority': 'high',
-                    'title': f"Qualify second supplier for {risk['ingredientName']}",
+                    'priority': priority,
+                    'grade': risk_fw['grade'],
+                    'finalScore': risk_fw['finalScore'],
+                    'dimensions': dims,
+                    'dimensionLabels': DIMENSION_LABELS['risk_mitigation'],
+                    'title': title,
                     'summary': risk['description'],
                     'impact': {
-                        'companiesAffected': risk['companiesAffected'],
-                        'productsAffected': risk['productsAffected'],
-                        'riskReduction': 'Eliminates single-source dependency',
+                        'companiesAffected': risk.get(
+                            'companiesAffected',
+                            risk.get('productsAffected', 0)
+                        ),
+                        'productsAffected': risk.get('productsAffected', 0),
+                        'riskReduction': (
+                            'Eliminates single-source dependency'
+                            if risk['type'] == 'single_source'
+                            else 'Reduces quality-risk exposure'
+                        ),
                     },
-                    'evidence': [
-                        risk['description'],
-                        f"Current sole supplier: {risk['supplierName']}",
-                        (f"Potential alternative suppliers from related ingredients: "
-                         f"{', '.join(s['name'] for s in alt_suppliers[:3])}")
-                        if alt_suppliers else
-                        "No alternative suppliers identified in current database — "
-                        "external sourcing research recommended.",
-                    ],
+                    'evidence': evidence,
                     'caveats': [
                         "New supplier must be qualified for GMP compliance",
                         "Formulation testing required before switching",
                         "Lead time and minimum order quantities need assessment",
                     ],
                     'alternativeSuppliers': alt_suppliers[:5],
-                    'confidence': 0.70 if alt_suppliers else 0.50,
-                    'baseName': risk['baseName'],
+                    'confidence': confidence,
+                    'baseName': bn,
                 })
 
         # Recommendation Type 3: Substitution opportunities
-        for group in self.substitution_groups[:15]:
-            if group['type'] == 'variant' and group['totalCompanies'] >= 3:
+        for group in self.substitution_groups[:30]:
+            if group['totalCompanies'] >= 2:
                 rec_id += 1
-                # Identify the "best" variant (most widely used)
-                best_member = max(group['members'],
-                                  key=lambda m: self.ingredient_profiles[m]['companyCount'])
+                best_member = max(
+                    group['members'],
+                    key=lambda m: self.ingredient_profiles[m]['companyCount'],
+                )
                 best_profile = self.ingredient_profiles[best_member]
+
+                # ── Compute framework dimensions ──
+                sub_fw = self._compute_substitution_dimensions(
+                    group, best_member, best_profile
+                )
+                dims = sub_fw['dimensions']
+
+                # Priority from framework
+                if sub_fw['grade'] == 'recommended':
+                    priority = (
+                        'high' if group['totalCompanies'] >= 4 else 'medium'
+                    )
+                elif sub_fw['grade'] == 'review_required':
+                    priority = 'medium'
+                else:
+                    priority = 'low'
+
+                confidence = round(dims['evidence_strength'], 2)
+
+                # ── Enriched evidence trail ──
+                gtype = ('Variant' if group['type'] == 'variant'
+                         else 'Functional')
+                evidence = [
+                    f"{gtype} substitution group: "
+                    f"{', '.join(group['memberNames'])}",
+                    f"Category: {group['category']}",
+                    f"{best_profile['name']} is the most widely used "
+                    f"({best_profile['companyCount']} companies, "
+                    f"{best_profile['supplierCount']} suppliers)",
+                    f"Combined supplier pool: {group['totalSuppliers']} "
+                    f"suppliers across {group['totalCompanies']} companies",
+                ]
+                if group['type'] == 'variant':
+                    evidence.append(
+                        "Members share high name similarity — likely the "
+                        "same ingredient in different forms or specifications"
+                    )
+                if group.get('allergenConsiderations'):
+                    evidence.append(
+                        f"Allergen considerations: "
+                        f"{', '.join(group['allergenConsiderations'])} "
+                        f"— substitution requires allergen-labeling review"
+                    )
+                evidence.append(
+                    f"Framework score: {sub_fw['finalScore']:.2f} — "
+                    f"similarity {dims['similarity_score']:.2f}, "
+                    f"evidence {dims['evidence_strength']:.2f}, "
+                    f"compliance {dims['compliance_compatibility']:.2f}, "
+                    f"network {dims['network_benefit']:.2f}, "
+                    f"switching {dims['switching_feasibility']:.2f}"
+                )
+
                 recs.append({
                     'id': rec_id,
                     'type': 'substitution',
-                    'priority': 'medium',
-                    'title': f"Standardize on {best_profile['name']} across variants",
+                    'priority': priority,
+                    'grade': sub_fw['grade'],
+                    'finalScore': sub_fw['finalScore'],
+                    'dimensions': dims,
+                    'dimensionLabels': DIMENSION_LABELS['substitution'],
+                    'title': (
+                        f"Standardize on {best_profile['name']} across "
+                        f"{'variants' if group['type'] == 'variant' else 'alternatives'}"
+                    ),
                     'summary': (
-                        f"{len(group['members'])} variants of this ingredient are used: "
-                        f"{', '.join(group['memberNames'])}. "
+                        f"{len(group['members'])} "
+                        f"{'variants' if group['type'] == 'variant' else 'alternatives'} "
+                        f"of this ingredient: {', '.join(group['memberNames'])}. "
                         f"Standardizing on {best_profile['name']} could consolidate "
-                        f"demand across {group['totalCompanies']} companies."
+                        f"demand across {group['totalCompanies']} companies. "
+                        f"Framework scores this {sub_fw['finalScore']:.2f} "
+                        f"({sub_fw['grade'].replace('_', ' ')})."
                     ),
                     'impact': {
                         'companiesAffected': group['totalCompanies'],
                         'variantsReduced': len(group['members']) - 1,
-                        'consolidationPotential': f"{len(group['members'])} variants → 1 standard",
+                        'consolidationPotential': (
+                            f"{len(group['members'])} variants → 1 standard"
+                        ),
                     },
-                    'evidence': [
-                        f"Variants identified: {', '.join(group['memberNames'])}",
-                        f"All belong to category: {group['category']}",
-                        f"{best_profile['name']} is the most widely used variant "
-                        f"({best_profile['companyCount']} companies)",
-                        f"Combined supplier pool: {group['totalSuppliers']} suppliers",
-                    ],
+                    'evidence': evidence,
                     'caveats': self._build_substitution_caveats(group),
-                    'confidence': group['confidence'],
+                    'confidence': confidence,
                     'substitutionGroup': group,
                 })
 
         # Recommendation Type 4: Cost optimization — switch to cheaper supplier
         for bn, profile in self.ingredient_profiles.items():
             pricing = profile.get('pricing')
-            if not pricing or not pricing.get('supplierPricing') or len(pricing['supplierPricing']) < 2:
+            if (not pricing or not pricing.get('supplierPricing')
+                    or len(pricing['supplierPricing']) < 2):
                 continue
             sp_list = pricing['supplierPricing']
-            cheapest = sp_list[0]  # already sorted by avgPrice
+            cheapest = sp_list[0]               # already sorted by avgPrice
             most_expensive = sp_list[-1]
             if cheapest['avgPrice'] <= 0 or most_expensive['avgPrice'] <= 0:
                 continue
             spread_pct = ((most_expensive['avgPrice'] - cheapest['avgPrice'])
                           / most_expensive['avgPrice'] * 100)
-            # Only flag significant price spreads with acceptable quality
-            if (spread_pct >= 15
-                    and (cheapest.get('qualityScore') or 0) >= 75
-                    and (cheapest.get('complianceScore') or 0) >= 75):
-                rec_id += 1
-                est_savings = (most_expensive['avgPrice'] - cheapest['avgPrice']) * (
-                    pricing['totalSpend'] / pricing['avgUnitPrice']
-                ) * 0.5  # conservative: 50% of volume could shift
-                recs.append({
-                    'id': rec_id,
-                    'type': 'cost_optimization',
-                    'priority': 'medium' if spread_pct >= 25 else 'low',
-                    'title': (f"Switch {profile['name']} sourcing to "
-                              f"{cheapest['name']} for cost savings"),
-                    'summary': (
-                        f"{profile['name']} shows a {spread_pct:.0f}% price spread "
-                        f"across suppliers. {cheapest['name']} offers "
-                        f"${cheapest['avgPrice']:.2f}/kg vs ${most_expensive['avgPrice']:.2f}/kg "
-                        f"({most_expensive['name']}), with quality score "
-                        f"{cheapest.get('qualityScore', 'N/A')}/100."
-                    ),
-                    'impact': {
-                        'companiesAffected': profile['companyCount'],
-                        'estimatedSavings': f"${est_savings:,.0f}",
-                        'priceReduction': f"{spread_pct:.0f}%",
-                    },
-                    'evidence': [
-                        f"Cheapest supplier: {cheapest['name']} at ${cheapest['avgPrice']:.2f}/kg "
-                        f"(quality: {cheapest.get('qualityScore', 'N/A')}, "
-                        f"compliance: {cheapest.get('complianceScore', 'N/A')}, "
-                        f"on-time: {cheapest['onTimeRate']:.0f}%)",
-                        f"Most expensive: {most_expensive['name']} at "
-                        f"${most_expensive['avgPrice']:.2f}/kg",
-                        f"Market benchmark: ${pricing['benchmark']['avgMarketPrice']:.2f}/kg",
-                        f"Total historical spend: ${pricing['totalSpend']:,.0f}",
-                    ],
-                    'caveats': self._build_caveats(bn) + [
-                        "Price comparison based on historical procurement data.",
-                        "Volume discounts may change effective pricing at consolidated quantities.",
-                    ],
-                    'confidence': 0.65,
-                    'baseName': bn,
-                })
+            # Gate: minimum spread and quality / compliance floor
+            if spread_pct < 15:
+                continue
+            if (cheapest.get('qualityScore') or 0) < 75:
+                continue
+            if (cheapest.get('complianceScore') or 0) < 75:
+                continue
+
+            rec_id += 1
+
+            # ── Compute framework dimensions ──
+            cost_fw = self._compute_cost_dimensions(
+                profile, cheapest, most_expensive, spread_pct, pricing
+            )
+            dims = cost_fw['dimensions']
+
+            # Priority from framework
+            if cost_fw['grade'] == 'recommended':
+                priority = 'high' if spread_pct >= 30 else 'medium'
+            elif cost_fw['grade'] == 'review_required':
+                priority = 'medium'
+            else:
+                priority = 'low'
+
+            confidence = round(dims['evidence_strength'], 2)
+
+            est_savings = (most_expensive['avgPrice'] - cheapest['avgPrice']) * (
+                pricing['totalSpend'] / pricing['avgUnitPrice']
+            ) * 0.5  # conservative: 50% volume shift
+
+            # ── Rich evidence trail ──
+            evidence = [
+                f"Cheapest supplier: {cheapest['name']} at "
+                f"${cheapest['avgPrice']:.2f}/kg "
+                f"(quality: {cheapest.get('qualityScore', 'N/A')}/100, "
+                f"compliance: {cheapest.get('complianceScore', 'N/A')}/100, "
+                f"on-time: {cheapest['onTimeRate']:.0f}%, "
+                f"based on {cheapest.get('orderCount', 0)} orders)",
+                f"Most expensive: {most_expensive['name']} at "
+                f"${most_expensive['avgPrice']:.2f}/kg "
+                f"({most_expensive.get('orderCount', 0)} orders)",
+                f"Price spread: {spread_pct:.1f}% — estimated savings of "
+                f"${est_savings:,.0f} on 50% volume shift",
+                f"Market benchmark: "
+                f"${pricing['benchmark']['avgMarketPrice']:.2f}/kg "
+                f"(volatility: "
+                f"{pricing['benchmark']['volatility']*100:.0f}%)",
+                f"Total historical spend: ${pricing['totalSpend']:,.0f} "
+                f"across {pricing['orderCount']} orders",
+                f"Framework score: {cost_fw['finalScore']:.2f} — "
+                f"savings {dims['savings_magnitude']:.2f}, "
+                f"evidence {dims['evidence_strength']:.2f}, "
+                f"quality {dims['quality_assurance']:.2f}, "
+                f"reliability {dims['supplier_reliability']:.2f}, "
+                f"ease {dims['implementation_ease']:.2f}",
+            ]
+
+            recs.append({
+                'id': rec_id,
+                'type': 'cost_optimization',
+                'priority': priority,
+                'grade': cost_fw['grade'],
+                'finalScore': cost_fw['finalScore'],
+                'dimensions': dims,
+                'dimensionLabels': DIMENSION_LABELS['cost_optimization'],
+                'title': (
+                    f"Switch {profile['name']} sourcing to "
+                    f"{cheapest['name']} for cost savings"
+                ),
+                'summary': (
+                    f"{profile['name']} shows a {spread_pct:.0f}% price "
+                    f"spread across suppliers. {cheapest['name']} offers "
+                    f"${cheapest['avgPrice']:.2f}/kg vs "
+                    f"${most_expensive['avgPrice']:.2f}/kg "
+                    f"({most_expensive['name']}). Framework scores this "
+                    f"{cost_fw['finalScore']:.2f} "
+                    f"({cost_fw['grade'].replace('_', ' ')}), "
+                    f"quality {cheapest.get('qualityScore', 'N/A')}/100."
+                ),
+                'impact': {
+                    'companiesAffected': profile['companyCount'],
+                    'estimatedSavings': f"${est_savings:,.0f}",
+                    'priceReduction': f"{spread_pct:.0f}%",
+                },
+                'evidence': evidence,
+                'caveats': self._build_caveats(bn) + [
+                    "Price comparison based on historical procurement data",
+                    "Volume discounts may change effective pricing at "
+                    "consolidated quantities",
+                ],
+                'confidence': confidence,
+                'baseName': bn,
+            })
 
         recs.sort(key=lambda r: (
             {'high': 0, 'medium': 1, 'low': 2}.get(r['priority'], 3),
