@@ -8,13 +8,35 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.egg-info/
+.pytest_cache/
+.ruff_cache/
 dist/
 build/
 *.egg
 
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+
 # SQLite databases
 *.sqlite
 *.db
+data/raw/*.sqlite
+
+# Cognee local store
+.cognee_data/
+
+# Pipeline caches
+.cache/
+
+# Generated reports
+outputs/reports/*.csv
+outputs/reports/*.json
+outputs/logs/
+
+# Jupyter
+.ipynb_checkpoints/
 
 # IDE / Editor
 .vscode/
@@ -32,12 +54,8 @@ Desktop.ini
 # Word temp files
 ~$*
 
-# Environment variables
-.env
-.env.local
-
 # Logs
 *.log
 
-# Node (if any)
+# Node
 node_modules/

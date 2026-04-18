@@ -1,0 +1,28 @@
+2026-04-18T06:06:16.201939Z [info     ] phase6_context_expanded        n_pairs=4 n_tuples=13
+2026-04-18T06:06:16.202133Z [info     ] phase6_tuple_start             candidate=calcium-carbonate company_id=1 i=0 product_id=13 source=calcium-citrate total=13
+2026-04-18T06:06:16.202267Z [info     ] phase6_rules_decision          acceptability=0.8 borderline=False candidate=calcium-carbonate company_id=1 product_id=13 recommendation_class=recommend source=calcium-citrate
+2026-04-18T06:06:16.202415Z [info     ] phase6_tuple_start             candidate=dicalcium-phosphate company_id=1 i=1 product_id=13 source=calcium-citrate total=13
+2026-04-18T06:06:16.202467Z [info     ] phase6_rules_decision          acceptability=0.89 borderline=False candidate=dicalcium-phosphate company_id=1 product_id=13 recommendation_class=recommend source=calcium-citrate
+2026-04-18T06:06:16.202545Z [info     ] phase6_tuple_start             candidate=magnesium-citrate company_id=1 i=2 product_id=13 source=calcium-citrate total=13
+2026-04-18T06:06:16.202589Z [info     ] phase6_rules_decision          acceptability=0.405 borderline=True candidate=magnesium-citrate company_id=1 product_id=13 recommendation_class=recommend_with_caveats source=calcium-citrate
+2026-04-18T06:06:16.202669Z [info     ] phase6_tuple_start             candidate=calcium-carbonate company_id=25 i=3 product_id=120 source=calcium-citrate total=13
+2026-04-18T06:06:16.202722Z [info     ] phase6_rules_decision          acceptability=0.8 borderline=False candidate=calcium-carbonate company_id=25 product_id=120 recommendation_class=recommend source=calcium-citrate
+2026-04-18T06:06:16.202961Z [info     ] phase6_tuple_start             candidate=dicalcium-phosphate company_id=25 i=4 product_id=120 source=calcium-citrate total=13
+2026-04-18T06:06:16.203029Z [info     ] phase6_rules_decision          acceptability=0.89 borderline=False candidate=dicalcium-phosphate company_id=25 product_id=120 recommendation_class=recommend source=calcium-citrate
+2026-04-18T06:06:16.203099Z [info     ] phase6_tuple_start             candidate=magnesium-citrate company_id=25 i=5 product_id=120 source=calcium-citrate total=13
+2026-04-18T06:06:16.203137Z [info     ] phase6_rules_decision          acceptability=0.405 borderline=True candidate=magnesium-citrate company_id=25 product_id=120 recommendation_class=recommend_with_caveats source=calcium-citrate
+2026-04-18T06:06:16.203214Z [info     ] phase6_tuple_start             candidate=calcium-carbonate company_id=32 i=6 product_id=111 source=calcium-citrate total=13
+2026-04-18T06:06:16.203254Z [info     ] phase6_rules_decision          acceptability=0.8 borderline=False candidate=calcium-carbonate company_id=32 product_id=111 recommendation_class=recommend source=calcium-citrate
+2026-04-18T06:06:16.203370Z [info     ] phase6_tuple_start             candidate=dicalcium-phosphate company_id=32 i=7 product_id=111 source=calcium-citrate total=13
+2026-04-18T06:06:16.203408Z [info     ] phase6_rules_decision          acceptability=0.89 borderline=False candidate=dicalcium-phosphate company_id=32 product_id=111 recommendation_class=recommend source=calcium-citrate
+2026-04-18T06:06:16.203471Z [info     ] phase6_tuple_start             candidate=magnesium-citrate company_id=32 i=8 product_id=111 source=calcium-citrate total=13
+2026-04-18T06:06:16.203504Z [info     ] phase6_rules_decision          acceptability=0.405 borderline=True candidate=magnesium-citrate company_id=32 product_id=111 recommendation_class=recommend_with_caveats source=calcium-citrate
+2026-04-18T06:06:16.203571Z [info     ] phase6_tuple_start             candidate=vitamin-a-retinyl-palmitate company_id=40 i=9 product_id=58 source=retinyl-palmitate-vitamin-a total=13
+2026-04-18T06:06:16.203650Z [info     ] phase6_rules_decision          acceptability=0.7075 borderline=True candidate=vitamin-a-retinyl-palmitate company_id=40 product_id=58 recommendation_class=recommend_with_caveats source=retinyl-palmitate-vitamin-a
+2026-04-18T06:06:16.203706Z [info     ] phase6_tuple_start             candidate=calcium-carbonate company_id=51 i=10 product_id=56 source=calcium-citrate total=13
+2026-04-18T06:06:16.203755Z [info     ] phase6_rules_decision          acceptability=0.8 borderline=False candidate=calcium-carbonate company_id=51 product_id=56 recommendation_class=recommend source=calcium-citrate
+2026-04-18T06:06:16.203869Z [info     ] phase6_tuple_start             candidate=dicalcium-phosphate company_id=51 i=11 product_id=56 source=calcium-citrate total=13
+2026-04-18T06:06:16.203937Z [info     ] phase6_rules_decision          acceptability=0.89 borderline=False candidate=dicalcium-phosphate company_id=51 product_id=56 recommendation_class=recommend source=calcium-citrate
+2026-04-18T06:06:16.204002Z [info     ] phase6_tuple_start             candidate=magnesium-citrate company_id=51 i=12 product_id=56 source=calcium-citrate total=13
+2026-04-18T06:06:16.204055Z [info     ] phase6_rules_decision          acceptability=0.405 borderline=True candidate=magnesium-citrate company_id=51 product_id=56 recommendation_class=recommend_with_caveats source=calcium-citrate
+{"ok": true, "n_tuples": 13, "n_rules_decisions": 13, "n_llm_decisions": 0, "n_cache_hits": 0, "n_api_calls": 0, "n_failures": 0, "n_without_evidence": 0, "counts_by_class": {"recommend": 8, "recommend_with_caveats": 5}, "partial": false, "duration_ms": 2, "gemini_model": null, "report": "outputs/reports/substitute_assessments.json"}

@@ -1,0 +1,372 @@
+HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:batchEmbedContents "HTTP/1.1 200 OK"
+2026-04-18T05:18:48.072630Z [info     ] phase4_target_ok               best_score=0.905851 elapsed_ms=2277 n_pool=15 n_returned=10 source_key=acacia-gum
+HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:batchEmbedContents "HTTP/1.1 200 OK"
+2026-04-18T05:18:49.149575Z [info     ] phase4_target_ok               best_score=0.847167 elapsed_ms=1076 n_pool=17 n_returned=10 source_key=acesulfame-potassium
+HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:batchEmbedContents "HTTP/1.1 200 OK"
+2026-04-18T05:18:50.203762Z [info     ] phase4_target_ok               best_score=0.831843 elapsed_ms=1053 n_pool=11 n_returned=10 source_key=alfalfa-leaf
+2026-04-18T05:18:50.204296Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=anhydrous-dextrose
+2026-04-18T05:18:50.227803Z [info     ] phase4_target_ok               best_score=0.747304 elapsed_ms=23 n_pool=81 n_returned=10 source_key=aquamin-mg-soluble
+HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:batchEmbedContents "HTTP/1.1 200 OK"
+2026-04-18T05:18:51.268724Z [info     ] phase4_target_ok               best_score=0.887829 elapsed_ms=1040 n_pool=5 n_returned=5 source_key=aqueous-coating
+2026-04-18T05:18:51.269158Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=artificial-flavor
+HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:batchEmbedContents "HTTP/1.1 200 OK"
+2026-04-18T05:18:52.348674Z [info     ] phase4_target_ok               best_score=0.903723 elapsed_ms=1079 n_pool=13 n_returned=10 source_key=artificial-flavors
+2026-04-18T05:18:52.375868Z [info     ] phase4_target_ok               best_score=0.937226 elapsed_ms=27 n_pool=81 n_returned=10 source_key=ascorbic-acid
+2026-04-18T05:18:52.401697Z [info     ] phase4_target_ok               best_score=0.977231 elapsed_ms=25 n_pool=81 n_returned=10 source_key=ascorbic-acid-vitamin-c
+HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:batchEmbedContents "HTTP/1.1 200 OK"
+2026-04-18T05:18:52.840168Z [info     ] phase4_target_ok               best_score=0.741374 elapsed_ms=438 n_pool=2 n_returned=2 source_key=ascorbyl-palmitate
+2026-04-18T05:18:52.840483Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=astaxanthin
+2026-04-18T05:18:52.865161Z [info     ] phase4_target_ok               best_score=0.859687 elapsed_ms=24 n_pool=81 n_returned=10 source_key=b-vitamins
+HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:batchEmbedContents "HTTP/1.1 200 OK"
+2026-04-18T05:18:53.967623Z [info     ] phase4_target_ok               best_score=0.856387 elapsed_ms=1102 n_pool=16 n_returned=10 source_key=bcaas
+HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:batchEmbedContents "HTTP/1.1 200 OK"
+2026-04-18T05:18:55.026006Z [info     ] phase4_target_ok               best_score=0.768009 elapsed_ms=1058 n_pool=8 n_returned=8 source_key=beet-extract
+2026-04-18T05:18:55.026430Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=beet-juice-powder
+2026-04-18T05:18:55.026658Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=beet-powder
+2026-04-18T05:18:55.029014Z [info     ] phase4_target_ok               best_score=0.752454 elapsed_ms=2 n_pool=8 n_returned=8 source_key=beta-carotene
+2026-04-18T05:18:55.030037Z [info     ] phase4_target_ok               best_score=0.717976 elapsed_ms=0 n_pool=2 n_returned=2 source_key=bht
+2026-04-18T05:18:55.030295Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=bifidobacterium-lactis-bl-04
+2026-04-18T05:18:55.055485Z [info     ] phase4_target_ok               best_score=0.854711 elapsed_ms=25 n_pool=81 n_returned=10 source_key=biotin
+2026-04-18T05:18:55.055816Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=black-pepper-concentrate
+HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:batchEmbedContents "HTTP/1.1 200 OK"
+2026-04-18T05:18:56.273243Z [info     ] phase4_target_ok               best_score=0.683652 elapsed_ms=1217 n_pool=10 n_returned=7 source_key=blend-of-oils-coconut-and-or-palm-with-beeswax-and-or-carnauba-w
+2026-04-18T05:18:56.278979Z [info     ] phase4_target_ok               best_score=0.860679 elapsed_ms=5 n_pool=8 n_returned=8 source_key=blue-2-lake
+2026-04-18T05:18:56.279695Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=blue-agave-inulin
+2026-04-18T05:18:56.290172Z [info     ] phase4_target_ok               best_score=0.925939 elapsed_ms=10 n_pool=16 n_returned=10 source_key=bone-gelatin-bovine
+2026-04-18T05:18:56.290780Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=boron
+2026-04-18T05:18:56.332037Z [info     ] phase4_target_ok               best_score=0.834692 elapsed_ms=41 n_pool=81 n_returned=10 source_key=boron-amino-acid-chelate
+2026-04-18T05:18:56.332819Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=boron-calcium-fructoborate
+2026-04-18T05:18:56.339823Z [info     ] phase4_target_ok               best_score=0.944351 elapsed_ms=6 n_pool=16 n_returned=10 source_key=brown-rice-protein
+2026-04-18T05:18:56.384088Z [info     ] phase4_target_ok               best_score=0.87308 elapsed_ms=44 n_pool=81 n_returned=10 source_key=calcium
+2026-04-18T05:18:56.427572Z [info     ] phase4_target_ok               best_score=0.941503 elapsed_ms=42 n_pool=81 n_returned=10 source_key=calcium-ascorbate
+2026-04-18T05:18:56.469723Z [info     ] phase4_target_ok               best_score=0.886178 elapsed_ms=41 n_pool=81 n_returned=10 source_key=calcium-carbonate
+2026-04-18T05:18:56.541434Z [info     ] phase4_target_ok               best_score=0.903752 elapsed_ms=71 n_pool=81 n_returned=10 source_key=calcium-citrate
+2026-04-18T05:18:56.554182Z [info     ] phase4_target_empty            elapsed_ms=5 reason=no_family source_key=calcium-d-pantothenate
+2026-04-18T05:18:56.554896Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=calcium-lactate-gluconate
+2026-04-18T05:18:56.555410Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=calcium-pantothenate-vitamin-b5
+2026-04-18T05:18:56.572283Z [info     ] phase4_target_ok               best_score=0.951071 elapsed_ms=16 n_pool=17 n_returned=10 source_key=cane-sugar
+2026-04-18T05:18:56.573069Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=carboxymethylcellulose-sodium
+2026-04-18T05:18:56.573452Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=carnauba-wax
+2026-04-18T05:18:56.583558Z [info     ] phase4_target_ok               best_score=0.857084 elapsed_ms=10 n_pool=15 n_returned=10 source_key=carrageenan
+2026-04-18T05:18:56.595232Z [info     ] phase4_target_ok               best_score=0.91922 elapsed_ms=11 n_pool=15 n_returned=10 source_key=cellulose
+2026-04-18T05:18:56.603398Z [info     ] phase4_target_ok               best_score=0.800067 elapsed_ms=7 n_pool=15 n_returned=10 source_key=cellulose-gel
+2026-04-18T05:18:56.604061Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=cellulose-gum
+2026-04-18T05:18:56.673033Z [info     ] phase4_target_ok               best_score=0.846598 elapsed_ms=68 n_pool=81 n_returned=10 source_key=chloride
+2026-04-18T05:18:56.705740Z [info     ] phase4_target_ok               best_score=0.91832 elapsed_ms=32 n_pool=81 n_returned=10 source_key=cholecalciferol
+2026-04-18T05:18:56.743616Z [info     ] phase4_target_ok               best_score=0.944862 elapsed_ms=37 n_pool=81 n_returned=10 source_key=cholecalciferol-vitamin-d3
+2026-04-18T05:18:56.781410Z [info     ] phase4_target_ok               best_score=0.798582 elapsed_ms=37 n_pool=81 n_returned=10 source_key=choline-bitartrate
+2026-04-18T05:18:56.818978Z [info     ] phase4_target_ok               best_score=0.904546 elapsed_ms=37 n_pool=81 n_returned=10 source_key=chromium
+2026-04-18T05:18:56.868501Z [info     ] phase4_target_ok               best_score=0.846598 elapsed_ms=49 n_pool=81 n_returned=10 source_key=chromium-chloride
+2026-04-18T05:18:56.869250Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=chromium-nicotinate
+2026-04-18T05:18:56.971720Z [info     ] phase4_target_ok               best_score=0.904546 elapsed_ms=102 n_pool=81 n_returned=10 source_key=chromium-picolinate
+2026-04-18T05:18:56.995726Z [info     ] phase4_target_ok               best_score=0.762468 elapsed_ms=23 n_pool=13 n_returned=10 source_key=cinnamon
+HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:batchEmbedContents "HTTP/1.1 200 OK"
+2026-04-18T05:18:57.524260Z [info     ] phase4_target_ok               best_score=0.890029 elapsed_ms=528 n_pool=3 n_returned=3 source_key=citric-acid
+2026-04-18T05:18:57.528292Z [info     ] phase4_target_ok               best_score=0.837857 elapsed_ms=3 n_pool=11 n_returned=10 source_key=citrus-bioflavonoids
+2026-04-18T05:18:57.534322Z [info     ] phase4_target_ok               best_score=0.907909 elapsed_ms=5 n_pool=13 n_returned=10 source_key=cocoa
+2026-04-18T05:18:57.539526Z [info     ] phase4_target_ok               best_score=0.907909 elapsed_ms=4 n_pool=13 n_returned=10 source_key=cocoa-powder
+2026-04-18T05:18:57.539903Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=cocoa-powder-processed-with-alkali
+2026-04-18T05:18:57.540450Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=cocoa-processed-with-alkali
+2026-04-18T05:18:57.544897Z [info     ] phase4_target_ok               best_score=0.915424 elapsed_ms=4 n_pool=10 n_returned=10 source_key=coconut-mct-oil
+2026-04-18T05:18:57.553009Z [info     ] phase4_target_ok               best_score=0.904661 elapsed_ms=7 n_pool=17 n_returned=10 source_key=coconut-sugar
+2026-04-18T05:18:57.553458Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=coconut-water-from-concentrate
+2026-04-18T05:18:57.553841Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=coconut-water-powder
+2026-04-18T05:18:57.554088Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=coenzyme-q10
+2026-04-18T05:18:57.560323Z [info     ] phase4_target_ok               best_score=0.746521 elapsed_ms=6 n_pool=16 n_returned=10 source_key=collagen-peptides
+2026-04-18T05:18:57.563944Z [info     ] phase4_target_ok               best_score=0.834643 elapsed_ms=3 n_pool=8 n_returned=8 source_key=coloring-concentrates
+2026-04-18T05:18:57.594615Z [info     ] phase4_target_ok               best_score=0.895402 elapsed_ms=30 n_pool=81 n_returned=10 source_key=concentrace-trace-minerals
+2026-04-18T05:18:57.630224Z [info     ] phase4_target_ok               best_score=0.848554 elapsed_ms=35 n_pool=81 n_returned=10 source_key=copper
+2026-04-18T05:18:57.665390Z [info     ] phase4_target_ok               best_score=0.905795 elapsed_ms=34 n_pool=81 n_returned=10 source_key=copper-sulfate
+2026-04-18T05:18:57.666385Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=coq10
+2026-04-18T05:18:57.670429Z [info     ] phase4_target_ok               best_score=0.700369 elapsed_ms=3 n_pool=10 n_returned=5 source_key=corn-oil
+2026-04-18T05:18:57.670823Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=croscarmellose-sodium
+2026-04-18T05:18:57.671042Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=cultured-nutrients
+2026-04-18T05:18:57.671226Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=cupric-oxide
+2026-04-18T05:18:57.671403Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=cupric-sulfate
+2026-04-18T05:18:57.701211Z [info     ] phase4_target_ok               best_score=0.918478 elapsed_ms=29 n_pool=81 n_returned=10 source_key=cyanocobalamin
+2026-04-18T05:18:57.730099Z [info     ] phase4_target_ok               best_score=0.979752 elapsed_ms=28 n_pool=81 n_returned=10 source_key=cyanocobalamin-vitamin-b12
+2026-04-18T05:18:57.760021Z [info     ] phase4_target_ok               best_score=0.911582 elapsed_ms=29 n_pool=81 n_returned=10 source_key=d-alpha-tocopheryl-acetate-vitamin-e
+2026-04-18T05:18:57.793093Z [info     ] phase4_target_ok               best_score=0.911582 elapsed_ms=32 n_pool=81 n_returned=10 source_key=d-alpha-tocopheryl-succinate
+2026-04-18T05:18:57.900091Z [info     ] phase4_target_ok               best_score=0.948872 elapsed_ms=106 n_pool=81 n_returned=10 source_key=d-calcium-pantothenate
+2026-04-18T05:18:57.908041Z [info     ] phase4_target_ok               best_score=0.866554 elapsed_ms=7 n_pool=17 n_returned=10 source_key=dextrose
+2026-04-18T05:18:57.936422Z [info     ] phase4_target_ok               best_score=0.87308 elapsed_ms=28 n_pool=81 n_returned=10 source_key=dibasic-calcium-phosphate-dihydrate
+2026-04-18T05:18:57.963593Z [info     ] phase4_target_ok               best_score=0.85132 elapsed_ms=27 n_pool=81 n_returned=10 source_key=dicalcium-phosphate
+2026-04-18T05:18:57.964499Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=digestive-enzymes
+2026-04-18T05:18:57.965265Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=dipotassium-phosphate
+2026-04-18T05:18:57.965580Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=dl-alpha-tocopherol
+2026-04-18T05:18:57.965789Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=dl-alpha-tocopheryl-acetate
+2026-04-18T05:18:57.965980Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=dl-tartaric-acid
+2026-04-18T05:18:57.966394Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=effervescent-base
+2026-04-18T05:18:57.971268Z [info     ] phase4_target_ok               best_score=0.734317 elapsed_ms=4 n_pool=11 n_returned=10 source_key=energy-support-botanicals-nutrients
+2026-04-18T05:18:57.972206Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=epicor-postbiotic
+2026-04-18T05:18:57.972733Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=fd-and-c-blue-no-2-lake
+2026-04-18T05:18:57.977598Z [info     ] phase4_target_ok               best_score=0.928087 elapsed_ms=4 n_pool=8 n_returned=8 source_key=fd-and-c-red-no-40-lake
+2026-04-18T05:18:57.978394Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=fd-and-c-yellow-no-6-lake
+2026-04-18T05:18:57.978979Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=ferment-media
+2026-04-18T05:18:58.023108Z [info     ] phase4_target_ok               best_score=0.846302 elapsed_ms=44 n_pool=81 n_returned=10 source_key=ferrous-fumarate
+2026-04-18T05:18:58.060971Z [info     ] phase4_target_ok               best_score=0.856597 elapsed_ms=37 n_pool=81 n_returned=10 source_key=folate
+2026-04-18T05:18:58.061663Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=folic-acid
+HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:batchEmbedContents "HTTP/1.1 200 OK"
+2026-04-18T05:18:59.273293Z [info     ] phase4_target_ok               best_score=0.850175 elapsed_ms=1211 n_pool=11 n_returned=10 source_key=fructooligosaccharides
+2026-04-18T05:18:59.276823Z [info     ] phase4_target_ok               best_score=0.768009 elapsed_ms=3 n_pool=8 n_returned=8 source_key=fruit-and-vegetable-juice
+2026-04-18T05:18:59.277219Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=fruit-nutrients
+2026-04-18T05:18:59.277471Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=gelatin
+2026-04-18T05:18:59.278041Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=gelatin-capsule
+2026-04-18T05:18:59.278329Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=gelatin-capsule-bovine
+2026-04-18T05:18:59.278552Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=gellan-gum
+2026-04-18T05:18:59.286057Z [info     ] phase4_target_ok               best_score=0.866554 elapsed_ms=7 n_pool=17 n_returned=10 source_key=glucose
+HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:batchEmbedContents "HTTP/1.1 200 OK"
+2026-04-18T05:18:59.943443Z [info     ] phase4_target_ok               best_score=0.72916 elapsed_ms=657 n_pool=2 n_returned=1 source_key=glycerin
+2026-04-18T05:18:59.944175Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=grape-seed-extract
+2026-04-18T05:18:59.944482Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=grass-fed-whey-protein-concentrate
+2026-04-18T05:18:59.944707Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=green-tea-extract
+2026-04-18T05:18:59.944947Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=ground-vanilla-beans
+2026-04-18T05:18:59.952721Z [info     ] phase4_target_ok               best_score=0.949017 elapsed_ms=7 n_pool=15 n_returned=10 source_key=gum-acacia
+2026-04-18T05:18:59.960561Z [info     ] phase4_target_ok               best_score=0.857306 elapsed_ms=7 n_pool=15 n_returned=10 source_key=gum-arabic
+2026-04-18T05:18:59.961198Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=gummy-base
+2026-04-18T05:18:59.968960Z [info     ] phase4_target_ok               best_score=0.82786 elapsed_ms=7 n_pool=16 n_returned=10 source_key=hemp-seed-protein
+2026-04-18T05:18:59.975619Z [info     ] phase4_target_ok               best_score=0.758067 elapsed_ms=6 n_pool=11 n_returned=10 source_key=hesperidin-complex
+2026-04-18T05:18:59.985677Z [info     ] phase4_target_ok               best_score=0.831823 elapsed_ms=9 n_pool=16 n_returned=10 source_key=hydrolyzed-whey-protein
+2026-04-18T05:18:59.993341Z [info     ] phase4_target_ok               best_score=0.879229 elapsed_ms=7 n_pool=15 n_returned=10 source_key=hydroxypropyl-methyl-cellulose
+2026-04-18T05:18:59.999012Z [info     ] phase4_target_ok               best_score=0.85132 elapsed_ms=5 n_pool=15 n_returned=10 source_key=hydroxypropyl-methylcellulose
+2026-04-18T05:19:00.006321Z [info     ] phase4_target_ok               best_score=0.74867 elapsed_ms=7 n_pool=15 n_returned=10 source_key=hydroxypropylmethylcellulose
+2026-04-18T05:19:00.011552Z [info     ] phase4_target_ok               best_score=0.803883 elapsed_ms=5 n_pool=15 n_returned=10 source_key=hypromellose
+2026-04-18T05:19:00.011881Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=hypromellose-capsule
+2026-04-18T05:19:00.050819Z [info     ] phase4_target_ok               best_score=0.784602 elapsed_ms=38 n_pool=81 n_returned=10 source_key=inositol
+2026-04-18T05:19:00.056400Z [info     ] phase4_target_ok               best_score=0.931579 elapsed_ms=5 n_pool=11 n_returned=10 source_key=inulin
+2026-04-18T05:19:00.086262Z [info     ] phase4_target_ok               best_score=0.846712 elapsed_ms=29 n_pool=81 n_returned=10 source_key=iodine
+2026-04-18T05:19:00.115830Z [info     ] phase4_target_ok               best_score=0.84823 elapsed_ms=29 n_pool=81 n_returned=10 source_key=iron
+2026-04-18T05:19:00.116480Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=iron-glycinate
+2026-04-18T05:19:00.117269Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=kalahari-desert-salt
+2026-04-18T05:19:00.122142Z [info     ] phase4_target_ok               best_score=0.858414 elapsed_ms=4 n_pool=11 n_returned=10 source_key=kelp-extract
+2026-04-18T05:19:00.127635Z [info     ] phase4_target_ok               best_score=0.907543 elapsed_ms=5 n_pool=16 n_returned=10 source_key=l-isoleucine
+2026-04-18T05:19:00.133835Z [info     ] phase4_target_ok               best_score=0.907543 elapsed_ms=6 n_pool=16 n_returned=10 source_key=l-leucine
+2026-04-18T05:19:00.140251Z [info     ] phase4_target_ok               best_score=0.903679 elapsed_ms=6 n_pool=16 n_returned=10 source_key=l-valine
+2026-04-18T05:19:00.140678Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=lac-resin
+2026-04-18T05:19:00.141994Z [info     ] phase4_target_ok               best_score=0.893983 elapsed_ms=1 n_pool=3 n_returned=3 source_key=lactic-acid
+HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:batchEmbedContents "HTTP/1.1 200 OK"
+2026-04-18T05:19:00.701214Z [info     ] phase4_target_ok               best_score=0.93465 elapsed_ms=559 n_pool=2 n_returned=2 source_key=lecithin
+2026-04-18T05:19:00.701909Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=lemon-bioflavonoid-complex
+2026-04-18T05:19:00.706256Z [info     ] phase4_target_ok               best_score=0.770062 elapsed_ms=4 n_pool=13 n_returned=10 source_key=lemon-juice-powder
+2026-04-18T05:19:00.706585Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=leucine
+2026-04-18T05:19:00.733809Z [info     ] phase4_target_ok               best_score=0.745802 elapsed_ms=27 n_pool=81 n_returned=10 source_key=lutein
+2026-04-18T05:19:00.734719Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=lycopene
+2026-04-18T05:19:00.761677Z [info     ] phase4_target_ok               best_score=0.914473 elapsed_ms=26 n_pool=81 n_returned=10 source_key=magnesium
+2026-04-18T05:19:00.762072Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=magnesium-amino-acid-chelate
+2026-04-18T05:19:00.762323Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=magnesium-aspartate
+2026-04-18T05:19:00.768039Z [info     ] phase4_target_ok               best_score=0.842069 elapsed_ms=5 n_pool=16 n_returned=10 source_key=magnesium-bisglycinate
+2026-04-18T05:19:00.794507Z [info     ] phase4_target_ok               best_score=0.910687 elapsed_ms=26 n_pool=81 n_returned=10 source_key=magnesium-carbonate
+2026-04-18T05:19:00.824361Z [info     ] phase4_target_ok               best_score=0.903752 elapsed_ms=29 n_pool=81 n_returned=10 source_key=magnesium-citrate
+2026-04-18T05:19:00.824728Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=magnesium-dimagnesium-malate
+2026-04-18T05:19:00.853007Z [info     ] phase4_target_ok               best_score=0.860458 elapsed_ms=28 n_pool=81 n_returned=10 source_key=magnesium-glycinate
+2026-04-18T05:19:00.853423Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=magnesium-l-threonate-magtein
+2026-04-18T05:19:00.878728Z [info     ] phase4_target_ok               best_score=0.903537 elapsed_ms=25 n_pool=81 n_returned=10 source_key=magnesium-malate
+2026-04-18T05:19:00.905180Z [info     ] phase4_target_ok               best_score=0.914473 elapsed_ms=26 n_pool=81 n_returned=10 source_key=magnesium-oxide
+HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:batchEmbedContents "HTTP/1.1 200 OK"
+2026-04-18T05:19:01.483409Z [info     ] phase4_target_ok               best_score=0.886846 elapsed_ms=578 n_pool=8 n_returned=8 source_key=magnesium-silicate
+2026-04-18T05:19:01.484215Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=magnesium-stearate
+2026-04-18T05:19:01.517847Z [info     ] phase4_target_ok               best_score=0.842708 elapsed_ms=33 n_pool=81 n_returned=10 source_key=magnesium-taurate
+2026-04-18T05:19:01.524119Z [info     ] phase4_target_ok               best_score=0.842069 elapsed_ms=6 n_pool=16 n_returned=10 source_key=magnesium-taurinate
+2026-04-18T05:19:01.525602Z [info     ] phase4_target_ok               best_score=0.893983 elapsed_ms=1 n_pool=3 n_returned=3 source_key=malic-acid
+2026-04-18T05:19:01.529615Z [info     ] phase4_target_ok               best_score=0.929546 elapsed_ms=3 n_pool=11 n_returned=10 source_key=maltodextrin
+2026-04-18T05:19:01.529867Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=manganese
+2026-04-18T05:19:01.530052Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=manganese-chelate
+2026-04-18T05:19:01.530293Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=manganese-citrate
+2026-04-18T05:19:01.556749Z [info     ] phase4_target_ok               best_score=0.90535 elapsed_ms=26 n_pool=81 n_returned=10 source_key=manganese-sulfate
+2026-04-18T05:19:01.557122Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=medium-chain-triglycerides
+2026-04-18T05:19:01.560793Z [info     ] phase4_target_ok               best_score=0.915424 elapsed_ms=3 n_pool=10 n_returned=10 source_key=medium-chain-triglycerides-mct-from-coconut-oil
+2026-04-18T05:19:01.563691Z [info     ] phase4_target_ok               best_score=0.837767 elapsed_ms=2 n_pool=8 n_returned=8 source_key=microcrystalline-cellulose
+2026-04-18T05:19:01.563980Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=milk-protein
+2026-04-18T05:19:01.569427Z [info     ] phase4_target_ok               best_score=0.879229 elapsed_ms=5 n_pool=15 n_returned=10 source_key=modified-cellulose
+2026-04-18T05:19:01.569764Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=modified-food-starch
+2026-04-18T05:19:01.569972Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=molybdenum
+2026-04-18T05:19:01.570156Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=monk-fruit-extract
+2026-04-18T05:19:01.570329Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=natural-and-artificial-flavors
+2026-04-18T05:19:01.570500Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=natural-cherry-flavor
+2026-04-18T05:19:01.588315Z [info     ] phase4_target_ok               best_score=0.918678 elapsed_ms=17 n_pool=13 n_returned=10 source_key=natural-flavor
+2026-04-18T05:19:01.593127Z [info     ] phase4_target_ok               best_score=0.938728 elapsed_ms=4 n_pool=13 n_returned=10 source_key=natural-flavors
+2026-04-18T05:19:01.593645Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=natural-french-vanilla-flavor
+2026-04-18T05:19:01.600652Z [info     ] phase4_target_ok               best_score=0.910275 elapsed_ms=6 n_pool=13 n_returned=10 source_key=natural-lemon-lime-flavor
+2026-04-18T05:19:01.601758Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=natural-passionfruit-flavor
+2026-04-18T05:19:01.602422Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=natural-peach-flavor
+2026-04-18T05:19:01.602798Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=natural-strawberry-flavor
+2026-04-18T05:19:01.603185Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=natural-tangerine-flavor
+2026-04-18T05:19:01.609200Z [info     ] phase4_target_ok               best_score=0.947882 elapsed_ms=5 n_pool=13 n_returned=10 source_key=natural-vanilla
+2026-04-18T05:19:01.617876Z [info     ] phase4_target_ok               best_score=0.947882 elapsed_ms=8 n_pool=13 n_returned=10 source_key=natural-vanilla-flavor
+2026-04-18T05:19:01.618712Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=niacin
+2026-04-18T05:19:01.619101Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=niacinamide
+2026-04-18T05:19:01.619396Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=niacinamide-vitamin-b3
+2026-04-18T05:19:01.646526Z [info     ] phase4_target_ok               best_score=0.846864 elapsed_ms=27 n_pool=81 n_returned=10 source_key=nicotinamide
+2026-04-18T05:19:01.646880Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=non-gmo-citric-acid
+2026-04-18T05:19:01.647085Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=non-gmo-corn-zein
+2026-04-18T05:19:01.647292Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=oil-fill
+2026-04-18T05:19:01.647702Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=olive-oil
+2026-04-18T05:19:01.651638Z [info     ] phase4_target_ok               best_score=0.732691 elapsed_ms=3 n_pool=10 n_returned=7 source_key=omega-3-dha
+2026-04-18T05:19:01.656528Z [info     ] phase4_target_ok               best_score=0.898715 elapsed_ms=4 n_pool=13 n_returned=10 source_key=orange-flavor
+2026-04-18T05:19:01.661896Z [info     ] phase4_target_ok               best_score=0.905851 elapsed_ms=5 n_pool=15 n_returned=10 source_key=organic-acacia
+2026-04-18T05:19:01.666143Z [info     ] phase4_target_ok               best_score=0.930634 elapsed_ms=4 n_pool=11 n_returned=10 source_key=organic-agave-inulin-powder
+2026-04-18T05:19:01.666981Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=organic-cane-sugar
+2026-04-18T05:19:01.669456Z [info     ] phase4_target_ok               best_score=0.887829 elapsed_ms=2 n_pool=5 n_returned=5 source_key=organic-coating
+2026-04-18T05:19:01.675671Z [info     ] phase4_target_ok               best_score=0.831823 elapsed_ms=6 n_pool=16 n_returned=10 source_key=organic-dairy-whey-protein-concentrate
+2026-04-18T05:19:01.681804Z [info     ] phase4_target_ok               best_score=0.850769 elapsed_ms=6 n_pool=17 n_returned=10 source_key=organic-erythritol
+2026-04-18T05:19:01.687356Z [info     ] phase4_target_ok               best_score=0.906243 elapsed_ms=5 n_pool=13 n_returned=10 source_key=organic-flavor
+2026-04-18T05:19:01.687708Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=organic-food-complex
+2026-04-18T05:19:01.687904Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=organic-food-complex-blend
+2026-04-18T05:19:01.691948Z [info     ] phase4_target_ok               best_score=0.871563 elapsed_ms=3 n_pool=11 n_returned=10 source_key=organic-ginger
+2026-04-18T05:19:01.697484Z [info     ] phase4_target_ok               best_score=0.949017 elapsed_ms=5 n_pool=15 n_returned=10 source_key=organic-gum-acacia
+2026-04-18T05:19:01.702153Z [info     ] phase4_target_ok               best_score=0.931579 elapsed_ms=4 n_pool=11 n_returned=10 source_key=organic-inulin
+2026-04-18T05:19:01.706424Z [info     ] phase4_target_ok               best_score=0.929546 elapsed_ms=4 n_pool=11 n_returned=10 source_key=organic-maltodextrin
+2026-04-18T05:19:01.706874Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=organic-pomegranate-juice-powder
+2026-04-18T05:19:01.710901Z [info     ] phase4_target_ok               best_score=0.702697 elapsed_ms=3 n_pool=11 n_returned=9 source_key=organic-rice-bran-extract
+2026-04-18T05:19:01.715213Z [info     ] phase4_target_ok               best_score=0.900321 elapsed_ms=4 n_pool=11 n_returned=10 source_key=organic-rice-dextrins
+2026-04-18T05:19:01.720344Z [info     ] phase4_target_ok               best_score=0.871563 elapsed_ms=4 n_pool=11 n_returned=10 source_key=organic-rosemary-extract
+2026-04-18T05:19:01.720661Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=organic-stevia
+2026-04-18T05:19:01.726556Z [info     ] phase4_target_ok               best_score=0.965426 elapsed_ms=5 n_pool=17 n_returned=10 source_key=organic-stevia-extract
+2026-04-18T05:19:01.733312Z [info     ] phase4_target_ok               best_score=0.965426 elapsed_ms=6 n_pool=17 n_returned=10 source_key=organic-stevia-extract-leaf
+2026-04-18T05:19:01.739092Z [info     ] phase4_target_ok               best_score=0.943964 elapsed_ms=5 n_pool=17 n_returned=10 source_key=organic-stevia-leaf-extract-rebaudioside-a
+2026-04-18T05:19:01.739414Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=organic-sunflower-lecithin
+2026-04-18T05:19:01.739765Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=organic-tapioca-fiber-imo
+2026-04-18T05:19:01.740143Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=organic-turmeric
+2026-04-18T05:19:01.744316Z [info     ] phase4_target_ok               best_score=0.889711 elapsed_ms=4 n_pool=13 n_returned=10 source_key=organic-vanilla-flavors
+2026-04-18T05:19:01.744652Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=organic-whey-protein
+2026-04-18T05:19:01.749361Z [info     ] phase4_target_ok               best_score=0.938728 elapsed_ms=4 n_pool=13 n_returned=10 source_key=other-natural-flavors
+2026-04-18T05:19:01.750023Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=palm-oil
+2026-04-18T05:19:01.780591Z [info     ] phase4_target_ok               best_score=0.88291 elapsed_ms=30 n_pool=81 n_returned=10 source_key=pantothenic-acid
+2026-04-18T05:19:01.781024Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=para-amino-benzoic-acid
+2026-04-18T05:19:01.787740Z [info     ] phase4_target_ok               best_score=0.893136 elapsed_ms=6 n_pool=16 n_returned=10 source_key=pea-protein
+2026-04-18T05:19:01.792067Z [info     ] phase4_target_ok               best_score=0.910718 elapsed_ms=4 n_pool=11 n_returned=10 source_key=pea-starch
+2026-04-18T05:19:01.792446Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=performance-support-nutrients
+2026-04-18T05:19:01.794517Z [info     ] phase4_target_ok               best_score=0.842573 elapsed_ms=2 n_pool=5 n_returned=5 source_key=pharmaceutical-glaze
+2026-04-18T05:19:01.824802Z [info     ] phase4_target_ok               best_score=0.849939 elapsed_ms=30 n_pool=81 n_returned=10 source_key=phytonadione
+2026-04-18T05:19:01.825351Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=pink-himalayan-salt
+2026-04-18T05:19:01.825594Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=plantgel-capsule
+2026-04-18T05:19:01.830032Z [info     ] phase4_target_ok               best_score=0.855501 elapsed_ms=4 n_pool=11 n_returned=10 source_key=polydextrose
+2026-04-18T05:19:01.831160Z [info     ] phase4_target_empty            elapsed_ms=1 n_pool=2 reason=all_below_threshold source_key=polyethylene-glycol
+2026-04-18T05:19:01.832072Z [info     ] phase4_target_ok               best_score=0.746376 elapsed_ms=0 n_pool=2 n_returned=2 source_key=polysorbate-80
+2026-04-18T05:19:01.835844Z [info     ] phase4_target_ok               best_score=0.706001 elapsed_ms=3 n_pool=8 n_returned=8 source_key=polyvinyl-alcohol
+2026-04-18T05:19:01.839030Z [info     ] phase4_target_ok               best_score=0.837767 elapsed_ms=3 n_pool=8 n_returned=8 source_key=polyvinylpolypyrrolidone
+2026-04-18T05:19:01.839359Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=pomegranate-extract
+2026-04-18T05:19:01.869599Z [info     ] phase4_target_ok               best_score=0.859998 elapsed_ms=29 n_pool=81 n_returned=10 source_key=potassium
+2026-04-18T05:19:01.870061Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=potassium-alginate
+2026-04-18T05:19:01.876480Z [info     ] phase4_target_ok               best_score=0.75664 elapsed_ms=6 n_pool=16 n_returned=10 source_key=potassium-aspartate
+2026-04-18T05:19:01.876955Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=potassium-chloride
+2026-04-18T05:19:01.877201Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=potassium-citrate
+2026-04-18T05:19:01.877390Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=potassium-gluconate
+2026-04-18T05:19:01.906215Z [info     ] phase4_target_ok               best_score=0.842355 elapsed_ms=28 n_pool=81 n_returned=10 source_key=potassium-iodide
+2026-04-18T05:19:01.906744Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=potassium-phosphate
+2026-04-18T05:19:01.907007Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=prebiotic-fiber
+2026-04-18T05:19:01.907440Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=probiotic-cultures
+2026-04-18T05:19:01.907761Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=pumpkin-seed-protein
+2026-04-18T05:19:01.913617Z [info     ] phase4_target_ok               best_score=0.951071 elapsed_ms=5 n_pool=17 n_returned=10 source_key=pure-cane-sugar
+2026-04-18T05:19:01.942551Z [info     ] phase4_target_ok               best_score=0.901518 elapsed_ms=28 n_pool=81 n_returned=10 source_key=pyridoxine-hcl
+2026-04-18T05:19:01.942956Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=pyridoxine-hydrochloride
+2026-04-18T05:19:01.973049Z [info     ] phase4_target_ok               best_score=0.981415 elapsed_ms=30 n_pool=81 n_returned=10 source_key=pyridoxine-hydrochloride-vitamin-b6
+2026-04-18T05:19:01.979870Z [info     ] phase4_target_ok               best_score=0.920888 elapsed_ms=6 n_pool=17 n_returned=10 source_key=rebaudioside-a
+2026-04-18T05:19:01.983415Z [info     ] phase4_target_ok               best_score=0.928087 elapsed_ms=3 n_pool=8 n_returned=8 source_key=red-40-lake
+2026-04-18T05:19:01.987916Z [info     ] phase4_target_ok               best_score=0.839241 elapsed_ms=4 n_pool=11 n_returned=10 source_key=resveratrol
+2026-04-18T05:19:01.988348Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=retinyl-acetate
+2026-04-18T05:19:02.015041Z [info     ] phase4_target_ok               best_score=0.996255 elapsed_ms=26 n_pool=81 n_returned=10 source_key=retinyl-palmitate-vitamin-a
+2026-04-18T05:19:02.019885Z [info     ] phase4_target_ok               best_score=0.858414 elapsed_ms=4 n_pool=11 n_returned=10 source_key=rhodiola-rosea-extract-root
+2026-04-18T05:19:02.047884Z [info     ] phase4_target_ok               best_score=0.870776 elapsed_ms=27 n_pool=81 n_returned=10 source_key=riboflavin
+2026-04-18T05:19:02.052693Z [info     ] phase4_target_ok               best_score=0.884135 elapsed_ms=4 n_pool=11 n_returned=10 source_key=rice-bran
+2026-04-18T05:19:02.053033Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=rice-flour
+2026-04-18T05:19:02.057209Z [info     ] phase4_target_ok               best_score=0.884135 elapsed_ms=4 n_pool=11 n_returned=10 source_key=rice-powder
+2026-04-18T05:19:02.062928Z [info     ] phase4_target_ok               best_score=0.944351 elapsed_ms=5 n_pool=16 n_returned=10 source_key=rice-protein
+2026-04-18T05:19:02.067762Z [info     ] phase4_target_ok               best_score=0.839241 elapsed_ms=4 n_pool=11 n_returned=10 source_key=rutin
+2026-04-18T05:19:02.071745Z [info     ] phase4_target_ok               best_score=0.697431 elapsed_ms=3 n_pool=10 n_returned=5 source_key=safflower-oil
+2026-04-18T05:19:02.072028Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=salt
+2026-04-18T05:19:02.072361Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=salt-sodium-chloride
+2026-04-18T05:19:02.072738Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=sea-salt
+2026-04-18T05:19:02.102731Z [info     ] phase4_target_ok               best_score=0.851681 elapsed_ms=29 n_pool=81 n_returned=10 source_key=selenium
+2026-04-18T05:19:02.106164Z [info     ] phase4_target_ok               best_score=0.849629 elapsed_ms=3 n_pool=8 n_returned=8 source_key=silica
+2026-04-18T05:19:02.106446Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=silicon-dioxide
+2026-04-18T05:19:02.137361Z [info     ] phase4_target_ok               best_score=0.859998 elapsed_ms=30 n_pool=81 n_returned=10 source_key=sodium
+2026-04-18T05:19:02.144343Z [info     ] phase4_target_ok               best_score=0.842713 elapsed_ms=6 n_pool=15 n_returned=10 source_key=sodium-alginate
+2026-04-18T05:19:02.147633Z [info     ] phase4_target_ok               best_score=0.886846 elapsed_ms=3 n_pool=8 n_returned=8 source_key=sodium-aluminum-silicate
+2026-04-18T05:19:02.179865Z [info     ] phase4_target_ok               best_score=0.914584 elapsed_ms=32 n_pool=81 n_returned=10 source_key=sodium-ascorbate
+2026-04-18T05:19:02.180243Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=sodium-benzoate
+2026-04-18T05:19:02.180446Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=sodium-chloride
+2026-04-18T05:19:02.181503Z [info     ] phase4_target_ok               best_score=0.750534 elapsed_ms=1 n_pool=3 n_returned=3 source_key=sodium-citrate
+2026-04-18T05:19:02.206941Z [info     ] phase4_target_ok               best_score=0.838885 elapsed_ms=25 n_pool=81 n_returned=10 source_key=sodium-molybdate
+2026-04-18T05:19:02.207313Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=sodium-selenite
+2026-04-18T05:19:02.210088Z [info     ] phase4_target_ok               best_score=0.744507 elapsed_ms=2 n_pool=8 n_returned=8 source_key=sodium-starch-glycolate
+2026-04-18T05:19:02.215251Z [info     ] phase4_target_ok               best_score=0.925779 elapsed_ms=5 n_pool=16 n_returned=10 source_key=soft-gel-capsule-bovine-gelatin
+2026-04-18T05:19:02.220472Z [info     ] phase4_target_ok               best_score=0.925939 elapsed_ms=5 n_pool=16 n_returned=10 source_key=softgel-bovine-gelatin
+2026-04-18T05:19:02.220774Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=softgel-capsule-bovine-gelatin
+2026-04-18T05:19:02.221557Z [info     ] phase4_target_ok               best_score=0.741374 elapsed_ms=0 n_pool=2 n_returned=2 source_key=sorbic-acid
+2026-04-18T05:19:02.226379Z [info     ] phase4_target_ok               best_score=0.850769 elapsed_ms=4 n_pool=17 n_returned=10 source_key=sorbitol
+2026-04-18T05:19:02.227286Z [info     ] phase4_target_ok               best_score=0.93465 elapsed_ms=0 n_pool=2 n_returned=2 source_key=soy-lecithin
+2026-04-18T05:19:02.234324Z [info     ] phase4_target_ok               best_score=0.713599 elapsed_ms=6 n_pool=10 n_returned=10 source_key=soybean-oil
+2026-04-18T05:19:02.239086Z [info     ] phase4_target_ok               best_score=0.910718 elapsed_ms=4 n_pool=11 n_returned=10 source_key=starch
+2026-04-18T05:19:02.244542Z [info     ] phase4_target_ok               best_score=0.9395 elapsed_ms=5 n_pool=10 n_returned=7 source_key=stearic-acid
+2026-04-18T05:19:02.245336Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=stevia
+2026-04-18T05:19:02.254218Z [info     ] phase4_target_ok               best_score=0.938153 elapsed_ms=8 n_pool=17 n_returned=10 source_key=stevia-leaf-extract
+2026-04-18T05:19:02.262548Z [info     ] phase4_target_ok               best_score=0.938153 elapsed_ms=8 n_pool=17 n_returned=10 source_key=stevia-leaf-extract-rebaudioside-a
+2026-04-18T05:19:02.263229Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=stevia-or-sucralose-sweetener
+2026-04-18T05:19:02.271475Z [info     ] phase4_target_ok               best_score=0.796087 elapsed_ms=8 n_pool=17 n_returned=10 source_key=sucralose
+2026-04-18T05:19:02.278353Z [info     ] phase4_target_ok               best_score=0.865757 elapsed_ms=6 n_pool=17 n_returned=10 source_key=sucrose
+2026-04-18T05:19:02.285499Z [info     ] phase4_target_ok               best_score=0.912518 elapsed_ms=7 n_pool=17 n_returned=10 source_key=sugar
+2026-04-18T05:19:02.286147Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=sulfate
+2026-04-18T05:19:02.286506Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=sunflower-lecithin
+2026-04-18T05:19:02.290472Z [info     ] phase4_target_ok               best_score=0.700369 elapsed_ms=3 n_pool=10 n_returned=5 source_key=sunflower-oil
+2026-04-18T05:19:02.293780Z [info     ] phase4_target_ok               best_score=0.843629 elapsed_ms=3 n_pool=8 n_returned=8 source_key=talc
+2026-04-18T05:19:02.300945Z [info     ] phase4_target_ok               best_score=0.777061 elapsed_ms=7 n_pool=17 n_returned=10 source_key=tapioca-syrup
+2026-04-18T05:19:02.302074Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=taurine
+2026-04-18T05:19:02.334896Z [info     ] phase4_target_ok               best_score=0.892915 elapsed_ms=32 n_pool=81 n_returned=10 source_key=thiamin
+2026-04-18T05:19:02.365352Z [info     ] phase4_target_ok               best_score=0.892915 elapsed_ms=30 n_pool=81 n_returned=10 source_key=thiamine
+2026-04-18T05:19:02.365743Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=thiamine-hcl
+2026-04-18T05:19:02.366042Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=thiamine-mononitrate
+2026-04-18T05:19:02.369845Z [info     ] phase4_target_ok               best_score=0.73198 elapsed_ms=3 n_pool=8 n_returned=8 source_key=titanium-dioxide
+2026-04-18T05:19:02.399203Z [info     ] phase4_target_ok               best_score=0.860384 elapsed_ms=29 n_pool=81 n_returned=10 source_key=tocopherols
+2026-04-18T05:19:02.430935Z [info     ] phase4_target_ok               best_score=0.895402 elapsed_ms=31 n_pool=81 n_returned=10 source_key=trace-mineral-concentrate
+2026-04-18T05:19:02.431410Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=tricalcium-phosphate
+2026-04-18T05:19:02.460960Z [info     ] phase4_target_ok               best_score=0.839448 elapsed_ms=29 n_pool=81 n_returned=10 source_key=vanadium-as-vanadyl-sulfate
+2026-04-18T05:19:02.463508Z [info     ] phase4_target_ok               best_score=0.932355 elapsed_ms=2 n_pool=5 n_returned=5 source_key=vegan-capsule
+2026-04-18T05:19:02.465849Z [info     ] phase4_target_ok               best_score=0.932355 elapsed_ms=2 n_pool=5 n_returned=5 source_key=vegan-capsule-hypromellose
+2026-04-18T05:19:02.470522Z [info     ] phase4_target_ok               best_score=0.779672 elapsed_ms=4 n_pool=10 n_returned=7 source_key=vegetable-acetoglycerides
+2026-04-18T05:19:02.476131Z [info     ] phase4_target_ok               best_score=0.91922 elapsed_ms=5 n_pool=15 n_returned=10 source_key=vegetable-cellulose
+2026-04-18T05:19:02.477275Z [info     ] phase4_target_ok               best_score=0.72916 elapsed_ms=1 n_pool=2 n_returned=1 source_key=vegetable-glycerin
+2026-04-18T05:19:02.480006Z [info     ] phase4_target_ok               best_score=0.873039 elapsed_ms=2 n_pool=8 n_returned=8 source_key=vegetable-magnesium-stearate
+2026-04-18T05:19:02.480325Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=vegetable-nutrients
+2026-04-18T05:19:02.485197Z [info     ] phase4_target_ok               best_score=0.9395 elapsed_ms=4 n_pool=10 n_returned=7 source_key=vegetable-stearic-acid
+2026-04-18T05:19:02.487628Z [info     ] phase4_target_ok               best_score=0.902394 elapsed_ms=2 n_pool=5 n_returned=5 source_key=vegetarian-capsule
+2026-04-18T05:19:02.521175Z [info     ] phase4_target_ok               best_score=0.933204 elapsed_ms=33 n_pool=81 n_returned=10 source_key=vitamin-a
+2026-04-18T05:19:02.552001Z [info     ] phase4_target_ok               best_score=0.933204 elapsed_ms=30 n_pool=81 n_returned=10 source_key=vitamin-a-acetate
+2026-04-18T05:19:02.552543Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=vitamin-a-palmitate
+2026-04-18T05:19:02.580014Z [info     ] phase4_target_ok               best_score=0.996255 elapsed_ms=27 n_pool=81 n_returned=10 source_key=vitamin-a-retinyl-palmitate
+2026-04-18T05:19:02.604832Z [info     ] phase4_target_ok               best_score=0.895252 elapsed_ms=24 n_pool=81 n_returned=10 source_key=vitamin-b1
+2026-04-18T05:19:02.627697Z [info     ] phase4_target_ok               best_score=0.932317 elapsed_ms=22 n_pool=81 n_returned=10 source_key=vitamin-b12
+2026-04-18T05:19:02.653248Z [info     ] phase4_target_ok               best_score=0.979752 elapsed_ms=25 n_pool=81 n_returned=10 source_key=vitamin-b12-cyanocobalamin
+2026-04-18T05:19:02.653881Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=vitamin-b12-methylcobalamin
+2026-04-18T05:19:02.679100Z [info     ] phase4_target_ok               best_score=0.895252 elapsed_ms=25 n_pool=81 n_returned=10 source_key=vitamin-b2
+2026-04-18T05:19:02.679456Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=vitamin-b3-niacinamide
+2026-04-18T05:19:02.704735Z [info     ] phase4_target_ok               best_score=0.948872 elapsed_ms=25 n_pool=81 n_returned=10 source_key=vitamin-b5-d-calcium-pantothenate
+2026-04-18T05:19:02.729631Z [info     ] phase4_target_ok               best_score=0.914579 elapsed_ms=24 n_pool=81 n_returned=10 source_key=vitamin-b6
+2026-04-18T05:19:02.754626Z [info     ] phase4_target_ok               best_score=0.90139 elapsed_ms=24 n_pool=81 n_returned=10 source_key=vitamin-b6-pyridoxal-5-phosphate
+2026-04-18T05:19:02.786275Z [info     ] phase4_target_ok               best_score=0.981415 elapsed_ms=31 n_pool=81 n_returned=10 source_key=vitamin-b6-pyridoxine-hydrochloride
+2026-04-18T05:19:02.786625Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=vitamin-c
+2026-04-18T05:19:02.812194Z [info     ] phase4_target_ok               best_score=0.977231 elapsed_ms=25 n_pool=81 n_returned=10 source_key=vitamin-c-ascorbic-acid
+2026-04-18T05:19:02.837421Z [info     ] phase4_target_ok               best_score=0.941503 elapsed_ms=25 n_pool=81 n_returned=10 source_key=vitamin-c-calcium-ascorbate
+2026-04-18T05:19:02.864763Z [info     ] phase4_target_ok               best_score=0.950612 elapsed_ms=27 n_pool=81 n_returned=10 source_key=vitamin-c-l-ascorbic-acid
+2026-04-18T05:19:02.890670Z [info     ] phase4_target_ok               best_score=0.905945 elapsed_ms=25 n_pool=81 n_returned=10 source_key=vitamin-d
+2026-04-18T05:19:02.916985Z [info     ] phase4_target_ok               best_score=0.944862 elapsed_ms=26 n_pool=81 n_returned=10 source_key=vitamin-d3
+2026-04-18T05:19:02.917565Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=vitamin-d3-cholecalciferol
+2026-04-18T05:19:02.943622Z [info     ] phase4_target_ok               best_score=0.901668 elapsed_ms=25 n_pool=81 n_returned=10 source_key=vitamin-e
+2026-04-18T05:19:02.943975Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=vitamin-e-alpha-tocopherol
+2026-04-18T05:19:02.944344Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=vitamin-e-d-alpha-tocopheryl
+2026-04-18T05:19:02.944551Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=vitamin-k
+2026-04-18T05:19:02.944738Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=vitamin-k1
+2026-04-18T05:19:02.944921Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=vitamin-k2
+2026-04-18T05:19:02.971053Z [info     ] phase4_target_ok               best_score=0.832616 elapsed_ms=26 n_pool=81 n_returned=10 source_key=vitamin-k2-menaquinone-7
+2026-04-18T05:19:02.971405Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=whey-protein-concentrate
+2026-04-18T05:19:02.971619Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=whey-protein-isolate
+2026-04-18T05:19:02.976436Z [info     ] phase4_target_ok               best_score=0.857084 elapsed_ms=4 n_pool=15 n_returned=10 source_key=xanthan-gum
+2026-04-18T05:19:02.979161Z [info     ] phase4_target_ok               best_score=0.873103 elapsed_ms=2 n_pool=8 n_returned=8 source_key=yellow-6-lake
+2026-04-18T05:19:02.983863Z [info     ] phase4_target_ok               best_score=0.838918 elapsed_ms=4 n_pool=11 n_returned=10 source_key=zeaxanthin
+2026-04-18T05:19:03.012283Z [info     ] phase4_target_ok               best_score=0.909027 elapsed_ms=28 n_pool=81 n_returned=10 source_key=zinc
+2026-04-18T05:19:03.039435Z [info     ] phase4_target_ok               best_score=0.892891 elapsed_ms=26 n_pool=81 n_returned=10 source_key=zinc-chelate
+2026-04-18T05:19:03.064758Z [info     ] phase4_target_ok               best_score=0.909027 elapsed_ms=25 n_pool=81 n_returned=10 source_key=zinc-citrate
+2026-04-18T05:19:03.065155Z [info     ] phase4_target_empty            elapsed_ms=0 reason=no_family source_key=zinc-oxide
+2026-04-18T05:19:03.091021Z [info     ] phase4_target_ok               best_score=0.905795 elapsed_ms=25 n_pool=81 n_returned=10 source_key=zinc-sulfate
+2026-04-18T05:19:03.115873Z [info     ] phase4_target_ok               best_score=0.892891 elapsed_ms=24 n_pool=81 n_returned=10 source_key=zinc-zinc-bisglycinate
+{"ok": true, "n_targets": 357, "n_with_candidates": 218, "n_without_candidates": 139, "avg_top_score": 0.8718739082568804, "duration_ms": 17542, "cross_family": false, "top_k": 10, "min_score": 0.55, "report": "outputs/reports/substitute_candidates.json"}

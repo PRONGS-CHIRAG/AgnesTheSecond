@@ -1,0 +1,1966 @@
+{
+  "schema_version": "v2",
+  "generated_at": "2026-04-18T07:06:43.126239Z",
+  "llm_model": "gpt-4o-mini",
+  "weights": {
+    "functional_equivalence": 0.35,
+    "regulatory": 0.25,
+    "certification": 0.15,
+    "quality_sensory": 0.1,
+    "price_availability": 0.1,
+    "typical_suppliers": 0.05
+  },
+  "thresholds": {
+    "accept": 0.75,
+    "reject": 0.35,
+    "min_grounded_claims": 2.0
+  },
+  "n_tuples": 33,
+  "n_rules_decisions": 27,
+  "n_llm_decisions": 6,
+  "n_cache_hits": 0,
+  "n_api_calls": 6,
+  "n_failures": 0,
+  "n_without_evidence": 0,
+  "counts_by_class": {
+    "recommend": 27,
+    "recommend_with_caveats": 6
+  },
+  "duration_ms": 18041,
+  "partial": false,
+  "items": [
+    {
+      "company_id": 27,
+      "company_name": "Liquid I.V.",
+      "finished_product_id": 7,
+      "finished_product_sku": "FG-iherb-105065",
+      "source_key": "vitamin-b12-cyanocobalamin",
+      "candidate_key": "cyanocobalamin",
+      "source_display_name": "vitamin b12 cyanocobalamin",
+      "candidate_display_name": "cyanocobalamin",
+      "recommendation_class": "recommend",
+      "acceptability": 0.8500000000000001,
+      "missing_information": [],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.85 (grounded=6/6, contradictions=none, missing=none)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://legerepharm.com/blog/comparing-forms-of-vitamin-b12-cyanocobalamin-vs-methylcobalamin-for-clinical-use/",
+          "title": "Comparing Forms of Vitamin B12: Cyanocobalamin vs. ...",
+          "domain": "legerepharm.com",
+          "retrieved_at": "2026-02-25T00:00:00Z"
+        },
+        {
+          "url": "https://www.sigmaaldrich.com/US/en/product/sial/phr1234?srsltid=AfmBOoom00qmwIj9PcZMNTgd232hSibtYJ8gH4KBT1EDbkIghlmtme-0",
+          "title": "Cyanocobalamin Pharmaceutical Secondary Standard; Certified Reference Material 68-19-9",
+          "domain": "sigmaaldrich.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK555964/",
+          "title": "Cyanocobalamin - StatPearls - NCBI Bookshelf - NIH",
+          "domain": "ncbi.nlm.nih.gov",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.thomasnet.com/suppliers/usa/cyanocobalamin-97002300",
+          "title": "Cyanocobalamin Suppliers - Thomasnet",
+          "domain": "thomasnet.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.sciencedirect.com/topics/biochemistry-genetics-and-molecular-biology/cyanocobalamin",
+          "title": "Cyanocobalamin - an overview | ScienceDirect Topics",
+          "domain": "sciencedirect.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.pharmacychecker.com/cyanocobalamin/",
+          "title": "Cyanocobalamin Prices - U.S. & International | PharmacyChecker.com",
+          "domain": "pharmacychecker.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.900322,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:25.084345Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 27,
+      "company_name": "Liquid I.V.",
+      "finished_product_id": 7,
+      "finished_product_sku": "FG-iherb-105065",
+      "source_key": "vitamin-b12-cyanocobalamin",
+      "candidate_key": "cyanocobalamin-vitamin-b12",
+      "source_display_name": "vitamin b12 cyanocobalamin",
+      "candidate_display_name": "cyanocobalamin vitamin b12",
+      "recommendation_class": "recommend",
+      "acceptability": 0.88,
+      "missing_information": [
+        "typical_suppliers",
+        "quality_sensory",
+        "price_availability"
+      ],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.88 (grounded=3/3, contradictions=none, missing=typical_suppliers, quality_sensory, price_availability)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Cyanocobalamin",
+          "title": "Cyanocobalamin - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.healthline.com/nutrition/methylcobalamin-vs-cyanocobalamin",
+          "title": "Methylcobalamin vs Cyanocobalamin: What's the Difference?",
+          "domain": "healthline.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.spectrumchemical.com/media/sd/C1454_SD.pdf?srsltid=AfmBOoqcJL3ln7jxnSwKvmColUyi1cgQpt66ykREObaXjnDECsns8mrC",
+          "title": "[PDF] C1454, Vitamin B12, FCC - Scientific Documentation",
+          "domain": "spectrumchemical.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.richtekltd.com/FishOil_05_0620301_07_07291",
+          "title": "Nutrivitas®Vitamin B12 (Cyanocobalamin) - Richtek ltd",
+          "domain": "richekltd.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://goodtoknowfacts.org/ingredient/vitamin-b12-cyanocobalamin",
+          "title": "Vitamin B12 (Cyanocobalamin) - Good to Know Facts",
+          "domain": "goodtoknowfacts.org",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7009413/",
+          "title": "Safety and efficacy of vitamin B12 (in the form of cyanocobalamin ...",
+          "domain": "ncbi.nlm.nih.gov",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.979435,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:25.084517Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 27,
+      "company_name": "Liquid I.V.",
+      "finished_product_id": 7,
+      "finished_product_sku": "FG-iherb-105065",
+      "source_key": "vitamin-b12-cyanocobalamin",
+      "candidate_key": "vitamin-b12",
+      "source_display_name": "vitamin b12 cyanocobalamin",
+      "candidate_display_name": "vitamin b12",
+      "recommendation_class": "recommend",
+      "acceptability": 0.8133333333333334,
+      "missing_information": [
+        "typical_suppliers",
+        "quality_sensory",
+        "price_availability"
+      ],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.81 (grounded=3/3, contradictions=none, missing=typical_suppliers, quality_sensory, price_availability)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://legerepharm.com/blog/comparing-forms-of-vitamin-b12-cyanocobalamin-vs-methylcobalamin-for-clinical-use/",
+          "title": "Comparing Forms of Vitamin B12: Cyanocobalamin vs. ...",
+          "domain": "legerepharm.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.accio.com/plp/halal-b12-vitamins",
+          "title": "Halal B12 Vitamins: Pure, Vegan & Certified",
+          "domain": "accio.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.fda.gov/media/117106/download",
+          "title": "[PDF] GRAS Notice No. GRN 000787 | FDA",
+          "domain": "fda.gov",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.931852,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:25.084620Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 27,
+      "company_name": "Liquid I.V.",
+      "finished_product_id": 36,
+      "finished_product_sku": "FG-walmart-270357039",
+      "source_key": "vitamin-b12-cyanocobalamin",
+      "candidate_key": "cyanocobalamin",
+      "source_display_name": "vitamin b12 cyanocobalamin",
+      "candidate_display_name": "cyanocobalamin",
+      "recommendation_class": "recommend",
+      "acceptability": 0.8500000000000001,
+      "missing_information": [],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.85 (grounded=6/6, contradictions=none, missing=none)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://legerepharm.com/blog/comparing-forms-of-vitamin-b12-cyanocobalamin-vs-methylcobalamin-for-clinical-use/",
+          "title": "Comparing Forms of Vitamin B12: Cyanocobalamin vs. ...",
+          "domain": "legerepharm.com",
+          "retrieved_at": "2026-02-25T00:00:00Z"
+        },
+        {
+          "url": "https://www.sigmaaldrich.com/US/en/product/sial/phr1234?srsltid=AfmBOoom00qmwIj9PcZMNTgd232hSibtYJ8gH4KBT1EDbkIghlmtme-0",
+          "title": "Cyanocobalamin Pharmaceutical Secondary Standard; Certified Reference Material 68-19-9",
+          "domain": "sigmaaldrich.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK555964/",
+          "title": "Cyanocobalamin - StatPearls - NCBI Bookshelf - NIH",
+          "domain": "ncbi.nlm.nih.gov",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.thomasnet.com/suppliers/usa/cyanocobalamin-97002300",
+          "title": "Cyanocobalamin Suppliers - Thomasnet",
+          "domain": "thomasnet.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.sciencedirect.com/topics/biochemistry-genetics-and-molecular-biology/cyanocobalamin",
+          "title": "Cyanocobalamin - an overview | ScienceDirect Topics",
+          "domain": "sciencedirect.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.pharmacychecker.com/cyanocobalamin/",
+          "title": "Cyanocobalamin Prices - U.S. & International | PharmacyChecker.com",
+          "domain": "pharmacychecker.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.900322,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:25.084712Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 27,
+      "company_name": "Liquid I.V.",
+      "finished_product_id": 36,
+      "finished_product_sku": "FG-walmart-270357039",
+      "source_key": "vitamin-b12-cyanocobalamin",
+      "candidate_key": "cyanocobalamin-vitamin-b12",
+      "source_display_name": "vitamin b12 cyanocobalamin",
+      "candidate_display_name": "cyanocobalamin vitamin b12",
+      "recommendation_class": "recommend",
+      "acceptability": 0.88,
+      "missing_information": [
+        "typical_suppliers",
+        "quality_sensory",
+        "price_availability"
+      ],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.88 (grounded=3/3, contradictions=none, missing=typical_suppliers, quality_sensory, price_availability)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Cyanocobalamin",
+          "title": "Cyanocobalamin - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.healthline.com/nutrition/methylcobalamin-vs-cyanocobalamin",
+          "title": "Methylcobalamin vs Cyanocobalamin: What's the Difference?",
+          "domain": "healthline.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.spectrumchemical.com/media/sd/C1454_SD.pdf?srsltid=AfmBOoqcJL3ln7jxnSwKvmColUyi1cgQpt66ykREObaXjnDECsns8mrC",
+          "title": "[PDF] C1454, Vitamin B12, FCC - Scientific Documentation",
+          "domain": "spectrumchemical.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.richtekltd.com/FishOil_05_0620301_07_07291",
+          "title": "Nutrivitas®Vitamin B12 (Cyanocobalamin) - Richtek ltd",
+          "domain": "richekltd.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://goodtoknowfacts.org/ingredient/vitamin-b12-cyanocobalamin",
+          "title": "Vitamin B12 (Cyanocobalamin) - Good to Know Facts",
+          "domain": "goodtoknowfacts.org",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7009413/",
+          "title": "Safety and efficacy of vitamin B12 (in the form of cyanocobalamin ...",
+          "domain": "ncbi.nlm.nih.gov",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.979435,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:25.084793Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 27,
+      "company_name": "Liquid I.V.",
+      "finished_product_id": 36,
+      "finished_product_sku": "FG-walmart-270357039",
+      "source_key": "vitamin-b12-cyanocobalamin",
+      "candidate_key": "vitamin-b12",
+      "source_display_name": "vitamin b12 cyanocobalamin",
+      "candidate_display_name": "vitamin b12",
+      "recommendation_class": "recommend",
+      "acceptability": 0.8133333333333334,
+      "missing_information": [
+        "typical_suppliers",
+        "quality_sensory",
+        "price_availability"
+      ],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.81 (grounded=3/3, contradictions=none, missing=typical_suppliers, quality_sensory, price_availability)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://legerepharm.com/blog/comparing-forms-of-vitamin-b12-cyanocobalamin-vs-methylcobalamin-for-clinical-use/",
+          "title": "Comparing Forms of Vitamin B12: Cyanocobalamin vs. ...",
+          "domain": "legerepharm.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.accio.com/plp/halal-b12-vitamins",
+          "title": "Halal B12 Vitamins: Pure, Vegan & Certified",
+          "domain": "accio.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.fda.gov/media/117106/download",
+          "title": "[PDF] GRAS Notice No. GRN 000787 | FDA",
+          "domain": "fda.gov",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.931852,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:25.084873Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 27,
+      "company_name": "Liquid I.V.",
+      "finished_product_id": 101,
+      "finished_product_sku": "FG-target-a-81806945",
+      "source_key": "vitamin-b12-cyanocobalamin",
+      "candidate_key": "cyanocobalamin",
+      "source_display_name": "vitamin b12 cyanocobalamin",
+      "candidate_display_name": "cyanocobalamin",
+      "recommendation_class": "recommend",
+      "acceptability": 0.8500000000000001,
+      "missing_information": [],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.85 (grounded=6/6, contradictions=none, missing=none)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://legerepharm.com/blog/comparing-forms-of-vitamin-b12-cyanocobalamin-vs-methylcobalamin-for-clinical-use/",
+          "title": "Comparing Forms of Vitamin B12: Cyanocobalamin vs. ...",
+          "domain": "legerepharm.com",
+          "retrieved_at": "2026-02-25T00:00:00Z"
+        },
+        {
+          "url": "https://www.sigmaaldrich.com/US/en/product/sial/phr1234?srsltid=AfmBOoom00qmwIj9PcZMNTgd232hSibtYJ8gH4KBT1EDbkIghlmtme-0",
+          "title": "Cyanocobalamin Pharmaceutical Secondary Standard; Certified Reference Material 68-19-9",
+          "domain": "sigmaaldrich.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK555964/",
+          "title": "Cyanocobalamin - StatPearls - NCBI Bookshelf - NIH",
+          "domain": "ncbi.nlm.nih.gov",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.thomasnet.com/suppliers/usa/cyanocobalamin-97002300",
+          "title": "Cyanocobalamin Suppliers - Thomasnet",
+          "domain": "thomasnet.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.sciencedirect.com/topics/biochemistry-genetics-and-molecular-biology/cyanocobalamin",
+          "title": "Cyanocobalamin - an overview | ScienceDirect Topics",
+          "domain": "sciencedirect.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.pharmacychecker.com/cyanocobalamin/",
+          "title": "Cyanocobalamin Prices - U.S. & International | PharmacyChecker.com",
+          "domain": "pharmacychecker.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.900322,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:25.084948Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 27,
+      "company_name": "Liquid I.V.",
+      "finished_product_id": 101,
+      "finished_product_sku": "FG-target-a-81806945",
+      "source_key": "vitamin-b12-cyanocobalamin",
+      "candidate_key": "cyanocobalamin-vitamin-b12",
+      "source_display_name": "vitamin b12 cyanocobalamin",
+      "candidate_display_name": "cyanocobalamin vitamin b12",
+      "recommendation_class": "recommend",
+      "acceptability": 0.88,
+      "missing_information": [
+        "typical_suppliers",
+        "quality_sensory",
+        "price_availability"
+      ],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.88 (grounded=3/3, contradictions=none, missing=typical_suppliers, quality_sensory, price_availability)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Cyanocobalamin",
+          "title": "Cyanocobalamin - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.healthline.com/nutrition/methylcobalamin-vs-cyanocobalamin",
+          "title": "Methylcobalamin vs Cyanocobalamin: What's the Difference?",
+          "domain": "healthline.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.spectrumchemical.com/media/sd/C1454_SD.pdf?srsltid=AfmBOoqcJL3ln7jxnSwKvmColUyi1cgQpt66ykREObaXjnDECsns8mrC",
+          "title": "[PDF] C1454, Vitamin B12, FCC - Scientific Documentation",
+          "domain": "spectrumchemical.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.richtekltd.com/FishOil_05_0620301_07_07291",
+          "title": "Nutrivitas®Vitamin B12 (Cyanocobalamin) - Richtek ltd",
+          "domain": "richekltd.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://goodtoknowfacts.org/ingredient/vitamin-b12-cyanocobalamin",
+          "title": "Vitamin B12 (Cyanocobalamin) - Good to Know Facts",
+          "domain": "goodtoknowfacts.org",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7009413/",
+          "title": "Safety and efficacy of vitamin B12 (in the form of cyanocobalamin ...",
+          "domain": "ncbi.nlm.nih.gov",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.979435,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:25.085032Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 27,
+      "company_name": "Liquid I.V.",
+      "finished_product_id": 101,
+      "finished_product_sku": "FG-target-a-81806945",
+      "source_key": "vitamin-b12-cyanocobalamin",
+      "candidate_key": "vitamin-b12",
+      "source_display_name": "vitamin b12 cyanocobalamin",
+      "candidate_display_name": "vitamin b12",
+      "recommendation_class": "recommend",
+      "acceptability": 0.8133333333333334,
+      "missing_information": [
+        "typical_suppliers",
+        "quality_sensory",
+        "price_availability"
+      ],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.81 (grounded=3/3, contradictions=none, missing=typical_suppliers, quality_sensory, price_availability)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://legerepharm.com/blog/comparing-forms-of-vitamin-b12-cyanocobalamin-vs-methylcobalamin-for-clinical-use/",
+          "title": "Comparing Forms of Vitamin B12: Cyanocobalamin vs. ...",
+          "domain": "legerepharm.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.accio.com/plp/halal-b12-vitamins",
+          "title": "Halal B12 Vitamins: Pure, Vegan & Certified",
+          "domain": "accio.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.fda.gov/media/117106/download",
+          "title": "[PDF] GRAS Notice No. GRN 000787 | FDA",
+          "domain": "fda.gov",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.931852,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:25.085115Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 27,
+      "company_name": "Liquid I.V.",
+      "finished_product_id": 129,
+      "finished_product_sku": "FG-walgreens-300447518",
+      "source_key": "vitamin-b12-cyanocobalamin",
+      "candidate_key": "cyanocobalamin",
+      "source_display_name": "vitamin b12 cyanocobalamin",
+      "candidate_display_name": "cyanocobalamin",
+      "recommendation_class": "recommend",
+      "acceptability": 0.8500000000000001,
+      "missing_information": [],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.85 (grounded=6/6, contradictions=none, missing=none)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://legerepharm.com/blog/comparing-forms-of-vitamin-b12-cyanocobalamin-vs-methylcobalamin-for-clinical-use/",
+          "title": "Comparing Forms of Vitamin B12: Cyanocobalamin vs. ...",
+          "domain": "legerepharm.com",
+          "retrieved_at": "2026-02-25T00:00:00Z"
+        },
+        {
+          "url": "https://www.sigmaaldrich.com/US/en/product/sial/phr1234?srsltid=AfmBOoom00qmwIj9PcZMNTgd232hSibtYJ8gH4KBT1EDbkIghlmtme-0",
+          "title": "Cyanocobalamin Pharmaceutical Secondary Standard; Certified Reference Material 68-19-9",
+          "domain": "sigmaaldrich.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK555964/",
+          "title": "Cyanocobalamin - StatPearls - NCBI Bookshelf - NIH",
+          "domain": "ncbi.nlm.nih.gov",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.thomasnet.com/suppliers/usa/cyanocobalamin-97002300",
+          "title": "Cyanocobalamin Suppliers - Thomasnet",
+          "domain": "thomasnet.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.sciencedirect.com/topics/biochemistry-genetics-and-molecular-biology/cyanocobalamin",
+          "title": "Cyanocobalamin - an overview | ScienceDirect Topics",
+          "domain": "sciencedirect.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.pharmacychecker.com/cyanocobalamin/",
+          "title": "Cyanocobalamin Prices - U.S. & International | PharmacyChecker.com",
+          "domain": "pharmacychecker.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.900322,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:25.085187Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 27,
+      "company_name": "Liquid I.V.",
+      "finished_product_id": 129,
+      "finished_product_sku": "FG-walgreens-300447518",
+      "source_key": "vitamin-b12-cyanocobalamin",
+      "candidate_key": "cyanocobalamin-vitamin-b12",
+      "source_display_name": "vitamin b12 cyanocobalamin",
+      "candidate_display_name": "cyanocobalamin vitamin b12",
+      "recommendation_class": "recommend",
+      "acceptability": 0.88,
+      "missing_information": [
+        "typical_suppliers",
+        "quality_sensory",
+        "price_availability"
+      ],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.88 (grounded=3/3, contradictions=none, missing=typical_suppliers, quality_sensory, price_availability)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Cyanocobalamin",
+          "title": "Cyanocobalamin - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.healthline.com/nutrition/methylcobalamin-vs-cyanocobalamin",
+          "title": "Methylcobalamin vs Cyanocobalamin: What's the Difference?",
+          "domain": "healthline.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.spectrumchemical.com/media/sd/C1454_SD.pdf?srsltid=AfmBOoqcJL3ln7jxnSwKvmColUyi1cgQpt66ykREObaXjnDECsns8mrC",
+          "title": "[PDF] C1454, Vitamin B12, FCC - Scientific Documentation",
+          "domain": "spectrumchemical.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.richtekltd.com/FishOil_05_0620301_07_07291",
+          "title": "Nutrivitas®Vitamin B12 (Cyanocobalamin) - Richtek ltd",
+          "domain": "richekltd.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://goodtoknowfacts.org/ingredient/vitamin-b12-cyanocobalamin",
+          "title": "Vitamin B12 (Cyanocobalamin) - Good to Know Facts",
+          "domain": "goodtoknowfacts.org",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7009413/",
+          "title": "Safety and efficacy of vitamin B12 (in the form of cyanocobalamin ...",
+          "domain": "ncbi.nlm.nih.gov",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.979435,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:25.085257Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 27,
+      "company_name": "Liquid I.V.",
+      "finished_product_id": 129,
+      "finished_product_sku": "FG-walgreens-300447518",
+      "source_key": "vitamin-b12-cyanocobalamin",
+      "candidate_key": "vitamin-b12",
+      "source_display_name": "vitamin b12 cyanocobalamin",
+      "candidate_display_name": "vitamin b12",
+      "recommendation_class": "recommend",
+      "acceptability": 0.8133333333333334,
+      "missing_information": [
+        "typical_suppliers",
+        "quality_sensory",
+        "price_availability"
+      ],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.81 (grounded=3/3, contradictions=none, missing=typical_suppliers, quality_sensory, price_availability)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://legerepharm.com/blog/comparing-forms-of-vitamin-b12-cyanocobalamin-vs-methylcobalamin-for-clinical-use/",
+          "title": "Comparing Forms of Vitamin B12: Cyanocobalamin vs. ...",
+          "domain": "legerepharm.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.accio.com/plp/halal-b12-vitamins",
+          "title": "Halal B12 Vitamins: Pure, Vegan & Certified",
+          "domain": "accio.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.fda.gov/media/117106/download",
+          "title": "[PDF] GRAS Notice No. GRN 000787 | FDA",
+          "domain": "fda.gov",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.931852,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:25.085329Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 27,
+      "company_name": "Liquid I.V.",
+      "finished_product_id": 134,
+      "finished_product_sku": "FG-walgreens-300411121",
+      "source_key": "vitamin-b12-cyanocobalamin",
+      "candidate_key": "cyanocobalamin",
+      "source_display_name": "vitamin b12 cyanocobalamin",
+      "candidate_display_name": "cyanocobalamin",
+      "recommendation_class": "recommend",
+      "acceptability": 0.8500000000000001,
+      "missing_information": [],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.85 (grounded=6/6, contradictions=none, missing=none)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://legerepharm.com/blog/comparing-forms-of-vitamin-b12-cyanocobalamin-vs-methylcobalamin-for-clinical-use/",
+          "title": "Comparing Forms of Vitamin B12: Cyanocobalamin vs. ...",
+          "domain": "legerepharm.com",
+          "retrieved_at": "2026-02-25T00:00:00Z"
+        },
+        {
+          "url": "https://www.sigmaaldrich.com/US/en/product/sial/phr1234?srsltid=AfmBOoom00qmwIj9PcZMNTgd232hSibtYJ8gH4KBT1EDbkIghlmtme-0",
+          "title": "Cyanocobalamin Pharmaceutical Secondary Standard; Certified Reference Material 68-19-9",
+          "domain": "sigmaaldrich.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK555964/",
+          "title": "Cyanocobalamin - StatPearls - NCBI Bookshelf - NIH",
+          "domain": "ncbi.nlm.nih.gov",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.thomasnet.com/suppliers/usa/cyanocobalamin-97002300",
+          "title": "Cyanocobalamin Suppliers - Thomasnet",
+          "domain": "thomasnet.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.sciencedirect.com/topics/biochemistry-genetics-and-molecular-biology/cyanocobalamin",
+          "title": "Cyanocobalamin - an overview | ScienceDirect Topics",
+          "domain": "sciencedirect.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.pharmacychecker.com/cyanocobalamin/",
+          "title": "Cyanocobalamin Prices - U.S. & International | PharmacyChecker.com",
+          "domain": "pharmacychecker.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.900322,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:25.085396Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 27,
+      "company_name": "Liquid I.V.",
+      "finished_product_id": 134,
+      "finished_product_sku": "FG-walgreens-300411121",
+      "source_key": "vitamin-b12-cyanocobalamin",
+      "candidate_key": "cyanocobalamin-vitamin-b12",
+      "source_display_name": "vitamin b12 cyanocobalamin",
+      "candidate_display_name": "cyanocobalamin vitamin b12",
+      "recommendation_class": "recommend",
+      "acceptability": 0.88,
+      "missing_information": [
+        "typical_suppliers",
+        "quality_sensory",
+        "price_availability"
+      ],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.88 (grounded=3/3, contradictions=none, missing=typical_suppliers, quality_sensory, price_availability)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Cyanocobalamin",
+          "title": "Cyanocobalamin - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.healthline.com/nutrition/methylcobalamin-vs-cyanocobalamin",
+          "title": "Methylcobalamin vs Cyanocobalamin: What's the Difference?",
+          "domain": "healthline.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.spectrumchemical.com/media/sd/C1454_SD.pdf?srsltid=AfmBOoqcJL3ln7jxnSwKvmColUyi1cgQpt66ykREObaXjnDECsns8mrC",
+          "title": "[PDF] C1454, Vitamin B12, FCC - Scientific Documentation",
+          "domain": "spectrumchemical.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.richtekltd.com/FishOil_05_0620301_07_07291",
+          "title": "Nutrivitas®Vitamin B12 (Cyanocobalamin) - Richtek ltd",
+          "domain": "richekltd.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://goodtoknowfacts.org/ingredient/vitamin-b12-cyanocobalamin",
+          "title": "Vitamin B12 (Cyanocobalamin) - Good to Know Facts",
+          "domain": "goodtoknowfacts.org",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7009413/",
+          "title": "Safety and efficacy of vitamin B12 (in the form of cyanocobalamin ...",
+          "domain": "ncbi.nlm.nih.gov",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.979435,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:25.085464Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 27,
+      "company_name": "Liquid I.V.",
+      "finished_product_id": 134,
+      "finished_product_sku": "FG-walgreens-300411121",
+      "source_key": "vitamin-b12-cyanocobalamin",
+      "candidate_key": "vitamin-b12",
+      "source_display_name": "vitamin b12 cyanocobalamin",
+      "candidate_display_name": "vitamin b12",
+      "recommendation_class": "recommend",
+      "acceptability": 0.8133333333333334,
+      "missing_information": [
+        "typical_suppliers",
+        "quality_sensory",
+        "price_availability"
+      ],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.81 (grounded=3/3, contradictions=none, missing=typical_suppliers, quality_sensory, price_availability)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://legerepharm.com/blog/comparing-forms-of-vitamin-b12-cyanocobalamin-vs-methylcobalamin-for-clinical-use/",
+          "title": "Comparing Forms of Vitamin B12: Cyanocobalamin vs. ...",
+          "domain": "legerepharm.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.accio.com/plp/halal-b12-vitamins",
+          "title": "Halal B12 Vitamins: Pure, Vegan & Certified",
+          "domain": "accio.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.fda.gov/media/117106/download",
+          "title": "[PDF] GRAS Notice No. GRN 000787 | FDA",
+          "domain": "fda.gov",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.931852,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:25.085536Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 40,
+      "company_name": "PRIME HYDRATION+",
+      "finished_product_id": 58,
+      "finished_product_sku": "FG-amazon-b0ft5z9k9n",
+      "source_key": "cyanocobalamin-vitamin-b12",
+      "candidate_key": "cyanocobalamin",
+      "source_display_name": "cyanocobalamin vitamin b12",
+      "candidate_display_name": "cyanocobalamin",
+      "recommendation_class": "recommend",
+      "acceptability": 0.835,
+      "missing_information": [],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.83 (grounded=6/6, contradictions=none, missing=none)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://legerepharm.com/blog/comparing-forms-of-vitamin-b12-cyanocobalamin-vs-methylcobalamin-for-clinical-use/",
+          "title": "Comparing Forms of Vitamin B12: Cyanocobalamin vs. ...",
+          "domain": "legerepharm.com",
+          "retrieved_at": "2026-02-25T00:00:00Z"
+        },
+        {
+          "url": "https://www.sigmaaldrich.com/US/en/product/sial/phr1234?srsltid=AfmBOoom00qmwIj9PcZMNTgd232hSibtYJ8gH4KBT1EDbkIghlmtme-0",
+          "title": "Cyanocobalamin Pharmaceutical Secondary Standard; Certified Reference Material 68-19-9",
+          "domain": "sigmaaldrich.com",
+          "retrieved_at": "2026-02-25T00:00:00Z"
+        },
+        {
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK555964/",
+          "title": "Cyanocobalamin - StatPearls - NCBI Bookshelf - NIH",
+          "domain": "ncbi.nlm.nih.gov",
+          "retrieved_at": "2026-02-25T00:00:00Z"
+        },
+        {
+          "url": "https://www.pharmacompass.com/manufacturers-suppliers-exporters/cyanocobalamin",
+          "title": "Cyanocobalamin API Manufacturers | Suppliers | Drug Master Files (DMF) | CEP | Pharmacompass.com",
+          "domain": "pharmacompass.com",
+          "retrieved_at": "2026-02-25T00:00:00Z"
+        },
+        {
+          "url": "https://www.sciencedirect.com/topics/biochemistry-genetics-and-molecular-biology/cyanocobalamin",
+          "title": "Cyanocobalamin - an overview | ScienceDirect Topics",
+          "domain": "sciencedirect.com",
+          "retrieved_at": "2026-02-25T00:00:00Z"
+        },
+        {
+          "url": "https://www.pharmacychecker.com/cyanocobalamin/",
+          "title": "Cyanocobalamin Prices - U.S. & International | PharmacyChecker.com",
+          "domain": "pharmacychecker.com",
+          "retrieved_at": "2026-02-25T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.917114,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:25.085606Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 40,
+      "company_name": "PRIME HYDRATION+",
+      "finished_product_id": 58,
+      "finished_product_sku": "FG-amazon-b0ft5z9k9n",
+      "source_key": "cyanocobalamin-vitamin-b12",
+      "candidate_key": "vitamin-b12",
+      "source_display_name": "cyanocobalamin vitamin b12",
+      "candidate_display_name": "vitamin b12",
+      "recommendation_class": "recommend",
+      "acceptability": 0.88,
+      "missing_information": [
+        "typical_suppliers",
+        "quality_sensory",
+        "price_availability"
+      ],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.88 (grounded=3/3, contradictions=none, missing=typical_suppliers, quality_sensory, price_availability)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://legerepharm.com/blog/comparing-forms-of-vitamin-b12-cyanocobalamin-vs-methylcobalamin-for-clinical-use/",
+          "title": "Comparing Forms of Vitamin B12: Cyanocobalamin vs. Methylcobalamin for Clinical Use - Legere Pharmaceuticals",
+          "domain": "legerepharm.com",
+          "retrieved_at": "2023-10-10T00:00:00Z"
+        },
+        {
+          "url": "https://www.boltpharmacy.co.uk/guide/b12-methylcobalamin-vs-b12-cyanocobalamin",
+          "title": "B12 Methylcobalamin vs Cyanocobalamin: Which Form Is Best? – Bolt Pharmacy",
+          "domain": "boltpharmacy.co.uk",
+          "retrieved_at": "2023-10-10T00:00:00Z"
+        },
+        {
+          "url": "https://www.accio.com/plp/halal-b12-vitamins",
+          "title": "Halal B12 Vitamins: Pure, Vegan & Certified - Accio",
+          "domain": "accio.com",
+          "retrieved_at": "2023-10-10T00:00:00Z"
+        },
+        {
+          "url": "https://reliancevitamin.com/certifications-of-quality/",
+          "title": "Certifications of Quality",
+          "domain": "reliancevitamin.com",
+          "retrieved_at": "2023-10-10T00:00:00Z"
+        },
+        {
+          "url": "https://www.fda.gov/media/117106/download",
+          "title": "[PDF] GRAS Notice No. GRN 000787 | FDA",
+          "domain": "fda.gov",
+          "retrieved_at": "2023-10-10T00:00:00Z"
+        },
+        {
+          "url": "https://www.linkedin.com/posts/globalregulatoryintelligence_regulatorycompliance-vitaminb12-supplements-activity-7331287764342059008-c7kn",
+          "title": "How Vitamin B12 is Regulated: FDA, GMP, and More | Freyr Global Regulatory Intelligence",
+          "domain": "linkedin.com",
+          "retrieved_at": "2023-10-10T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.923018,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:25.085677Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 40,
+      "company_name": "PRIME HYDRATION+",
+      "finished_product_id": 58,
+      "finished_product_sku": "FG-amazon-b0ft5z9k9n",
+      "source_key": "cyanocobalamin-vitamin-b12",
+      "candidate_key": "vitamin-b12-cyanocobalamin",
+      "source_display_name": "cyanocobalamin vitamin b12",
+      "candidate_display_name": "vitamin b12 cyanocobalamin",
+      "recommendation_class": "recommend_with_caveats",
+      "acceptability": 0.8923076923076924,
+      "missing_information": [
+        "certification",
+        "quality_sensory"
+      ],
+      "contradictions": [],
+      "caveats": [
+        "requires certification documentation",
+        "requires quality sensory evaluation"
+      ],
+      "rationale": "Vitamin B12 cyanocobalamin is functionally equivalent to cyanocobalamin vitamin B12 and is supported by regulatory approval, but certification and quality sensory data are missing.",
+      "decision_path": "llm",
+      "citations_used": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Cyanocobalamin",
+          "title": "Cyanocobalamin - Wikipedia",
+          "domain": "wikipedia.org",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://redox.com/products/vitamin-b12-cyanocobalamin-99-min/",
+          "title": "Vitamin B12 Cyanocobalamin 99% Min Supplier & Chemical Distributor | Redox",
+          "domain": "redox.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.bulksupplements.com/products/vitamin-b12-1-percent-cyanocobalamin-powder?srsltid=AfmBOoqbh4Hmg3qBd5hwDTVEUNA69ADhdnTUL6aGv6enMEKF4sKgINhv",
+          "title": "Cyanocobalamin Supplement | Vitamin B12 Supplement",
+          "domain": "bulksupplements.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK555964/",
+          "title": "Cyanocobalamin - StatPearls - NCBI Bookshelf - NIH",
+          "domain": "ncbi.nlm.nih.gov",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        }
+      ],
+      "substitute_score": 0.979435,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:25.085754Z",
+      "llm_model": "gpt-4o-mini"
+    },
+    {
+      "company_id": 40,
+      "company_name": "PRIME HYDRATION+",
+      "finished_product_id": 58,
+      "finished_product_sku": "FG-amazon-b0ft5z9k9n",
+      "source_key": "pyridoxine-hydrochloride-vitamin-b6",
+      "candidate_key": "vitamin-b6",
+      "source_display_name": "pyridoxine hydrochloride vitamin b6",
+      "candidate_display_name": "vitamin b6",
+      "recommendation_class": "recommend",
+      "acceptability": 0.8533333333333334,
+      "missing_information": [
+        "typical_suppliers",
+        "quality_sensory",
+        "price_availability"
+      ],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.85 (grounded=3/3, contradictions=none, missing=typical_suppliers, quality_sensory, price_availability)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK557436/",
+          "title": "Vitamin B6 (Pyridoxine) - StatPearls - NCBI Bookshelf - NIH",
+          "domain": "ncbi.nlm.nih.gov",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.kantipurhealth.com/NOW-Foods-Vitamin-B-6-100-Mg-100-Vegetable-Capsules-Non-GMO/1000878",
+          "title": "100 Vegetable Capsules, Non-GMO, Halal, Kosher, GMP Certified",
+          "domain": "kantipurhealth.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.efsa.europa.eu/en/press/news/160624",
+          "title": "Dietary reference values: advice on vitamin B6 - EFSA",
+          "domain": "efsa.europa.eu",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.904607,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:28.604610Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 40,
+      "company_name": "PRIME HYDRATION+",
+      "finished_product_id": 58,
+      "finished_product_sku": "FG-amazon-b0ft5z9k9n",
+      "source_key": "pyridoxine-hydrochloride-vitamin-b6",
+      "candidate_key": "vitamin-b6-pyridoxal-5-phosphate",
+      "source_display_name": "pyridoxine hydrochloride vitamin b6",
+      "candidate_display_name": "vitamin b6 pyridoxal 5 phosphate",
+      "recommendation_class": "recommend",
+      "acceptability": 0.78,
+      "missing_information": [],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.78 (grounded=6/6, contradictions=none, missing=none)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://www.nutriavenue.com/pyridoxal-5-phosphate-vs-pyridoxine-hcl/",
+          "title": "Pyridoxal 5 Phosphate VS Pyridoxine HCl: What's Differences?",
+          "domain": "nutriavenue.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://thornevet.com/glossary/vitamin-b6-pyridoxine-hcl-pyridoxal-5-phosphate/",
+          "title": "Vitamin B6 (Pyridoxine HCl / Pyridoxal 5'-Phosphate) - Thorne Vet",
+          "domain": "thornevet.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.ecahealthcareusa.com/products-solutions/coenzymes-vitamins/pyridoxal-5-phosphate/",
+          "title": "P5PURE™ Pyridoxal-5-Phosphate the active form of Vitamin B6",
+          "domain": "ecahealthcareusa.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.foodsweeteners.com/halal-certified-vitamin-b6/",
+          "title": "Halal Vitamin B6: Pyridoxine Production and Verification",
+          "domain": "foodsweeteners.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.fda.gov/media/117106/download",
+          "title": "[PDF] GRAS Notice No. GRN 000787 | FDA",
+          "domain": "fda.gov",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.fda.gov/food/food-ingredients-packaging/generally-recognized-safe-gras",
+          "title": "Generally Recognized as Safe (GRAS) - FDA",
+          "domain": "fda.gov",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://vivion.com/bulk-pyridoxal-5-phosphate-supplier/",
+          "title": "Pyridoxal 5 Phosphate Supplier | Bulk Distributor | Vivion",
+          "domain": "vivion.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://biogenicfoods.com/pyridoxal-5-phosphate-p5p-vitamin-b6-100-pure-powder-bulk-pack/?srsltid=AfmBOopAUVAOslXYvyEdGfEv5msVUssXjR_z1ZMSCgERP_JgSQx29d30",
+          "title": "Pyridoxal 5' Phosphate - P5P - Vitamin B6 - Biogenic Foods",
+          "domain": "biogenicfoods.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11528956/",
+          "title": "High-dose Vitamin-B6 reduces sensory over-responsivity - PMC",
+          "domain": "ncbi.nlm.nih.gov",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://dataintelo.com/report/pyridoxal-5-phosphate-supplements-market",
+          "title": "Pyridoxal-5-Phosphate Supplements Market Research Report 2033",
+          "domain": "dataintelo.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        }
+      ],
+      "substitute_score": 0.89377,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:28.604858Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 40,
+      "company_name": "PRIME HYDRATION+",
+      "finished_product_id": 58,
+      "finished_product_sku": "FG-amazon-b0ft5z9k9n",
+      "source_key": "pyridoxine-hydrochloride-vitamin-b6",
+      "candidate_key": "vitamin-b6-pyridoxine-hydrochloride",
+      "source_display_name": "pyridoxine hydrochloride vitamin b6",
+      "candidate_display_name": "vitamin b6 pyridoxine hydrochloride",
+      "recommendation_class": "recommend_with_caveats",
+      "acceptability": 0.7818181818181816,
+      "missing_information": [
+        "regulatory"
+      ],
+      "contradictions": [],
+      "caveats": [
+        "requires fresh regulatory sign-off"
+      ],
+      "rationale": "Vitamin B6 pyridoxine hydrochloride is functionally equivalent to pyridoxine hydrochloride vitamin B6 and is supported by credible suppliers. However, additional regulatory information is needed to ensure compliance.",
+      "decision_path": "llm",
+      "citations_used": [
+        {
+          "url": "https://www.nutriavenue.com/vb6-pyridoxine-hcl-powder-applications/",
+          "title": "Vitamin B6: Is Pyridoxine HCL Powder Good To Apply Products?",
+          "domain": "nutriavenue.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.sciencedirect.com/topics/chemistry/pyridoxine-hydrochloride",
+          "title": "Pyridoxine Hydrochloride - an overview | ScienceDirect Topics",
+          "domain": "sciencedirect.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.dastech.com/apis-and-pharmaceuticals/pyridoxine-hydrochloride-vitamin-b6",
+          "title": "Pyridoxine Hydrochloride (Vitamin B6) Supplier & Distributor",
+          "domain": "dastech.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.glenwellhealthcare.com/herbal-product-manufacturers/Vitamin-B6-Pyridoxine-API-Manufacturer/",
+          "title": "Vitamin B6 (Pyridoxine) API Manufacturer",
+          "domain": "glenwellhealthcare.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.spectrumrx.com/media/sd/PY103_SD.pdf",
+          "title": "[PDF] PY103, Pyridoxine Hydrochloride, USP - Scientific Documentation",
+          "domain": "spectrumrx.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        }
+      ],
+      "substitute_score": 0.976455,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:28.605032Z",
+      "llm_model": "gpt-4o-mini"
+    },
+    {
+      "company_id": 40,
+      "company_name": "PRIME HYDRATION+",
+      "finished_product_id": 58,
+      "finished_product_sku": "FG-amazon-b0ft5z9k9n",
+      "source_key": "retinyl-palmitate-vitamin-a",
+      "candidate_key": "vitamin-a",
+      "source_display_name": "retinyl palmitate vitamin a",
+      "candidate_display_name": "vitamin a",
+      "recommendation_class": "recommend",
+      "acceptability": 0.7866666666666666,
+      "missing_information": [
+        "typical_suppliers",
+        "quality_sensory",
+        "price_availability"
+      ],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.79 (grounded=3/3, contradictions=none, missing=typical_suppliers, quality_sensory, price_availability)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Retinyl_palmitate",
+          "title": "Retinyl palmitate",
+          "domain": "wikipedia.org",
+          "retrieved_at": "2023-10-10T00:00:00Z"
+        },
+        {
+          "url": "https://reliancevitamin.com/certifications-of-quality/",
+          "title": "Certifications of Quality - Reliance Vitamin",
+          "domain": "reliancevitamin.com",
+          "retrieved_at": "2023-10-10T00:00:00Z"
+        },
+        {
+          "url": "https://www.fda.gov/food/food-ingredients-packaging/generally-recognized-safe-gras",
+          "title": "Generally Recognized as Safe (GRAS) | FDA",
+          "domain": "fda.gov",
+          "retrieved_at": "2023-10-10T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.892986,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:32.368817Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 40,
+      "company_name": "PRIME HYDRATION+",
+      "finished_product_id": 58,
+      "finished_product_sku": "FG-amazon-b0ft5z9k9n",
+      "source_key": "retinyl-palmitate-vitamin-a",
+      "candidate_key": "vitamin-a-acetate",
+      "source_display_name": "retinyl palmitate vitamin a",
+      "candidate_display_name": "vitamin a acetate",
+      "recommendation_class": "recommend",
+      "acceptability": 0.8533333333333334,
+      "missing_information": [
+        "typical_suppliers",
+        "quality_sensory",
+        "price_availability"
+      ],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.85 (grounded=3/3, contradictions=none, missing=typical_suppliers, quality_sensory, price_availability)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Retinyl_acetate",
+          "title": "Retinyl acetate",
+          "domain": "wikipedia.org",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://health.ec.europa.eu/publications/vitamin-retinol-retinyl-acetate-retinyl-palmitate_en",
+          "title": "Vitamin A (Retinol, Retinyl Acetate, Retinyl Palmitate) - Public Health",
+          "domain": "health.ec.europa.eu",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.nutriavenue.com/ingredients/best-vitamin-a-acetate-powder/",
+          "title": "Premium Vitamin A Acetate Powder Supplier - Nutri Avenue",
+          "domain": "nutriavenue.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.richtekltd.com/FishOil_05_06201630_6_06251011_567_06301112_751_07021406_560",
+          "title": "NutriVitas®Vitamin A Acetate - Richtek ltd",
+          "domain": "richtekltd.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.fda.gov/food/food-ingredients-packaging/generally-recognized-safe-gras",
+          "title": "Generally Recognized as Safe (GRAS) - FDA",
+          "domain": "fda.gov",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.thegoodscentscompany.com/data/rw1309561.html",
+          "title": "vitamin A acetate, 127-47-9 - The Good Scents Company",
+          "domain": "thegoodscentscompany.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        }
+      ],
+      "substitute_score": 0.883575,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:32.368996Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 40,
+      "company_name": "PRIME HYDRATION+",
+      "finished_product_id": 58,
+      "finished_product_sku": "FG-amazon-b0ft5z9k9n",
+      "source_key": "retinyl-palmitate-vitamin-a",
+      "candidate_key": "vitamin-a-retinyl-palmitate",
+      "source_display_name": "retinyl palmitate vitamin a",
+      "candidate_display_name": "vitamin a retinyl palmitate",
+      "recommendation_class": "recommend_with_caveats",
+      "acceptability": 0.8363636363636362,
+      "missing_information": [
+        "regulatory"
+      ],
+      "contradictions": [],
+      "caveats": [
+        "requires fresh regulatory sign-off"
+      ],
+      "rationale": "Vitamin A retinyl palmitate is functionally equivalent to retinyl palmitate vitamin A and is supported by credible suppliers. However, additional regulatory information is needed to ensure compliance.",
+      "decision_path": "llm",
+      "citations_used": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Retinyl_palmitate",
+          "title": "Retinyl palmitate - Wikipedia",
+          "domain": "wikipedia.org",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://royed.in/conversion-of-vitamin-a-retinol-to-vitamin-a-palmitate/",
+          "title": "Conversion of Vitamin A Retinol to Vitamin A Palmitate Explained",
+          "domain": "royed.in",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.pharmacompass.com/manufacturers-suppliers-exporters/vitamin-a-palmitate",
+          "title": "Vitamin- A palmitate API Manufacturers | Drug Master Files (DMF)",
+          "domain": "pharmacompass.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.caymanchem.com/product/23796/retinyl-palmitate?srsltid=AfmBOopX8Mfql-xAQMu4qvcpTpF_2zFzmW9yPkgsMBQdTCAhALtQ6YG9",
+          "title": "Retinyl Palmitate (CAS 79-81-2) - Cayman Chemical",
+          "domain": "caymanchem.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.makingcosmetics.com/on/demandware.static/-/Sites-makingcosmetics-master/default/dw562252d7/certificate-of-analysis/coa-vitamin-a-retinyl-palmitate2.pdf",
+          "title": "[PDF] Vitamin A (retinyl palmitate) - Certificate of Analysis",
+          "domain": "makingcosmetics.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        }
+      ],
+      "substitute_score": 0.980808,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:32.369149Z",
+      "llm_model": "gpt-4o-mini"
+    },
+    {
+      "company_id": 44,
+      "company_name": "Ritual",
+      "finished_product_id": 21,
+      "finished_product_sku": "FG-thrive-market-ritual-mens-multivitamin-18",
+      "source_key": "vitamin-a-retinyl-palmitate",
+      "candidate_key": "retinyl-palmitate-vitamin-a",
+      "source_display_name": "vitamin a retinyl palmitate",
+      "candidate_display_name": "retinyl palmitate vitamin a",
+      "recommendation_class": "recommend",
+      "acceptability": 0.8133333333333334,
+      "missing_information": [
+        "typical_suppliers",
+        "quality_sensory",
+        "price_availability"
+      ],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.81 (grounded=3/3, contradictions=none, missing=typical_suppliers, quality_sensory, price_availability)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://xtendlife.com/blogs/supplement-ingredients/vitamin-a-retinyl-palmitate?srsltid=AfmBOorvDnGsQ6X86QUEjQDd743EltO7wHIGM00177DtDYK2uR6txSA8",
+          "title": "Vitamin A (Retinyl Palmitate) - Xtend-Life",
+          "domain": "xtendlife.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Retinyl_palmitate",
+          "title": "Retinyl palmitate - Wikipedia",
+          "domain": "wikipedia.org",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.amazon.com/Green-Organic-Supplements-Vitamin-Palmitate/dp/B07W6N31GD",
+          "title": "Vitamin A, Retinyl Palmitate, 90 VCaps, 15000IU, Hand Made, Non ...",
+          "domain": "amazon.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.amazon.com/Capsules-Supplement-Peak-Performance-Vitamins/dp/B084RDGLFD",
+          "title": "Certified Organic Vitamin A 5000 IU Supplement Capsules - High ...",
+          "domain": "amazon.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.ecfr.gov/current/title-21/chapter-I/subchapter-B/part-184/subpart-B/section-184.1930",
+          "title": "21 CFR 184.1930 -- Vitamin A. - eCFR",
+          "domain": "ecfr.gov",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://health.ec.europa.eu/document/download/f1881bcd-ee58-4d42-9701-3feaaa26de61_en",
+          "title": "[PDF] Opinion on Vitamin A (Retinol, Retinyl Acetate, Retinyl Palmitate)",
+          "domain": "health.ec.europa.eu",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        }
+      ],
+      "substitute_score": 0.980808,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:35.203220Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 44,
+      "company_name": "Ritual",
+      "finished_product_id": 21,
+      "finished_product_sku": "FG-thrive-market-ritual-mens-multivitamin-18",
+      "source_key": "vitamin-a-retinyl-palmitate",
+      "candidate_key": "vitamin-a",
+      "source_display_name": "vitamin a retinyl palmitate",
+      "candidate_display_name": "vitamin a",
+      "recommendation_class": "recommend",
+      "acceptability": 0.7999999999999999,
+      "missing_information": [
+        "quality_sensory"
+      ],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.80 (grounded=5/5, contradictions=none, missing=quality_sensory)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://health.ec.europa.eu/document/download/f1881bcd-ee58-4d42-9701-3feaaa26de61_en",
+          "title": "[PDF] Opinion on Vitamin A (Retinol, Retinyl Acetate, Retinyl Palmitate)",
+          "domain": "health.ec.europa.eu",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.amerigoscientific.com/vitamin-a-palmitate-benefits-applications-and-scientific-insights.html?srsltid=AfmBOorBWR1zaKfm7KV7oKQzgmxPgslJLu3BhRW5DqipF6G0Oajo9ARa",
+          "title": "Vitamin A Palmitate: Benefits, Applications, and ...",
+          "domain": "amerigoscientific.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.robinsonpharma.com/vitamin-a-manufacturers-you-should-know/",
+          "title": "11 Vitamin A Manufacturers You Should Know",
+          "domain": "robinsonpharma.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.originnutra.com/certifications",
+          "title": "cGMP Certified Supplement Manufacturer – Organic, Kosher, Halal | Origin Nutra",
+          "domain": "originnutra.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.fda.gov/food/food-ingredients-packaging/generally-recognized-safe-gras",
+          "title": "Generally Recognized as Safe (GRAS) | FDA",
+          "domain": "fda.gov",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.thomasnet.com/articles/top-suppliers/vitamin-a-manufacturers-suppliers/",
+          "title": "Vitamin A Manufacturers and Suppliers in the USA - Thomasnet",
+          "domain": "thomasnet.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.brenntag.com/en-us/products/vitamin-a.html",
+          "title": "Buy Vitamin A: supplier, wholesaler, bulk distributor | Brenntag",
+          "domain": "brenntag.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://finance.yahoo.com/news/global-vitamin-market-trends-forecasts-090700894.html",
+          "title": "Global Vitamin A Market Trends and Forecasts to 2029",
+          "domain": "finance.yahoo.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.902491,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:35.203406Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 44,
+      "company_name": "Ritual",
+      "finished_product_id": 21,
+      "finished_product_sku": "FG-thrive-market-ritual-mens-multivitamin-18",
+      "source_key": "vitamin-a-retinyl-palmitate",
+      "candidate_key": "vitamin-a-acetate",
+      "source_display_name": "vitamin a retinyl palmitate",
+      "candidate_display_name": "vitamin a acetate",
+      "recommendation_class": "recommend_with_caveats",
+      "acceptability": 0.7333333333333334,
+      "missing_information": [
+        "price_availability"
+      ],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "Vitamin A acetate is functionally similar to vitamin A retinyl palmitate and is supported by strong safety and certification claims. However, further information on price and availability is needed to ensure a smooth procurement process.",
+      "decision_path": "llm",
+      "citations_used": [
+        {
+          "url": "https://health.ec.europa.eu/publications/vitamin-retinol-retinyl-acetate-retinyl-palmitate_en",
+          "title": "Vitamin A (Retinol, Retinyl Acetate, Retinyl Palmitate) - Public Health",
+          "domain": "health.ec.europa.eu",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.sciencedirect.com/topics/neuroscience/retinol-acetate",
+          "title": "Retinol Acetate - an overview | ScienceDirect Topics",
+          "domain": "sciencedirect.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.nutriavenue.com/ingredients/best-vitamin-a-acetate-powder/",
+          "title": "Premium Vitamin A Acetate Powder Supplier - Nutri Avenue",
+          "domain": "nutriavenue.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.richtekltd.com/FishOil_05_06201630_6_06251011_567_06301112_751_07021406_560",
+          "title": "NutriVitas®Vitamin A Acetate - Richtek ltd",
+          "domain": "richtekltd.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.thegoodscentscompany.com/data/rw1309561.html",
+          "title": "vitamin A acetate, 127-47-9 - The Good Scents Company",
+          "domain": "thegoodscentscompany.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.fda.gov/food/food-ingredients-packaging/generally-recognized-safe-gras",
+          "title": "Generally Recognized as Safe (GRAS) - FDA",
+          "domain": "fda.gov",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.foodchem.com/product/vitamin-a-acetate/",
+          "title": "Vitamin A Acetate - Foodchem International Corporation",
+          "domain": "foodchem.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.americaninternationalfoods.com/ingredient-categories/vitamins/acetate/",
+          "title": "Vitamin A Acetate - American International Foods, Inc.",
+          "domain": "americaninternationalfoods.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.researchgate.net/publication/220036788_Dietary_a-tocopheryl_acetate_supplementation_modifies_volatile_aldehyde_and_sensory_properties_of_dry-cured_hams",
+          "title": "Dietary α-tocopheryl acetate supplementation modifies volatile ...",
+          "domain": "researchgate.net",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        }
+      ],
+      "substitute_score": 0.896472,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:35.203573Z",
+      "llm_model": "gpt-4o-mini"
+    },
+    {
+      "company_id": 62,
+      "company_name": "up&up",
+      "finished_product_id": 96,
+      "finished_product_sku": "FG-target-a-90043361",
+      "source_key": "cyanocobalamin-vitamin-b12",
+      "candidate_key": "cyanocobalamin",
+      "source_display_name": "cyanocobalamin vitamin b12",
+      "candidate_display_name": "cyanocobalamin",
+      "recommendation_class": "recommend",
+      "acceptability": 0.835,
+      "missing_information": [],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.83 (grounded=6/6, contradictions=none, missing=none)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://legerepharm.com/blog/comparing-forms-of-vitamin-b12-cyanocobalamin-vs-methylcobalamin-for-clinical-use/",
+          "title": "Comparing Forms of Vitamin B12: Cyanocobalamin vs. ...",
+          "domain": "legerepharm.com",
+          "retrieved_at": "2026-02-25T00:00:00Z"
+        },
+        {
+          "url": "https://www.sigmaaldrich.com/US/en/product/sial/phr1234?srsltid=AfmBOoom00qmwIj9PcZMNTgd232hSibtYJ8gH4KBT1EDbkIghlmtme-0",
+          "title": "Cyanocobalamin Pharmaceutical Secondary Standard; Certified Reference Material 68-19-9",
+          "domain": "sigmaaldrich.com",
+          "retrieved_at": "2026-02-25T00:00:00Z"
+        },
+        {
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK555964/",
+          "title": "Cyanocobalamin - StatPearls - NCBI Bookshelf - NIH",
+          "domain": "ncbi.nlm.nih.gov",
+          "retrieved_at": "2026-02-25T00:00:00Z"
+        },
+        {
+          "url": "https://www.pharmacompass.com/manufacturers-suppliers-exporters/cyanocobalamin",
+          "title": "Cyanocobalamin API Manufacturers | Suppliers | Drug Master Files (DMF) | CEP | Pharmacompass.com",
+          "domain": "pharmacompass.com",
+          "retrieved_at": "2026-02-25T00:00:00Z"
+        },
+        {
+          "url": "https://www.sciencedirect.com/topics/biochemistry-genetics-and-molecular-biology/cyanocobalamin",
+          "title": "Cyanocobalamin - an overview | ScienceDirect Topics",
+          "domain": "sciencedirect.com",
+          "retrieved_at": "2026-02-25T00:00:00Z"
+        },
+        {
+          "url": "https://www.pharmacychecker.com/cyanocobalamin/",
+          "title": "Cyanocobalamin Prices - U.S. & International | PharmacyChecker.com",
+          "domain": "pharmacychecker.com",
+          "retrieved_at": "2026-02-25T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.917114,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:37.796179Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 62,
+      "company_name": "up&up",
+      "finished_product_id": 96,
+      "finished_product_sku": "FG-target-a-90043361",
+      "source_key": "cyanocobalamin-vitamin-b12",
+      "candidate_key": "vitamin-b12",
+      "source_display_name": "cyanocobalamin vitamin b12",
+      "candidate_display_name": "vitamin b12",
+      "recommendation_class": "recommend",
+      "acceptability": 0.88,
+      "missing_information": [
+        "typical_suppliers",
+        "quality_sensory",
+        "price_availability"
+      ],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.88 (grounded=3/3, contradictions=none, missing=typical_suppliers, quality_sensory, price_availability)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://legerepharm.com/blog/comparing-forms-of-vitamin-b12-cyanocobalamin-vs-methylcobalamin-for-clinical-use/",
+          "title": "Comparing Forms of Vitamin B12: Cyanocobalamin vs. Methylcobalamin for Clinical Use - Legere Pharmaceuticals",
+          "domain": "legerepharm.com",
+          "retrieved_at": "2023-10-10T00:00:00Z"
+        },
+        {
+          "url": "https://www.boltpharmacy.co.uk/guide/b12-methylcobalamin-vs-b12-cyanocobalamin",
+          "title": "B12 Methylcobalamin vs Cyanocobalamin: Which Form Is Best? – Bolt Pharmacy",
+          "domain": "boltpharmacy.co.uk",
+          "retrieved_at": "2023-10-10T00:00:00Z"
+        },
+        {
+          "url": "https://www.accio.com/plp/halal-b12-vitamins",
+          "title": "Halal B12 Vitamins: Pure, Vegan & Certified - Accio",
+          "domain": "accio.com",
+          "retrieved_at": "2023-10-10T00:00:00Z"
+        },
+        {
+          "url": "https://reliancevitamin.com/certifications-of-quality/",
+          "title": "Certifications of Quality",
+          "domain": "reliancevitamin.com",
+          "retrieved_at": "2023-10-10T00:00:00Z"
+        },
+        {
+          "url": "https://www.fda.gov/media/117106/download",
+          "title": "[PDF] GRAS Notice No. GRN 000787 | FDA",
+          "domain": "fda.gov",
+          "retrieved_at": "2023-10-10T00:00:00Z"
+        },
+        {
+          "url": "https://www.linkedin.com/posts/globalregulatoryintelligence_regulatorycompliance-vitaminb12-supplements-activity-7331287764342059008-c7kn",
+          "title": "How Vitamin B12 is Regulated: FDA, GMP, and More | Freyr Global Regulatory Intelligence",
+          "domain": "linkedin.com",
+          "retrieved_at": "2023-10-10T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.923018,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:37.796366Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 62,
+      "company_name": "up&up",
+      "finished_product_id": 96,
+      "finished_product_sku": "FG-target-a-90043361",
+      "source_key": "cyanocobalamin-vitamin-b12",
+      "candidate_key": "vitamin-b12-cyanocobalamin",
+      "source_display_name": "cyanocobalamin vitamin b12",
+      "candidate_display_name": "vitamin b12 cyanocobalamin",
+      "recommendation_class": "recommend_with_caveats",
+      "acceptability": 0.8923076923076924,
+      "missing_information": [
+        "certification"
+      ],
+      "contradictions": [],
+      "caveats": [
+        "requires certification verification"
+      ],
+      "rationale": "The candidate substitute vitamin B12 cyanocobalamin is functionally equivalent to the source material cyanocobalamin vitamin B12 and is supported by regulatory approval. However, additional certification information is needed to ensure compliance with quality standards.",
+      "decision_path": "llm",
+      "citations_used": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Cyanocobalamin",
+          "title": "Cyanocobalamin - Wikipedia",
+          "domain": "wikipedia.org",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://redox.com/products/vitamin-b12-cyanocobalamin-99-min/",
+          "title": "Vitamin B12 Cyanocobalamin 99% Min Supplier & Chemical Distributor | Redox",
+          "domain": "redox.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.bulksupplements.com/products/vitamin-b12-1-percent-cyanocobalamin-powder?srsltid=AfmBOoqbh4Hmg3qBd5hwDTVEUNA69ADhdnTUL6aGv6enMEKF4sKgINhv",
+          "title": "Cyanocobalamin Supplement | Vitamin B12 Supplement",
+          "domain": "bulksupplements.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK555964/",
+          "title": "Cyanocobalamin - StatPearls - NCBI Bookshelf - NIH",
+          "domain": "ncbi.nlm.nih.gov",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        }
+      ],
+      "substitute_score": 0.979435,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:37.796521Z",
+      "llm_model": "gpt-4o-mini"
+    },
+    {
+      "company_id": 62,
+      "company_name": "up&up",
+      "finished_product_id": 96,
+      "finished_product_sku": "FG-target-a-90043361",
+      "source_key": "pyridoxine-hydrochloride-vitamin-b6",
+      "candidate_key": "vitamin-b6",
+      "source_display_name": "pyridoxine hydrochloride vitamin b6",
+      "candidate_display_name": "vitamin b6",
+      "recommendation_class": "recommend",
+      "acceptability": 0.8533333333333334,
+      "missing_information": [
+        "typical_suppliers",
+        "quality_sensory",
+        "price_availability"
+      ],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.85 (grounded=3/3, contradictions=none, missing=typical_suppliers, quality_sensory, price_availability)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK557436/",
+          "title": "Vitamin B6 (Pyridoxine) - StatPearls - NCBI Bookshelf - NIH",
+          "domain": "ncbi.nlm.nih.gov",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.kantipurhealth.com/NOW-Foods-Vitamin-B-6-100-Mg-100-Vegetable-Capsules-Non-GMO/1000878",
+          "title": "100 Vegetable Capsules, Non-GMO, Halal, Kosher, GMP Certified",
+          "domain": "kantipurhealth.com",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        },
+        {
+          "url": "https://www.efsa.europa.eu/en/press/news/160624",
+          "title": "Dietary reference values: advice on vitamin B6 - EFSA",
+          "domain": "efsa.europa.eu",
+          "retrieved_at": "2023-10-01T00:00:00Z"
+        }
+      ],
+      "substitute_score": 0.904607,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:40.057491Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 62,
+      "company_name": "up&up",
+      "finished_product_id": 96,
+      "finished_product_sku": "FG-target-a-90043361",
+      "source_key": "pyridoxine-hydrochloride-vitamin-b6",
+      "candidate_key": "vitamin-b6-pyridoxal-5-phosphate",
+      "source_display_name": "pyridoxine hydrochloride vitamin b6",
+      "candidate_display_name": "vitamin b6 pyridoxal 5 phosphate",
+      "recommendation_class": "recommend",
+      "acceptability": 0.78,
+      "missing_information": [],
+      "contradictions": [],
+      "caveats": [],
+      "rationale": "recommend at acceptability=0.78 (grounded=6/6, contradictions=none, missing=none)",
+      "decision_path": "rules",
+      "citations_used": [
+        {
+          "url": "https://www.nutriavenue.com/pyridoxal-5-phosphate-vs-pyridoxine-hcl/",
+          "title": "Pyridoxal 5 Phosphate VS Pyridoxine HCl: What's Differences?",
+          "domain": "nutriavenue.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://thornevet.com/glossary/vitamin-b6-pyridoxine-hcl-pyridoxal-5-phosphate/",
+          "title": "Vitamin B6 (Pyridoxine HCl / Pyridoxal 5'-Phosphate) - Thorne Vet",
+          "domain": "thornevet.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.ecahealthcareusa.com/products-solutions/coenzymes-vitamins/pyridoxal-5-phosphate/",
+          "title": "P5PURE™ Pyridoxal-5-Phosphate the active form of Vitamin B6",
+          "domain": "ecahealthcareusa.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.foodsweeteners.com/halal-certified-vitamin-b6/",
+          "title": "Halal Vitamin B6: Pyridoxine Production and Verification",
+          "domain": "foodsweeteners.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.fda.gov/media/117106/download",
+          "title": "[PDF] GRAS Notice No. GRN 000787 | FDA",
+          "domain": "fda.gov",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.fda.gov/food/food-ingredients-packaging/generally-recognized-safe-gras",
+          "title": "Generally Recognized as Safe (GRAS) - FDA",
+          "domain": "fda.gov",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://vivion.com/bulk-pyridoxal-5-phosphate-supplier/",
+          "title": "Pyridoxal 5 Phosphate Supplier | Bulk Distributor | Vivion",
+          "domain": "vivion.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://biogenicfoods.com/pyridoxal-5-phosphate-p5p-vitamin-b6-100-pure-powder-bulk-pack/?srsltid=AfmBOopAUVAOslXYvyEdGfEv5msVUssXjR_z1ZMSCgERP_JgSQx29d30",
+          "title": "Pyridoxal 5' Phosphate - P5P - Vitamin B6 - Biogenic Foods",
+          "domain": "biogenicfoods.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11528956/",
+          "title": "High-dose Vitamin-B6 reduces sensory over-responsivity - PMC",
+          "domain": "ncbi.nlm.nih.gov",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://dataintelo.com/report/pyridoxal-5-phosphate-supplements-market",
+          "title": "Pyridoxal-5-Phosphate Supplements Market Research Report 2033",
+          "domain": "dataintelo.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        }
+      ],
+      "substitute_score": 0.89377,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:40.057651Z",
+      "llm_model": null
+    },
+    {
+      "company_id": 62,
+      "company_name": "up&up",
+      "finished_product_id": 96,
+      "finished_product_sku": "FG-target-a-90043361",
+      "source_key": "pyridoxine-hydrochloride-vitamin-b6",
+      "candidate_key": "vitamin-b6-pyridoxine-hydrochloride",
+      "source_display_name": "pyridoxine hydrochloride vitamin b6",
+      "candidate_display_name": "vitamin b6 pyridoxine hydrochloride",
+      "recommendation_class": "recommend_with_caveats",
+      "acceptability": 0.7818181818181816,
+      "missing_information": [
+        "regulatory"
+      ],
+      "contradictions": [],
+      "caveats": [
+        "requires fresh regulatory sign-off"
+      ],
+      "rationale": "Vitamin B6 pyridoxine hydrochloride is functionally equivalent to pyridoxine hydrochloride vitamin B6, supported by strong supplier evidence and certification for dietary requirements. However, additional regulatory information is needed to fully ensure compliance.",
+      "decision_path": "llm",
+      "citations_used": [
+        {
+          "url": "https://www.nutriavenue.com/vb6-pyridoxine-hcl-powder-applications/",
+          "title": "Vitamin B6: Is Pyridoxine HCL Powder Good To Apply Products?",
+          "domain": "nutriavenue.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.sciencedirect.com/topics/chemistry/pyridoxine-hydrochloride",
+          "title": "Pyridoxine Hydrochloride - an overview | ScienceDirect Topics",
+          "domain": "sciencedirect.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.dastech.com/apis-and-pharmaceuticals/pyridoxine-hydrochloride-vitamin-b6",
+          "title": "Pyridoxine Hydrochloride (Vitamin B6) Supplier & Distributor",
+          "domain": "dastech.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.glenwellhealthcare.com/herbal-product-manufacturers/Vitamin-B6-Pyridoxine-API-Manufacturer/",
+          "title": "Vitamin B6 (Pyridoxine) API Manufacturer",
+          "domain": "glenwellhealthcare.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        },
+        {
+          "url": "https://www.spectrumrx.com/media/sd/PY103_SD.pdf",
+          "title": "[PDF] PY103, Pyridoxine Hydrochloride, USP - Scientific Documentation",
+          "domain": "spectrumrx.com",
+          "retrieved_at": "2023-10-01T12:00:00Z"
+        }
+      ],
+      "substitute_score": 0.976455,
+      "schema_version": "v2",
+      "generated_at": "2026-04-18T07:06:40.057832Z",
+      "llm_model": "gpt-4o-mini"
+    }
+  ]
+}
