@@ -240,6 +240,111 @@ a:hover { text-decoration: underline; }
   background: var(--accent2);
 }
 
+/* Prioritization Framework: grade badge + tension matrix */
+.grade-badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.grade-badge.safe_to_consolidate {
+  background: rgba(34,197,94,0.12);
+  color: var(--success);
+  border-color: rgba(34,197,94,0.3);
+}
+.grade-badge.review_required {
+  background: rgba(245,158,11,0.12);
+  color: var(--warn);
+  border-color: rgba(245,158,11,0.3);
+}
+.grade-badge.not_recommended {
+  background: rgba(239,68,68,0.12);
+  color: var(--danger);
+  border-color: rgba(239,68,68,0.3);
+}
+.final-score-pill {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+.final-score-pill strong {
+  color: var(--accent2);
+  font-size: 13px;
+}
+.downgrade-banner {
+  margin: 10px 0;
+  padding: 10px 12px;
+  background: rgba(245,158,11,0.08);
+  border: 1px solid rgba(245,158,11,0.3);
+  border-radius: 8px;
+  color: var(--warn);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.downgrade-banner strong { color: var(--text); }
+.tension-matrix {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.tension-matrix-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent2);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.dim-row {
+  display: grid;
+  grid-template-columns: 160px 1fr 42px;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+}
+.dim-row .dim-label {
+  color: var(--text2);
+}
+.dim-row .dim-label.key {
+  color: var(--text);
+  font-weight: 600;
+}
+.dim-row .dim-value {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 11px;
+  color: var(--text);
+  text-align: right;
+}
+.dim-fill {
+  height: 6px;
+  background: var(--surface3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.dim-fill-inner {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+.dim-fill-inner.critical { background: var(--danger); }
+.dim-fill-inner.warn { background: var(--warn); }
+.dim-fill-inner.good { background: var(--success); }
+.dim-fill-inner.neutral { background: var(--accent2); }
+
 /* Risk Cards */
 .risk-card {
   background: var(--surface2);
@@ -766,13 +871,68 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // ── Render: Recommendations ───────────────────
+// Prioritization Framework: render the 5-dimension tension matrix
+// Returns empty string when dims are absent (non-consolidation rec, old data).
+const DIM_ORDER = [
+  ['consolidation_benefit', 'Consolidation leverage'],
+  ['evidence_confidence',   'Evidence confidence'],
+  ['compliance_fit',        'Compliance fit'],
+  ['supplier_diversification', 'Supplier diversification'],
+  ['switching_feasibility', 'Switching feasibility'],
+];
+function dimFillClass(key, value) {
+  if (key === 'supplier_diversification') {
+    if (value < 0.30) return 'critical';
+    if (value < 0.55) return 'warn';
+    return 'good';
+  }
+  if (key === 'compliance_fit') return value < 0.5 ? 'warn' : 'neutral';
+  return '';
+}
+function renderTensionMatrix(dims) {
+  if (!dims) return '';
+  return `
+    <div class="tension-matrix">
+      <div class="tension-matrix-title">Prioritization Framework</div>
+      ${DIM_ORDER.map(([key, label]) => {
+        const v = Number(dims[key] || 0);
+        const pct = Math.round(v * 100);
+        const cls = dimFillClass(key, v);
+        const isKey = key === 'supplier_diversification';
+        return `
+          <div class="dim-row">
+            <div class="dim-label ${isKey ? 'key' : ''}">${label}${isKey ? ' ⚙' : ''}</div>
+            <div class="dim-fill"><div class="dim-fill-inner ${cls}" style="width:${pct}%"></div></div>
+            <div class="dim-value">${v.toFixed(2)}</div>
+          </div>`;
+      }).join('')}
+    </div>`;
+}
+function gradeBadge(grade) {
+  if (!grade) return '';
+  const label = grade.replace(/_/g, ' ');
+  return `<span class="grade-badge ${grade}">${label}</span>`;
+}
+
 function renderRecs(recs) {
   document.getElementById('recCount').textContent = `${recs.length} recommendation${recs.length !== 1 ? 's' : ''}`;
   if (!recs.length) {
     document.getElementById('recsList').innerHTML = '<div style="color:var(--text2);padding:20px">No recommendations match this filter.</div>';
     return;
   }
-  document.getElementById('recsList').innerHTML = recs.map(r => `
+  document.getElementById('recsList').innerHTML = recs.map(r => {
+    const hasFramework = r.type === 'consolidation' && r.dimensions;
+    const scorePill = hasFramework
+      ? `<span class="final-score-pill">Score <strong>${Number(r.finalScore).toFixed(2)}</strong></span>`
+      : '';
+    const downgradeBanner = r.concentrationRiskDowngrade ? `
+      <div class="downgrade-banner">
+        <strong>⚙ Concentration-risk veto fired.</strong> The network has ≤2 suppliers
+        for this ingredient, so full consolidation would create single-source risk.
+        Agnes downgraded this recommendation — consolidate most volume, but keep
+        a qualified backup. <em>Maximum leverage with minimum concentration risk.</em>
+      </div>` : '';
+    return `
     <div class="rec-card" data-id="${r.id}">
       <div class="rec-header">
         <span class="rec-priority ${r.priority}">${r.priority}</span>
@@ -781,9 +941,13 @@ function renderRecs(recs) {
           <div class="rec-title">${esc(r.title)}</div>
           <div class="rec-summary">${esc(r.summary)}</div>
         </div>
+        ${gradeBadge(r.grade)}
+        ${scorePill}
       </div>
       <div class="rec-detail">
-        <div style="margin-bottom:10px;">
+        ${downgradeBanner}
+        ${renderTensionMatrix(r.dimensions)}
+        <div style="margin:10px 0;">
           <strong style="font-size:12px;color:var(--accent2);">Impact</strong>
           <div class="impact-chips">
             ${Object.entries(r.impact).map(([k, v]) =>
@@ -810,8 +974,8 @@ function renderRecs(recs) {
           ${Math.round(r.confidence * 100)}%
         </div>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 
   document.querySelectorAll('.rec-card').forEach(card => {
     card.addEventListener('click', () => card.classList.toggle('open'));
@@ -824,19 +988,36 @@ function renderConsol(opps) {
     document.getElementById('consolList').innerHTML = '<div style="color:var(--text2);padding:20px">No consolidation opportunities found.</div>';
     return;
   }
-  document.getElementById('consolList').innerHTML = opps.map(o => `
+  document.getElementById('consolList').innerHTML = opps.map(o => {
+    const dims = o.prioritization && o.prioritization.dimensions;
+    const downgradeBanner = o.concentrationRiskDowngrade ? `
+      <div class="downgrade-banner">
+        <strong>⚙ Concentration-risk veto fired.</strong> Network has only
+        ${o.prioritization.globalSupplierCount} global supplier(s) for this
+        ingredient — full consolidation would create single-source risk. Keep
+        at least one qualified backup. <em>Maximum leverage with minimum
+        concentration risk.</em>
+      </div>` : '';
+    const scorePill = typeof o.finalScore === 'number'
+      ? `<span class="final-score-pill">Score <strong>${Number(o.finalScore).toFixed(2)}</strong></span>`
+      : '';
+    return `
     <div class="consol-card">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:180px">
           <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;">${esc(o.ingredientName)}</div>
           <div style="font-size:11px;color:var(--text2);margin-top:2px;">${esc(o.category)}</div>
         </div>
+        ${gradeBadge(o.grade)}
+        ${scorePill}
         <span class="impact-chip"><strong>${o.companyCount}</strong> companies</span>
         <span class="impact-chip"><strong>${o.currentSupplierCount}</strong> suppliers → <strong>1</strong></span>
         <span class="impact-chip" style="border-color:var(--accent2);color:var(--accent2);">→ ${esc(o.recommendedSupplierName)}</span>
         ${o.costAnalysis && o.costAnalysis.estimatedSavings > 0 ? `<span class="impact-chip" style="border-color:var(--success);color:var(--success);">💰 Save $${Number(o.costAnalysis.estimatedSavings).toLocaleString()} (${o.costAnalysis.savingsPercent.toFixed(1)}%)</span>` : ''}
       </div>
       <div class="consol-detail">
+        ${downgradeBanner}
+        ${renderTensionMatrix(dims)}
         ${o.costAnalysis ? `
         <div style="margin-bottom:10px;">
           <strong style="font-size:12px;color:var(--success);">Cost Analysis</strong>
@@ -871,8 +1052,8 @@ function renderConsol(opps) {
           </ul>
         </div>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 
   document.querySelectorAll('.consol-card').forEach(card => {
     card.addEventListener('click', () => card.classList.toggle('open'));
