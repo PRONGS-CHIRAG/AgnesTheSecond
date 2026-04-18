@@ -4,6 +4,27 @@ AgnesTheSecond Analysis Engine
 Core analysis module for identifying substitutable ingredients,
 consolidation opportunities, and sourcing recommendations across
 a CPG supply chain database.
+
+Prioritization Framework
+------------------------
+Every consolidation opportunity is scored across 5 explicit dimensions
+that balance leverage against concentration risk:
+
+  0.35 × consolidation_benefit     — how much buying leverage is gained
+  0.25 × evidence_confidence       — how well-supported the recommendation is
+  0.20 × compliance_fit            — quality + compliance fit of the target supplier
+  0.10 × supplier_diversification  — network resilience AFTER consolidation
+  0.10 × switching_feasibility     — how actionable the swap is in practice
+
+The `supplier_diversification` dimension is the anti-monopoly guard:
+when the network has ≤2 suppliers for an ingredient, collapsing to one
+creates single-source risk, and the framework **downgrades** the grade
+from "safe_to_consolidate" to "review_required" even when the raw
+weighted score would otherwise clear the threshold.
+
+Agnes doesn't minimize suppliers. It finds the optimal consolidation
+point — enough leverage to negotiate, enough diversification to absorb
+a supplier disruption.
 """
 
 import sqlite3
@@ -11,6 +32,21 @@ import re
 import math
 from collections import defaultdict
 from difflib import SequenceMatcher
+
+# ────────────────────────────────────────────────────────────
+#  Prioritization Framework constants
+# ────────────────────────────────────────────────────────────
+
+PRIORITIZATION_WEIGHTS = {
+    'consolidation_benefit': 0.35,
+    'evidence_confidence': 0.25,
+    'compliance_fit': 0.20,
+    'supplier_diversification': 0.10,
+    'switching_feasibility': 0.10,
+}
+GRADE_SAFE_THRESHOLD = 0.70
+GRADE_REJECT_THRESHOLD = 0.30
+DIVERSIFICATION_FLOOR = 0.30  # monopoly veto fires below this
 
 # ────────────────────────────────────────────────────────────
 #  Ingredient Knowledge Base
@@ -619,6 +655,127 @@ class AgnesEngine:
 
         return subclusters
 
+    # ── Prioritization Framework ────────────────
+
+    @staticmethod
+    def _clamp(x):
+        return max(0.0, min(1.0, float(x)))
+
+    def _compute_prioritization_dimensions(
+        self, profile, company_supplier_map, best_supplier_id, cost_analysis
+    ):
+        """Compute the 5-dimension prioritization scores for one opportunity.
+
+        All dimensions return a float in [0, 1]; higher is better for the
+        recommendation. ``supplier_diversification`` is the monopoly guard —
+        it drops fast when the network has very few suppliers for the
+        ingredient, regardless of how attractive the numbers look elsewhere.
+        """
+        total_companies = profile['companyCount']
+        covered = sum(
+            1 for sids in company_supplier_map.values() if best_supplier_id in sids
+        )
+        all_suppliers = set()
+        for sids in company_supplier_map.values():
+            all_suppliers.update(sids)
+        current_supplier_count = len(all_suppliers)
+        global_supplier_count = profile.get('supplierCount', current_supplier_count)
+
+        # 1) consolidation_benefit: coverage fraction + fragmentation relief
+        coverage_ratio = (
+            covered / total_companies if total_companies else 0.0
+        )
+        # Relief from fragmentation: current_supplier_count>=3 is more painful to manage
+        fragmentation_relief = self._clamp((current_supplier_count - 1) / 4.0)
+        consolidation_benefit = self._clamp(
+            0.6 * coverage_ratio + 0.4 * fragmentation_relief
+        )
+
+        # 2) evidence_confidence: do we actually have data backing this up?
+        # Presence of procurement history + supplier rating = high confidence
+        ev = 0.4  # baseline: name/ingredient data exists
+        if cost_analysis is not None:
+            ev += 0.3  # procurement history backs the cost claim
+        best_rating = self.supplier_ratings.get(best_supplier_id)
+        if best_rating:
+            ev += 0.2  # quality/compliance scores exist
+        if profile.get('singleSourceCount', 0) == 0:
+            ev += 0.1  # no data gaps in supplier mapping
+        evidence_confidence = self._clamp(ev)
+
+        # 3) compliance_fit: best supplier's quality + compliance half-avg.
+        # do_not_recommend equivalent: quality<70 → fit near zero.
+        if best_rating:
+            q = best_rating.get('QualityScore', 0) or 0
+            c = best_rating.get('ComplianceScore', 0) or 0
+            compliance_fit = self._clamp((q + c) / 200.0)
+            if q < 70 or c < 70:
+                compliance_fit = min(compliance_fit, 0.35)
+        else:
+            compliance_fit = 0.5  # neutral when we lack rating data
+
+        # 4) supplier_diversification: NETWORK resilience AFTER consolidation.
+        # Key insight: after consolidating 1 supplier serves the network;
+        # what matters is how many ALTERNATES remain globally for backup.
+        alternates_remaining = max(0, global_supplier_count - 1)
+        if global_supplier_count <= 1:
+            supplier_diversification = 0.0  # would-be monopoly
+        elif global_supplier_count == 2:
+            supplier_diversification = 0.25  # one thin backup
+        elif global_supplier_count == 3:
+            supplier_diversification = 0.55
+        else:
+            supplier_diversification = self._clamp(alternates_remaining / 4.0 + 0.25)
+
+        # 5) switching_feasibility: reliability + lead time + coverage already there.
+        feas = 0.4  # baseline
+        if best_rating:
+            rel = best_rating.get('ReliabilityScore', 0) or 0
+            lead = best_rating.get('LeadTimeDays', 30) or 30
+            feas += 0.3 * self._clamp(rel / 100.0)
+            feas += 0.15 * self._clamp(1 - (min(lead, 60) / 60.0))
+        feas += 0.15 * coverage_ratio  # supplier already serves some companies
+        switching_feasibility = self._clamp(feas)
+
+        final_score = self._clamp(
+            PRIORITIZATION_WEIGHTS['consolidation_benefit'] * consolidation_benefit
+            + PRIORITIZATION_WEIGHTS['evidence_confidence'] * evidence_confidence
+            + PRIORITIZATION_WEIGHTS['compliance_fit'] * compliance_fit
+            + PRIORITIZATION_WEIGHTS['supplier_diversification'] * supplier_diversification
+            + PRIORITIZATION_WEIGHTS['switching_feasibility'] * switching_feasibility
+        )
+
+        # Grade mapping with anti-monopoly veto
+        if final_score >= GRADE_SAFE_THRESHOLD:
+            grade = 'safe_to_consolidate'
+        elif final_score <= GRADE_REJECT_THRESHOLD:
+            grade = 'not_recommended'
+        else:
+            grade = 'review_required'
+
+        concentration_risk_downgrade = False
+        if (
+            grade == 'safe_to_consolidate'
+            and supplier_diversification < DIVERSIFICATION_FLOOR
+        ):
+            grade = 'review_required'
+            concentration_risk_downgrade = True
+
+        return {
+            'dimensions': {
+                'consolidation_benefit': round(consolidation_benefit, 4),
+                'evidence_confidence': round(evidence_confidence, 4),
+                'compliance_fit': round(compliance_fit, 4),
+                'supplier_diversification': round(supplier_diversification, 4),
+                'switching_feasibility': round(switching_feasibility, 4),
+            },
+            'finalScore': round(final_score, 4),
+            'grade': grade,
+            'concentrationRiskDowngrade': concentration_risk_downgrade,
+            'globalSupplierCount': global_supplier_count,
+            'alternatesRemaining': alternates_remaining,
+        }
+
     # ── Consolidation Analysis ─────────────────
 
     def analyze_consolidation(self):
@@ -666,6 +823,11 @@ class AgnesEngine:
                 bn, profile, company_supplier_map, best_supplier_id
             )
 
+            # Prioritization Framework: compute 5-dimension scores + grade
+            prioritization = self._compute_prioritization_dimensions(
+                profile, company_supplier_map, best_supplier_id, cost_analysis
+            )
+
             opportunities.append({
                 'ingredientName': profile['name'],
                 'baseName': bn,
@@ -687,12 +849,21 @@ class AgnesEngine:
                 ],
                 'impactScore': impact,
                 'costAnalysis': cost_analysis,
+                'prioritization': prioritization,
+                'finalScore': prioritization['finalScore'],
+                'grade': prioritization['grade'],
+                'concentrationRiskDowngrade': prioritization[
+                    'concentrationRiskDowngrade'
+                ],
                 'evidence': self._build_consolidation_evidence(
-                    bn, profile, company_supplier_map, best_supplier_id
+                    bn, profile, company_supplier_map, best_supplier_id,
+                    prioritization=prioritization,
                 ),
             })
 
-        opportunities.sort(key=lambda x: -x['impactScore'])
+        # Sort by the framework's final score (primary) with impact as tiebreaker,
+        # so demo-visible "top" opportunities reflect the prioritization pitch.
+        opportunities.sort(key=lambda x: (-x['finalScore'], -x['impactScore']))
         self.consolidation_opportunities = opportunities
 
     def _consolidation_cost_analysis(self, bn, profile, company_supplier_map,
@@ -738,7 +909,7 @@ class AgnesEngine:
         }
 
     def _build_consolidation_evidence(self, bn, profile, company_supplier_map,
-                                       best_supplier_id):
+                                       best_supplier_id, prioritization=None):
         """Build an evidence trail for a consolidation recommendation."""
         best_name = self.suppliers[best_supplier_id]['Name']
         total_cos = profile['companyCount']
@@ -753,6 +924,25 @@ class AgnesEngine:
             f"{best_name} already serves {covered}/{total_cos} companies "
             f"for this ingredient."
         )
+        if prioritization:
+            dims = prioritization['dimensions']
+            evidence.append(
+                f"Prioritization Framework score {prioritization['finalScore']:.2f} "
+                f"(grade: {prioritization['grade']}): "
+                f"leverage {dims['consolidation_benefit']:.2f}, "
+                f"evidence {dims['evidence_confidence']:.2f}, "
+                f"compliance {dims['compliance_fit']:.2f}, "
+                f"diversification {dims['supplier_diversification']:.2f}, "
+                f"switching {dims['switching_feasibility']:.2f}."
+            )
+            if prioritization['concentrationRiskDowngrade']:
+                evidence.append(
+                    "⚠️ Concentration-risk veto: the network has ≤2 suppliers "
+                    "for this ingredient, so full consolidation would create "
+                    "single-source risk. Recommendation downgraded to "
+                    "review_required — consolidate MOST volume but keep "
+                    "a qualified backup supplier."
+                )
         if profile['singleSourceCount'] > 0:
             evidence.append(
                 f"⚠️ {profile['singleSourceCount']} product SKU(s) have only "
@@ -927,25 +1117,68 @@ class AgnesEngine:
         rec_id = 0
 
         # Recommendation Type 1: Consolidation plays
+        # Ranked by the Prioritization Framework's final score, not raw impact.
         for opp in self.consolidation_opportunities[:20]:
             rec_id += 1
-            saving_potential = 'high' if opp['companyCount'] >= 5 else \
-                               'medium' if opp['companyCount'] >= 3 else 'low'
+            grade = opp.get('grade', 'review_required')
+            # Priority uses the framework grade first; falls back to volume heuristic
+            if grade == 'not_recommended':
+                priority = 'low'
+            elif grade == 'safe_to_consolidate':
+                priority = 'high' if opp['companyCount'] >= 3 else 'medium'
+            else:  # review_required
+                priority = 'medium' if opp['companyCount'] >= 5 else 'low'
+
+            downgrade = opp.get('concentrationRiskDowngrade', False)
+            if downgrade:
+                title = (
+                    f"Partial consolidation of {opp['ingredientName']} — "
+                    f"lead with {opp['recommendedSupplierName']}, keep a backup"
+                )
+                summary = (
+                    f"{opp['ingredientName']} is purchased by {opp['companyCount']} "
+                    f"companies from {opp['currentSupplierCount']} suppliers, but the "
+                    f"network has ≤2 global suppliers. Full consolidation would "
+                    f"create single-source risk, so Agnes recommends shifting most "
+                    f"volume to {opp['recommendedSupplierName']} while qualifying "
+                    f"at least one backup — maximum leverage with minimum "
+                    f"concentration risk."
+                )
+            else:
+                title = (
+                    f"Consolidate {opp['ingredientName']} to "
+                    f"{opp['recommendedSupplierName']}"
+                )
+                summary = (
+                    f"{opp['ingredientName']} is purchased by {opp['companyCount']} "
+                    f"companies from {opp['currentSupplierCount']} suppliers. "
+                    f"The Prioritization Framework scores this "
+                    f"{opp['finalScore']:.2f} ({grade}): consolidating to "
+                    f"{opp['recommendedSupplierName']} aggregates buying volume "
+                    f"while leaving "
+                    f"{opp['prioritization']['alternatesRemaining']} supplier(s) "
+                    f"as backup across the network."
+                )
+
             recs.append({
                 'id': rec_id,
                 'type': 'consolidation',
-                'priority': saving_potential,
-                'title': f"Consolidate {opp['ingredientName']} to {opp['recommendedSupplierName']}",
-                'summary': (
-                    f"{opp['ingredientName']} is purchased by {opp['companyCount']} companies "
-                    f"from {opp['currentSupplierCount']} suppliers. "
-                    f"Consolidating to {opp['recommendedSupplierName']} could aggregate "
-                    f"buying volume and improve negotiating leverage."
-                ),
+                'priority': priority,
+                'grade': grade,
+                'finalScore': opp['finalScore'],
+                'dimensions': opp['prioritization']['dimensions'],
+                'concentrationRiskDowngrade': downgrade,
+                'title': title,
+                'summary': summary,
                 'impact': {
                     'companiesAffected': opp['companyCount'],
                     'suppliersReduced': opp['currentSupplierCount'] - 1,
-                    'volumeAggregation': f"{opp['companyCount']} companies → 1 consolidated order",
+                    'volumeAggregation': (
+                        f"{opp['companyCount']} companies → "
+                        f"1 primary + {opp['prioritization']['alternatesRemaining']} "
+                        f"backup" if downgrade
+                        else f"{opp['companyCount']} companies → 1 consolidated order"
+                    ),
                 },
                 'evidence': opp['evidence'],
                 'caveats': self._build_caveats(opp['baseName']),
