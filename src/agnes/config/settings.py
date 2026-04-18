@@ -21,13 +21,23 @@ class Settings(BaseSettings):
         default="gemini-2.5-flash",
         description="Model id for Gemini API.",
     )
-    cognee_llm_provider: str = Field(
-        default="gemini",
-        description="LLM provider name for Cognee (LiteLLM-style).",
+    cogwit_api_key: str | None = Field(
+        default=None,
+        description=(
+            "Cognee Cloud API key (used by cogwit-sdk). "
+            "Falls back to the COGWIT_API_KEY env var when AGNES_COGWIT_API_KEY is unset."
+        ),
     )
-    cognee_data_root: Path = Field(
-        default=Path(".cognee_data"),
-        description="Local directory for Cognee storage during development.",
+    cogwit_dataset: str = Field(
+        default="agnes",
+        description="Default Cognee Cloud dataset name for ingest / smoke tests.",
+    )
+    cogwit_base_url: str | None = Field(
+        default=None,
+        description=(
+            "Optional override for the Cognee Cloud base URL. "
+            "When set, exported as COGWIT_API_BASE so cogwit-sdk picks it up."
+        ),
     )
     log_level: str = Field(default="INFO", description="Logging level.")
 

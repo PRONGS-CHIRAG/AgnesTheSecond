@@ -487,3 +487,31 @@ project/
 **Observability:** Structured logs per pair (`phase5_pair_start`, `phase5_cache_hit`, `phase5_grounded_call`, `phase5_pair_ok`, `phase5_pair_failed`, `phase5_budget_exhausted`) plus a single-line run summary on stdout. No PII or secrets in logs.
 
 **Next phase:** Phase 6 — context and compliance reasoning over `SubstituteEvidence` to produce typed `SubstituteAssessment` verdicts with `recommendation_class`, `missing_information`, and uncertainty surfacing.
+
+### Phase 6: Cognee Cloud Integration
+
+**Purpose:** Replace the local Cognee + LiteLLM + FastEmbed stack with a managed Cognee Cloud integration so the knowledge graph (Phase 3 payload) is persisted, queryable, and shareable out-of-box, without running a local vector store or LLM proxy.
+
+**Design rules:**
+
+- Cloud-only: no dual backend, no `.cognee_data/` fallback. A missing API key fails fast.
+- Single dependency: the official `cogwit-sdk` (`>=0.1.7`). `cognee` and `fastembed` are removed from `pyproject.toml`.
+- Deterministic fact serialization: Phase 3 `KGNode` / `KGEdge` objects are rendered into a stable list of English sentences (`Node X is a Kind. with attributes k=v.` / `src EDGE_KIND dst.`) so Cognee Cloud cognify receives the same structure every run. Sentences preserve the sort order already imposed by `build_graph_payload`.
+- Thin async wrapper over the SDK; structured errors raise `CognneCloudError` instead of leaking SDK `*Error` variants. Callers don't branch on response shape.
+- Env-var parity: the wrapper honors both `AGNES_COGWIT_API_KEY` (preferred) and the SDK-native `COGWIT_API_KEY`; `AGNES_COGWIT_BASE_URL` is re-exported as `COGWIT_API_BASE` so the SDK picks it up.
+
+**What was built:**
+
+- `src/agnes/graph/cognee_cloud_client.py` — `build_cogwit`, `serialize_graph`, `CognneCloudClient` (`add_text`, `add_graph` with batching, `cognify`, `search`, `ping`), `CognneCloudError`, and a sync `ping(settings)` helper for CLI use.
+- `scripts/cognee_cloud_ingest.py` — CLI that loads `CanonicalRegistry`, rebuilds the Phase 3 payload, uploads it to Cognee Cloud via `add_graph`, runs `cognify`, and optionally verifies with a `GRAPH_COMPLETION` search. Writes `outputs/reports/cognee_cloud_ingest.json` (dataset id + counts + latencies + cogwit SDK version + search preview). Supports `--limit`, `--batch-size`, `--fresh` (timestamped dataset), `--skip-cognify`, `--verify-query`.
+- `scripts/smoke_cognee.py` — now points at the cloud client; `{"ok": true, "dataset_id": ...}` round-trip through `api.cognee.ai`.
+- `src/agnes/config/settings.py` — added `cogwit_api_key`, `cogwit_dataset` (default `agnes`), `cogwit_base_url`; removed `cognee_llm_provider` and `cognee_data_root`.
+- `.env.example` — added `AGNES_COGWIT_API_KEY`, `AGNES_COGWIT_DATASET`, commented `AGNES_COGWIT_BASE_URL`; removed `AGNES_COGNEE_DATA_ROOT`.
+- `pyproject.toml` — swapped `cognee>=0.3` for `cogwit-sdk>=0.1.7`, removed `fastembed`.
+- `tests/test_cognee_cloud_client.py` — offline coverage via a stubbed `cogwit` instance (`AsyncMock`): deterministic `serialize_graph`, API-key resolution precedence, missing-key short-circuit, `add_text` dispatch, `add_graph` batching + dataset-id reuse, error-variant detection, and `ping` happy/error paths. `tests/test_smoke.py` updated to import the new module.
+
+**Observability:** Structured logs per operation (`cogwit.add_text`, `cogwit.add_graph.batch`, `cogwit.cognify`, `cogwit.search`). No secrets in logs.
+
+**Idempotence:** Reruns against the same `AGNES_COGWIT_DATASET` append-update the existing dataset. `--fresh` appends a UTC timestamp to the dataset name for a clean slate (the SDK currently has no delete primitive).
+
+**Next phase:** Phase 7 — context and compliance reasoning over `SubstituteEvidence` (originally framed as Phase 6) plus wiring Cognee Cloud search into the evidence/recommender loop.

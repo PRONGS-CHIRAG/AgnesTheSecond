@@ -15,9 +15,8 @@ dependencies = [
     "pandas>=2",
     "python-dotenv>=1",
     "google-genai>=1",
-    "cognee>=0.3",
+    "aiohttp>=3.12",
     "structlog>=24",
-    "fastembed>=0.3",
 ]
 
 [project.optional-dependencies]

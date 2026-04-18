@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Smoke test: Cognee add + cognify (local store, Gemini LLM, FastEmbed)."""
+"""Smoke test: Cognee Cloud add + cognify via the documented ``/api/v1/*`` API."""
 
 from __future__ import annotations
 
 import json
 
 from agnes.config.settings import Settings
-from agnes.graph.cognee_client import ping as cognee_ping
+from agnes.graph.cognee_cloud_client import ping as cognee_ping
 from agnes.utils.logging import configure_logging
 
 
