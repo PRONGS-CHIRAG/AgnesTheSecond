@@ -174,10 +174,16 @@ def build_pdf(
     story.append(Spacer(1, 12))
 
     # ── Line-items table ──────────────────────────────────────────────────
-    header = ["#", "Product", "Unit", "Quantity", "Unit price", "Line total"]
+    # A 'sku-style' paragraph so long SKUs wrap cleanly inside their column
+    sku_style = ParagraphStyle(
+        name="poSku", parent=styles["body"],
+        fontName="Courier", fontSize=8.5, leading=11, textColor=MUTED,
+    )
+    header = ["#", "Product", "SKU", "Unit", "Qty", "Unit price", "Line total"]
     rows: list[list[Any]] = [header]
     items = draft.get("items") or []
     for idx, item in enumerate(items, start=1):
+        sku_text = item.get("sku") or "—"
         rows.append(
             [
                 str(idx),
@@ -187,6 +193,7 @@ def build_pdf(
                        if not item.get("resolved") else ""),
                     styles["body"],
                 ),
+                Paragraph(sku_text, sku_style),
                 item.get("unit") or "kg",
                 _fmt_qty(float(item.get("quantity") or 0)),
                 _fmt_money(item.get("unit_price")),
@@ -201,11 +208,13 @@ def build_pdf(
             "",
             "",
             "",
+            "",
         ])
 
+    # 7 columns totalling 166 mm (A4 usable width with 22 mm margins).
     line_table = Table(
         rows,
-        colWidths=[10 * mm, 82 * mm, 18 * mm, 22 * mm, 26 * mm, 28 * mm],
+        colWidths=[8 * mm, 52 * mm, 36 * mm, 12 * mm, 14 * mm, 20 * mm, 24 * mm],
         repeatRows=1,
         hAlign="LEFT",
     )
@@ -225,8 +234,8 @@ def build_pdf(
                 ("VALIGN", (0, 0), (-1, -1), "TOP"),
                 ("TOPPADDING", (0, 1), (-1, -1), 6),
                 ("BOTTOMPADDING", (0, 1), (-1, -1), 6),
-                ("ALIGN", (3, 0), (-1, -1), "RIGHT"),
-                ("ALIGN", (2, 0), (2, -1), "CENTER"),
+                ("ALIGN", (4, 0), (-1, -1), "RIGHT"),
+                ("ALIGN", (3, 0), (3, -1), "CENTER"),
                 # Grid
                 ("LINEBELOW", (0, 0), (-1, 0), 0.75, BORDER),
                 ("LINEBELOW", (0, 1), (-1, -2), 0.25, BORDER),

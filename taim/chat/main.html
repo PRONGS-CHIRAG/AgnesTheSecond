@@ -1072,6 +1072,13 @@ async function sendMessage() {
       conversationHistory.push({ role: 'assistant', content: reply });
       saveChatToSession();
       persistMessage('assistant', reply);
+
+      // Auto-trigger order drafting when the user's turn looks like an
+      // ordering command. Fires once the assistant has responded so the
+      // extractor has both sides of the exchange to work from.
+      if (detectsOrderIntent(text)) {
+        setTimeout(() => { generateOrder(); }, 100);
+      }
     }
   } catch (err) {
     removeThinking();
@@ -1081,6 +1088,29 @@ async function sendMessage() {
   isBusy = false;
   document.getElementById('sendBtn').disabled = false;
   input.focus();
+}
+
+// ── Auto-trigger detection ─────────────────────
+// Returns true when the user's turn contains an unambiguous order/buy
+// command. We deliberately keep this regex-based (not LLM) so the trigger
+// is deterministic and free.
+const ORDER_INTENT_PATTERNS = [
+  /\bplace\s+(an?\s+)?(order|po|purchase[\s-]?order)\b/i,
+  /\bcreate\s+(an?\s+)?(order|po|purchase[\s-]?order)\b/i,
+  /\b(send|issue|draft|generate|make)\s+(an?\s+)?(order|po|purchase[\s-]?order)\b/i,
+  /^\s*(please\s+)?order\b\s+(?!.*\?\s*$)/i,            // "order 500kg of X"
+  /\bi[' ]?(d|would)\s+like\s+to\s+(order|buy|purchase)\b/i,
+  /\bi\s+want\s+to\s+(order|buy|purchase)\b/i,
+  /\bplease\s+(order|buy|purchase)\b/i,
+  /\b(buy|purchase|procure)\s+\d+/i,                    // "buy 500kg"
+  /\border\s+\d+/i,                                     // "order 500 kg"
+  /\byes,?\s+(place|create|send)\s+(the|that)\s+(order|po)\b/i,
+  /\bgo\s+ahead.{0,20}\b(order|po|purchase)\b/i,
+];
+
+function detectsOrderIntent(text) {
+  if (!text) return false;
+  return ORDER_INTENT_PATTERNS.some((rx) => rx.test(text));
 }
 
 // ── Order Panel ────────────────────────────────
