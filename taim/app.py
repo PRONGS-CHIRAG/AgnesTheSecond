@@ -11,9 +11,9 @@ load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/")
+@app.route("/health")
 def health():
-    return {"status": "ok", "message": "Agnes backend running on Vercel"}
+    return {"status": "ok", "message": "Agnes backend running"}
 
 # Register Chat blueprint (main landing page at /)
 from chat.routes import chat_bp
