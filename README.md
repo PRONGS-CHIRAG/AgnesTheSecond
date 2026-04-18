@@ -18,7 +18,6 @@ Spherecast Makeathon 2026**.
 - [Quick start](#quick-start)
 - [Environment variables](#environment-variables)
 - [Repository layout](#repository-layout)
-- [Pitch materials](#pitch-materials)
 - [License](#license)
 
 ---
@@ -224,18 +223,6 @@ AgnesTheSecond/
 For a deep technical tour of `taim/` (schema, analysis pipeline,
 substitution logic, risk types, recommendation types, chat agent tools,
 explorer APIs) read [taim/README.md](taim/README.md).
-
----
-
-## Pitch materials
-
-- **[PITCH.md](PITCH.md)** — full speaker script (5-minute version, 60-second
-  cut, 1-minute demo), an architecture note, answers for common Q&A
-  ("where do you use LLMs, exactly?", "why not just consolidate fully?"),
-  and a list of what *not* to demo.
-- **[PITCH.pptx](PITCH.pptx)** — 3-slide deck: Problem, Solution,
-  Trustworthy-by-design. Regenerate anytime with
-  `python3 scripts/build_pitch_pptx.py`.
 
 ---
 
