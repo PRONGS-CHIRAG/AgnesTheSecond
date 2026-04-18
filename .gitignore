@@ -65,5 +65,9 @@ Desktop.ini
 # Node
 node_modules/
 
-
 *.pdf
+
+# Pitch materials — kept local, not shown in the public repo
+PITCH.md
+PITCH.pptx
+scripts/build_pitch_pptx.py
