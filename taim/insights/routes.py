@@ -1,7 +1,7 @@
 """
 Agnes Solution – Flask Blueprint
 =================================
-API endpoints for the Agnes AI Supply Chain Analysis engine.
+API endpoints for the AgnesTheSecond Analysis engine.
 """
 
 from flask import Blueprint, jsonify, request, send_from_directory

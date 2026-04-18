@@ -1,4 +1,4 @@
-# Agnes — AI-powered Supply Chain Intelligence Platform
+# AgnesTheSecond — AI-powered Supply Chain Intelligence Platform
 
 Agnes is a full-stack decision-support system for CPG (Consumer Packaged Goods) supply chain teams. It analyzes raw material sourcing, supplier quality, procurement cost efficiency, substitution opportunities, and consolidation strategies across a multi-company network.
 
@@ -17,7 +17,7 @@ Built for the TUM.ai x Spherecast Makeathon 2026.
   - [Supplier Ratings](#supplier-ratings)
   - [Price Benchmarks](#price-benchmarks)
   - [Procurement History](#procurement-history)
-- [Agnes AI Analysis Engine](#agnes-ai-analysis-engine)
+- [AgnesTheSecond Analysis Engine](#agnesthesecond-analysis-engine)
   - [Ingredient Profiling](#1-ingredient-profiling)
   - [Substitution Detection](#2-substitution-detection)
   - [Consolidation Analysis](#3-consolidation-analysis)
@@ -77,7 +77,7 @@ A 5-tab interactive data browser:
 - **Tables** — Raw database table browser with filtering, pagination, and CSV-style exploration.
 
 ### 3. Insights (`/agnes/`)
-Agnes AI analysis dashboard with 5 tabs:
+AgnesTheSecond analysis dashboard with 5 tabs:
 - **Recommendations** — Prioritized action items (consolidation, risk mitigation, substitution, cost optimization).
 - **Consolidation** — Cross-company ingredient consolidation opportunities with cost analysis.
 - **Substitutions** — Variant and functional ingredient substitution groups.
@@ -241,7 +241,7 @@ Only needs to be run once. It will drop and recreate the tables if they already 
 
 ---
 
-## Agnes AI Analysis Engine
+## AgnesTheSecond Analysis Engine
 
 The core engine (`insights/agnes_engine.py`, ~1200 lines) runs a complete analysis pipeline when the Insights page is first loaded. The engine is a lazy-initialized singleton — it analyzes once and caches results.
 
@@ -496,7 +496,7 @@ python app.py
 The app starts at **http://localhost:5000**:
 - `/` — Chat (main landing page)
 - `/explorer/` — Data Explorer
-- `/agnes/` — Agnes AI Insights
+- `/agnes/` — AgnesTheSecond Insights
 
 ### Environment Variables
 

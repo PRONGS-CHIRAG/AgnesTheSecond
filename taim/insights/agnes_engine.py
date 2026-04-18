@@ -1,6 +1,6 @@
 """
-Agnes AI Supply Chain Analysis Engine
-=====================================
+AgnesTheSecond Analysis Engine
+==============================
 Core analysis module for identifying substitutable ingredients,
 consolidation opportunities, and sourcing recommendations across
 a CPG supply chain database.
@@ -182,7 +182,7 @@ def _jaccard(set_a, set_b):
 # ────────────────────────────────────────────────────────────
 
 class AgnesEngine:
-    """Agnes AI Supply Chain Analysis Engine.
+    """AgnesTheSecond Analysis Engine.
 
     Loads a SQLite supply chain database and performs:
     - Ingredient profiling & functional categorization

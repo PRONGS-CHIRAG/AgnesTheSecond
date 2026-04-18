@@ -1,6 +1,6 @@
 """
-Agnes AI Agent
-==============
+AgnesTheSecond Agent
+=====================
 OpenAI-powered agent that answers natural-language supply chain questions
 by querying the SQLite database, finding substitutes via BOM analysis,
 and synthesising actionable answers.
