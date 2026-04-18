@@ -486,6 +486,8 @@ project/
 
 **Observability:** Structured logs per pair (`phase5_pair_start`, `phase5_cache_hit`, `phase5_grounded_call`, `phase5_pair_ok`, `phase5_pair_failed`, `phase5_budget_exhausted`) plus a single-line run summary on stdout. No PII or secrets in logs.
 
+**Verified (run log, 2026-04-18):** End-to-end check of `scripts/phase5_evidence.py` with inputs `outputs/reports/substitute_candidates.json` and `outputs/reports/canonical_registry.json`. Offline: 27 tests passed (`test_evidence_models`, `test_enricher_selector`, `test_enricher`, `test_gemini_grounded`). Dry-run (`--top-sources 1 --per-source 3 --max-total 0 --dry-run`) selected three pairs for source `calcium-citrate` → `magnesium-citrate`, `calcium-carbonate`, `dicalcium-phosphate`. Live pass with `gemini-2.5-flash`: `n_pairs=3`, warm cache yielded `n_cache_hits=3`, `n_api_calls=0`, `n_failures=0`, `partial=false`; all 18 claims `grounding_strength=grounded` with Gemini grounding citations; `magnesium-citrate` item `any_contradictions=true` (mixed functional equivalence vs calcium citrate). Outputs: `outputs/reports/substitute_evidence.json`, `substitute_evidence.csv`; idempotent rerun confirmed `n_api_calls=0`. First grounded runs can be slow; reruns are network-free once `.cache/phase5_evidence.json` is warm.
+
 **Next phase:** Phase 6 — context and compliance reasoning over `SubstituteEvidence` to produce typed `SubstituteAssessment` verdicts with `recommendation_class`, `missing_information`, and uncertainty surfacing.
 
 ### Phase 6: Cognee Cloud Integration
