@@ -800,7 +800,6 @@ function initRecognition() {
   const r = new SR();
   r.continuous = false;
   r.interimResults = true;
-  r.lang = 'en-US';
 
   r.onresult = (e) => {
     let interim = '', final = '';
