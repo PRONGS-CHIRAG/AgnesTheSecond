@@ -151,18 +151,15 @@ def _strip_sku_prefix(sku: str) -> str:
     return sku
 
 
-def resolve_product(
-    name: str, supplier_id: int | None
-) -> tuple[int | None, str, str | None]:
+def resolve_product(name: str, supplier_id: int | None) -> tuple[int | None, str]:
     """Match a natural-language product name to a raw-material Product row.
 
-    Returns ``(product_id, canonical_name, sku)``. When ``supplier_id`` is
-    known, restricts the search to products that supplier can actually supply
-    (per Supplier_Product) so the returned SKU is the one the supplier
-    carries. Falls back to all raw materials if nothing matches.
+    When ``supplier_id`` is known, restricts the search to products that
+    supplier can actually supply (per Supplier_Product). Falls back to all
+    raw materials if nothing matches.
     """
     if not name:
-        return None, name, None
+        return None, name
     with _connect() as conn:
         if supplier_id is not None:
             rows = conn.execute(
@@ -178,7 +175,7 @@ def resolve_product(
                 "SELECT Id, SKU, Type FROM Product WHERE Type = 'raw-material'"
             ).fetchall()
     if not rows:
-        return None, name, None
+        return None, name
     scored = sorted(
         rows,
         key=lambda r: _similarity(name, _strip_sku_prefix(r["SKU"])),
@@ -186,8 +183,8 @@ def resolve_product(
     )
     best = scored[0]
     if _similarity(name, _strip_sku_prefix(best["SKU"])) >= 0.45:
-        return int(best["Id"]), _strip_sku_prefix(best["SKU"]), best["SKU"]
-    return None, name, None
+        return int(best["Id"]), _strip_sku_prefix(best["SKU"])
+    return None, name
 
 
 def _benchmark_price(product_name: str) -> float | None:
@@ -263,7 +260,7 @@ def build_draft(
             qty_f = float(qty) if qty is not None else 1.0
         except (TypeError, ValueError):
             qty_f = 1.0
-        product_id, resolved_name, sku = resolve_product(name, supplier_id)
+        product_id, resolved_name = resolve_product(name, supplier_id)
         if product_id is None:
             warnings.append(
                 f"Product '{name}' not matched to the catalogue — "
@@ -286,7 +283,6 @@ def build_draft(
             {
                 "product_id": product_id,
                 "product_name": resolved_name or name,
-                "sku": sku,
                 "unit": item.get("unit") or "kg",
                 "quantity": qty_f,
                 "unit_price": unit_price_f,

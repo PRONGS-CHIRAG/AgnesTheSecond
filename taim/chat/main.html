@@ -82,20 +82,24 @@
   }
   .topnav .key-status .dot.ok { background: var(--accent2); }
 
-  /* ── Layout: chat left, PO panel right ───────── */
+  /* ── Layout: chat full-width by default; split when order is drafted */
   .app-split {
     flex: 1;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 560px;
+    grid-template-columns: 1fr;
     min-height: 0;
     overflow: hidden;
+    transition: grid-template-columns 0.25s ease;
+  }
+  .app-split.with-order {
+    grid-template-columns: minmax(0, 1fr) 560px;
   }
   @media (max-width: 1100px) {
-    .app-split { grid-template-columns: minmax(0, 1fr) 440px; }
+    .app-split.with-order { grid-template-columns: minmax(0, 1fr) 440px; }
   }
   @media (max-width: 860px) {
-    .app-split { grid-template-columns: 1fr; }
-    .po-panel { display: none; }
+    .app-split.with-order { grid-template-columns: 1fr; }
+    .app-split.with-order .po-panel { display: none; }
   }
 
   /* ── Chat Area ──────────────────────────────── */
@@ -104,19 +108,28 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
     padding: 24px 24px 0;
     overflow: hidden;
     min-width: 0;
   }
+  .app-split.with-order .chat-wrap {
+    max-width: none;
+    margin: 0;
+  }
 
-  /* ── PO / Order Panel ───────────────────────── */
+  /* ── PO / Order Panel (hidden until first order) ─ */
   .po-panel {
-    display: flex;
+    display: none;
     flex-direction: column;
     background: var(--surface);
     border-left: 1px solid var(--border);
     min-width: 0;
     min-height: 0;
+  }
+  .app-split.with-order .po-panel {
+    display: flex;
   }
   .po-panel .po-head {
     display: flex;
@@ -645,24 +658,17 @@
     </div>
   </div>
 
-  <!-- ── Right-panel: Purchase Order preview ─── -->
+  <!-- ── Right-panel: Purchase Order preview (hidden until first order) ── -->
   <aside class="po-panel" id="poPanel">
     <div class="po-head">
       <div>
         <div class="po-title">Purchase Order</div>
-        <div class="po-sub" id="poSub">Draft from this conversation</div>
+        <div class="po-sub" id="poSub">Drafted from this conversation</div>
       </div>
       <div class="spacer"></div>
       <button class="po-btn secondary" id="poDownloadBtn" onclick="downloadOrderPdf()" disabled title="Download PDF">Download</button>
-      <button class="po-btn" id="poGenerateBtn" onclick="generateOrder()">Place Order</button>
     </div>
-    <div class="po-body" id="poBody">
-      <div class="po-empty" id="poEmpty">
-        <div class="glyph">📄</div>
-        <h3>No order drafted yet</h3>
-        <p>Chat with Agnes about what you want to buy. When you're ready, click <strong>Place Order</strong> and the draft PDF will appear here.</p>
-      </div>
-    </div>
+    <div class="po-body" id="poBody"></div>
     <div class="po-warnings" id="poWarnings" style="display:none"></div>
   </aside>
 </div>
@@ -1114,32 +1120,37 @@ function detectsOrderIntent(text) {
 }
 
 // ── Order Panel ────────────────────────────────
+function revealOrderPanel() {
+  document.querySelector('.app-split').classList.add('with-order');
+}
+
+function hideOrderPanel() {
+  document.querySelector('.app-split').classList.remove('with-order');
+}
+
 function resetOrderPanel() {
   currentOrderId = null;
-  const body = document.getElementById('poBody');
-  body.innerHTML = `
-    <div class="po-empty" id="poEmpty">
-      <div class="glyph">📄</div>
-      <h3>No order drafted yet</h3>
-      <p>Chat with Agnes about what you want to buy. When you're ready, click <strong>Place Order</strong> and the draft PDF will appear here.</p>
-    </div>`;
-  document.getElementById('poSub').textContent = 'Draft from this conversation';
+  document.getElementById('poBody').innerHTML = '';
+  document.getElementById('poSub').textContent = 'Drafted from this conversation';
   document.getElementById('poDownloadBtn').disabled = true;
   const warn = document.getElementById('poWarnings');
   warn.style.display = 'none';
   warn.innerHTML = '';
+  hideOrderPanel();
 }
 
 function showOrderLoading() {
+  revealOrderPanel();
   const body = document.getElementById('poBody');
   body.innerHTML = `
     <div class="po-loading">
       <div class="spinner"></div>
-      <div>Extracting order details…</div>
+      <div>Drafting purchase order…</div>
     </div>`;
 }
 
 function showOrderError(msg) {
+  revealOrderPanel();
   const body = document.getElementById('poBody');
   body.innerHTML = `
     <div class="po-empty">
@@ -1151,6 +1162,7 @@ function showOrderError(msg) {
 
 function renderOrderPdf(orderId, poNumber, draft) {
   currentOrderId = orderId;
+  revealOrderPanel();
   const body = document.getElementById('poBody');
   const ts = Date.now();
   body.innerHTML = `<iframe class="po-iframe" src="/orders/pdf/${orderId}?t=${ts}#toolbar=0&navpanes=0"></iframe>`;
@@ -1168,9 +1180,10 @@ function renderOrderPdf(orderId, poNumber, draft) {
   }
 }
 
+let orderInFlight = false;
+
 async function generateOrder() {
-  const btn = document.getElementById('poGenerateBtn');
-  if (btn.disabled) return;
+  if (orderInFlight) return;
   if (conversationHistory.length === 0) {
     showOrderError('Chat with Agnes first — tell her what you want to order.');
     return;
@@ -1180,8 +1193,7 @@ async function generateOrder() {
     openKeyModal();
     return;
   }
-  btn.disabled = true;
-  btn.textContent = 'Drafting…';
+  orderInFlight = true;
   showOrderLoading();
   try {
     const resp = await fetch('/orders/generate', {
@@ -1201,8 +1213,7 @@ async function generateOrder() {
   } catch (e) {
     showOrderError('Network error while drafting order.');
   } finally {
-    btn.disabled = false;
-    btn.textContent = 'Place Order';
+    orderInFlight = false;
   }
 }
 
