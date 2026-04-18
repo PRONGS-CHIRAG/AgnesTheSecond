@@ -3,6 +3,7 @@
 Endpoints:
 - ``POST /orders/save_message`` — persist a chat/cube message.
 - ``POST /orders/generate``     — extract + validate + write PDF.
+- ``POST /orders/place/<id>``   — upload PDF to Dify workflow (fire-and-forget).
 - ``GET  /orders/pdf/<id>``     — serve the generated PDF inline.
 - ``GET  /orders/export/<sid>`` — raw conversation JSON (debug).
 - ``GET  /orders/draft/<id>``   — inspect the stored draft (debug).
@@ -12,6 +13,7 @@ from __future__ import annotations
 
 import os
 
+import requests as http_requests
 from flask import Blueprint, abort, jsonify, request, send_file
 
 from .extractor import OrderExtractionError, build_draft
@@ -147,3 +149,63 @@ def serve_draft(order_id: int):
 @orders_bp.route("/export/<session_id>")
 def export_session(session_id: str):
     return jsonify(export_session_json(session_id))
+
+
+# ── Dify workflow: fire-and-forget ───────────────────────
+@orders_bp.route("/place/<int:order_id>", methods=["POST"])
+def place_order(order_id: int):
+    """Upload the generated PDF to the Dify workflow API."""
+    order = get_order(order_id)
+    if not order or not order.get("pdf_path"):
+        return jsonify({"error": "Order not found"}), 404
+    pdf_path = order["pdf_path"]
+    if not os.path.isfile(pdf_path):
+        return jsonify({"error": "PDF file missing"}), 404
+
+    dify_key = os.environ.get("DIFY_API_KEY", "").strip()
+    dify_base = os.environ.get("DIFY_API_BASE", "https://api.dify.ai/v1").strip().rstrip("/")
+    if not dify_key:
+        return jsonify({"error": "DIFY_API_KEY not configured"}), 500
+
+    headers = {"Authorization": f"Bearer {dify_key}"}
+
+    # Step 1 — upload PDF file to Dify
+    try:
+        with open(pdf_path, "rb") as f:
+            upload_resp = http_requests.post(
+                f"{dify_base}/files/upload",
+                headers=headers,
+                files={"file": (os.path.basename(pdf_path), f, "application/pdf")},
+                data={"user": "agnes-order-system"},
+                timeout=30,
+            )
+        upload_resp.raise_for_status()
+        file_id = upload_resp.json().get("id")
+    except Exception as exc:
+        return jsonify({"error": f"Dify file upload failed: {exc}"}), 502
+
+    # Step 2 — run the Dify workflow with the uploaded file
+    try:
+        run_resp = http_requests.post(
+            f"{dify_base}/workflows/run",
+            headers={**headers, "Content-Type": "application/json"},
+            json={
+                "inputs": {
+                    "file": [
+                        {
+                            "type": "document",
+                            "transfer_method": "local_file",
+                            "upload_file_id": file_id,
+                        }
+                    ]
+                },
+                "response_mode": "blocking",
+                "user": "agnes-order-system",
+            },
+            timeout=60,
+        )
+        run_resp.raise_for_status()
+    except Exception as exc:
+        return jsonify({"error": f"Dify workflow run failed: {exc}"}), 502
+
+    return jsonify({"ok": True, "po_number": order["po_number"]})

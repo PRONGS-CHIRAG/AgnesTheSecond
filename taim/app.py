@@ -1,5 +1,12 @@
+import os
+from pathlib import Path
+
+from dotenv import load_dotenv
 from flask import Flask
 from flask_cors import CORS
+
+# Load .env from project root (one level up from taim/)
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 app = Flask(__name__)
 CORS(app)
@@ -30,4 +37,5 @@ from orders.routes import orders_bp
 app.register_blueprint(orders_bp)
 
 if __name__ == '__main__':
-    app.run(debug=True, threaded=True, port=5050)
+    port = int(os.environ.get('PORT', 5050))
+    app.run(debug=True, threaded=True, host='0.0.0.0', port=port)

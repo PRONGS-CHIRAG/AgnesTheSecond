@@ -671,6 +671,7 @@
       </div>
       <div class="spacer"></div>
       <button class="po-btn secondary" id="poDownloadBtn" onclick="downloadOrderPdf()" disabled title="Download PDF">Download</button>
+      <button class="po-btn" id="poPlaceBtn" onclick="placeOrder()" disabled title="Send order to supplier">Place Order</button>
     </div>
     <div class="po-body" id="poBody"></div>
     <div class="po-warnings" id="poWarnings" style="display:none"></div>
@@ -1146,6 +1147,12 @@ function resetOrderPanel() {
   document.getElementById('poBody').innerHTML = '';
   document.getElementById('poSub').textContent = 'Drafted from this conversation';
   document.getElementById('poDownloadBtn').disabled = true;
+  const placeBtn = document.getElementById('poPlaceBtn');
+  placeBtn.disabled = true;
+  placeBtn.textContent = 'Place Order';
+  placeBtn.style.background = '';
+  placeBtn.style.color = '';
+  placeBtn.style.borderColor = '';
   const warn = document.getElementById('poWarnings');
   warn.style.display = 'none';
   warn.innerHTML = '';
@@ -1181,6 +1188,7 @@ function renderOrderPdf(orderId, poNumber, draft) {
   body.innerHTML = `<iframe class="po-iframe" src="/orders/pdf/${orderId}?t=${ts}#toolbar=0&navpanes=0"></iframe>`;
   document.getElementById('poSub').textContent = `${poNumber}  ·  ${(draft.items || []).length} item(s)`;
   document.getElementById('poDownloadBtn').disabled = false;
+  document.getElementById('poPlaceBtn').disabled = false;
 
   const warn = document.getElementById('poWarnings');
   const warnings = draft.warnings || [];
@@ -1190,6 +1198,31 @@ function renderOrderPdf(orderId, poNumber, draft) {
     warn.style.display = 'block';
   } else {
     warn.style.display = 'none';
+  }
+}
+
+async function placeOrder() {
+  if (!currentOrderId) return;
+  const btn = document.getElementById('poPlaceBtn');
+  btn.disabled = true;
+  btn.textContent = 'Placing…';
+  try {
+    const resp = await fetch(`/orders/place/${currentOrderId}`, { method: 'POST' });
+    const data = await resp.json().catch(() => ({}));
+    if (resp.ok && data.ok) {
+      btn.textContent = '✓ Order Placed';
+      btn.style.background = 'var(--accent2)';
+      btn.style.color = 'var(--bg)';
+      btn.style.borderColor = 'var(--accent2)';
+    } else {
+      btn.textContent = 'Failed';
+      btn.disabled = false;
+      setTimeout(() => { btn.textContent = 'Place Order'; }, 2000);
+    }
+  } catch {
+    btn.textContent = 'Failed';
+    btn.disabled = false;
+    setTimeout(() => { btn.textContent = 'Place Order'; }, 2000);
   }
 }
 

@@ -20,7 +20,10 @@ import sqlite3
 from datetime import datetime, timezone
 from typing import Any
 
-_DB_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "hackathon-tumai", "db.sqlite")
+_DB_PATH = os.environ.get(
+    "ORDERS_DB_PATH",
+    os.path.join(os.path.dirname(__file__), "..", "..", "hackathon-tumai", "db.sqlite"),
+)
 DB_PATH = os.path.abspath(_DB_PATH)
 
 

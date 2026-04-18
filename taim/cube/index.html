@@ -695,6 +695,7 @@
     <div class="order-footer">
       <button onclick="closeOrderPopup()">Close</button>
       <button class="primary" id="orderDownloadBtn" disabled onclick="downloadCubeOrder()">⬇ Download PDF</button>
+      <button class="primary" id="orderPlaceBtn" disabled onclick="placeCubeOrder()" style="background:#22c55e;border-color:#22c55e">Place Order</button>
     </div>
   </div>
 </div>
@@ -1276,6 +1277,9 @@ function showCubeOrderLoading() {
     '<div class="order-loading"><div class="spinner"></div><div>Drafting purchase order…</div></div>';
   document.getElementById('orderPoBadge').textContent = '';
   document.getElementById('orderDownloadBtn').disabled = true;
+  document.getElementById('orderPlaceBtn').disabled = true;
+  document.getElementById('orderPlaceBtn').textContent = 'Place Order';
+  document.getElementById('orderPlaceBtn').style.background = '#22c55e';
   document.getElementById('orderWarnings').style.display = 'none';
 }
 
@@ -1294,6 +1298,7 @@ function renderCubeOrderPdf(orderId, poNumber, draft) {
     '<iframe src="/orders/pdf/' + orderId + '?t=' + ts + '#toolbar=0&navpanes=0"></iframe>';
   document.getElementById('orderPoBadge').textContent = poNumber;
   document.getElementById('orderDownloadBtn').disabled = false;
+  document.getElementById('orderPlaceBtn').disabled = false;
 
   const warn = document.getElementById('orderWarnings');
   const warnings = (draft && draft.warnings) || [];
@@ -1303,6 +1308,29 @@ function renderCubeOrderPdf(orderId, poNumber, draft) {
     warn.style.display = 'block';
   } else {
     warn.style.display = 'none';
+  }
+}
+
+async function placeCubeOrder() {
+  if (!cubeOrderId) return;
+  const btn = document.getElementById('orderPlaceBtn');
+  btn.disabled = true;
+  btn.textContent = 'Placing…';
+  try {
+    const resp = await fetch('/orders/place/' + cubeOrderId, { method: 'POST' });
+    const data = await resp.json().catch(() => ({}));
+    if (resp.ok && data.ok) {
+      btn.textContent = '✓ Order Placed';
+      btn.style.background = '#16a34a';
+    } else {
+      btn.textContent = 'Failed';
+      btn.disabled = false;
+      setTimeout(function() { btn.textContent = 'Place Order'; }, 2000);
+    }
+  } catch(e) {
+    btn.textContent = 'Failed';
+    btn.disabled = false;
+    setTimeout(function() { btn.textContent = 'Place Order'; }, 2000);
   }
 }
 
