@@ -20,5 +20,10 @@ app.register_blueprint(agnes_bp)
 from cube.routes import cube_bp
 app.register_blueprint(cube_bp)
 
+# Register Orders blueprint (serves at /orders/) — conversation persistence +
+# LLM-drafted purchase-order PDFs.
+from orders.routes import orders_bp
+app.register_blueprint(orders_bp)
+
 if __name__ == '__main__':
-    app.run(debug=True, threaded=True)
+    app.run(debug=True, threaded=True, port=5050)
