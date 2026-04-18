@@ -36,6 +36,10 @@ app.register_blueprint(cube_bp)
 from orders.routes import orders_bp
 app.register_blueprint(orders_bp)
 
+# Register Product Sourcing blueprint (serves at /sourcing/)
+from sourcing.routes import sourcing_bp
+app.register_blueprint(sourcing_bp)
+
 if __name__ == '__main__':
     # Local dev only — production uses gunicorn (see Procfile).
     port = int(os.environ.get('PORT', 5050))

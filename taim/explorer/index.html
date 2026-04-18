@@ -694,6 +694,7 @@
   <a href="/cube/">Cube</a>
   <a href="/explorer/" class="active">Explorer</a>
   <a href="/agnes/">Insights</a>
+  <a href="/sourcing/">Sourcing</a>
 </div>
 <div class="app">
   <!-- ── Sidebar Overlay + Drawer ────────────────── -->
@@ -988,6 +989,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     clearTimeout(supSearchTimer);
     supSearchTimer = setTimeout(() => loadSuppliers(), 200);
   });
+
+  // ── Deep-link via URL params: ?tab=suppliers&search=Name ──
+  const urlParams = new URLSearchParams(window.location.search);
+  const tabParam = urlParams.get('tab');
+  const searchParam = urlParams.get('search');
+  if (tabParam === 'suppliers') {
+    navigateToSupplier(searchParam || '');
+  } else if (tabParam === 'ingredients') {
+    if (searchParam) {
+      $('#ingrSearch').value = searchParam;
+      loadIngredients();
+    }
+  }
 });
 
 // ── Sidebar ──────────────────────────────────

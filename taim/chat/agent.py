@@ -11,6 +11,7 @@ import os
 import re
 import json
 from openai import OpenAI
+from sourcing.engine import source_ingredients
 
 DB_PATH = os.path.join(
     os.path.dirname(__file__), '../../hackathon-tumai/db.sqlite'
@@ -89,11 +90,12 @@ When answering questions:
 1. Use the execute_sql tool to query the database. Write clean SQL.
 2. Use find_substitutes tool to find potential replacements for ingredients.
 3. Use analyze_bom to inspect a product's bill of materials.
-4. Always ground your answers in actual data from tools — never fabricate numbers.
-5. Be specific: name companies, suppliers, ingredient names, counts, prices, quality scores.
-6. When relevant, mention risks (single-source, concentration, quality), costs, and opportunities (consolidation, substitution, savings).
-7. Format your answers in clear Markdown with headers, bullet points, and tables where helpful.
-8. If a query returns no results or you're uncertain, say so honestly.
+4. Use source_product when the user wants to create/source a new product and provides a list of ingredients — this returns a complete deterministic sourcing report with all supplier details, pricing, quality, and risk flags.
+5. Always ground your answers in actual data from tools — never fabricate numbers.
+6. Be specific: name companies, suppliers, ingredient names, counts, prices, quality scores.
+7. When relevant, mention risks (single-source, concentration, quality), costs, and opportunities (consolidation, substitution, savings).
+8. Format your answers in clear Markdown with headers, bullet points, and tables where helpful.
+9. If a query returns no results or you're uncertain, say so honestly.
 
 SCOPE RESTRICTION (CRITICAL):
 - You are ONLY allowed to answer questions related to supply chain, procurement, sourcing, ingredients, suppliers, products, BOMs, costs, pricing, quality, compliance, logistics, and our business data.
@@ -151,6 +153,28 @@ TOOLS = [
                     }
                 },
                 "required": ["search_term"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "source_product",
+            "description": "Given a product concept and its ingredients, find all matching suppliers from the database with pricing, quality scores, certifications, lead times, and risk flags for each ingredient. Use this when the user says they want to make a new product and lists ingredients, or asks 'who can supply X, Y, and Z'. Returns a full deterministic sourcing report.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "product_name": {
+                        "type": "string",
+                        "description": "Name of the product being sourced (e.g. 'Premium Protein Bar')."
+                    },
+                    "ingredients": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "List of ingredient names to find suppliers for (e.g. ['whey protein', 'cocoa', 'stevia'])."
+                    }
+                },
+                "required": ["ingredients"]
             }
         }
     }
@@ -518,6 +542,7 @@ TOOL_DISPATCH = {
     "execute_sql": lambda args: tool_execute_sql(args["query"]),
     "find_substitutes": lambda args: tool_find_substitutes(args["ingredient_name"]),
     "analyze_bom": lambda args: tool_analyze_bom(args["search_term"]),
+    "source_product": lambda args: source_ingredients(args["ingredients"]),
 }
 
 
@@ -529,6 +554,9 @@ def _tool_label(name, args):
         return f"Finding substitutes for \"{args.get('ingredient_name', '')}\""
     if name == "analyze_bom":
         return f"Analyzing BOM for \"{args.get('search_term', '')}\""
+    if name == "source_product":
+        ings = args.get('ingredients', [])
+        return f"Sourcing suppliers for {len(ings)} ingredient{'s' if len(ings) != 1 else ''}"
     return name
 
 
