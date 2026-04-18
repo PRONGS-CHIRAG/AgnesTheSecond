@@ -1,51 +1,44 @@
-"""Gemini embedding client with on-disk cache (Phase 4)."""
+"""OpenAI embedding client with on-disk cache (Phase 4)."""
 
 from __future__ import annotations
 
 import json
 import math
 import os
+import time
 from pathlib import Path
 from typing import Protocol
 
 import structlog
 
 from agnes.config.settings import Settings
+from agnes.llm import is_rate_limited, make_client, retry_after_seconds
 
 logger = structlog.get_logger(__name__)
 
-DEFAULT_EMBEDDING_MODEL = "gemini-embedding-001"
+DEFAULT_EMBEDDING_MODEL = "text-embedding-3-small"
 DEFAULT_CACHE_PATH = Path(".cache/phase4_embeddings.json")
+
+EMBED_RATE_LIMIT_PER_MIN = int(os.environ.get("AGNES_EMBED_RPM", "90"))
+EMBED_MAX_RETRIES = int(os.environ.get("AGNES_EMBED_MAX_RETRIES", "6"))
 
 
 class EmbeddingBackend(Protocol):
-    """Minimal provider interface (google-genai by default; tests inject their own)."""
+    """Minimal provider interface (OpenAI by default; tests inject their own)."""
 
     def embed_batch(self, texts: list[str], model: str) -> list[list[float]]:
         ...
 
 
-class _GoogleGenAIBackend:
-    """Thin wrapper over ``google.genai.Client.models.embed_content``."""
+class _OpenAIEmbeddingBackend:
+    """Thin wrapper over ``openai.OpenAI.embeddings.create``."""
 
     def __init__(self, api_key: str | None) -> None:
-        from google import genai
-
-        self._genai = genai
-        self._client = genai.Client(api_key=api_key) if api_key else genai.Client()
+        self._client = make_client(api_key or "")
 
     def embed_batch(self, texts: list[str], model: str) -> list[list[float]]:
-        resp = self._client.models.embed_content(model=model, contents=texts)
-        out: list[list[float]] = []
-        for e in resp.embeddings:
-            values = getattr(e, "values", None)
-            if values is None and isinstance(e, dict):
-                values = e.get("values")
-            if values is None:
-                msg = "Gemini embedding response missing 'values'"
-                raise RuntimeError(msg)
-            out.append(list(values))
-        return out
+        resp = self._client.embeddings.create(model=model, input=texts)
+        return [list(d.embedding) for d in resp.data]
 
 
 def cosine(a: list[float], b: list[float]) -> float:
@@ -61,9 +54,9 @@ def cosine(a: list[float], b: list[float]) -> float:
     return max(0.0, min(1.0, (sim + 1.0) / 2.0))
 
 
-class GeminiEmbeddingClient:
+class EmbeddingClient:
     """
-    Cached Gemini embedding client keyed by ``(model, canonical_key)``.
+    Cached OpenAI embedding client keyed by ``(model, canonical_key)``.
 
     Cache is a JSON file on disk; the in-memory copy is flushed via ``save()``.
     Network calls only happen for cache misses; tests inject a backend stub.
@@ -84,6 +77,7 @@ class GeminiEmbeddingClient:
         self.cache_path = cache_path or DEFAULT_CACHE_PATH
         self._cache: dict[str, dict[str, list[float]]] = self._load_cache()
         self._backend = backend
+        self._request_ts: list[float] = []
 
     def _load_cache(self) -> dict[str, dict[str, list[float]]]:
         if not self.cache_path.is_file():
@@ -109,7 +103,7 @@ class GeminiEmbeddingClient:
 
     def _ensure_backend(self) -> EmbeddingBackend:
         if self._backend is None:
-            self._backend = _GoogleGenAIBackend(api_key=self.settings.gemini_api_key)
+            self._backend = _OpenAIEmbeddingBackend(api_key=self.settings.openai_api_key)
         return self._backend
 
     def get(self, canonical_key: str, text: str) -> list[float]:
@@ -120,7 +114,7 @@ class GeminiEmbeddingClient:
             return cache_model[canonical_key]
         logger.debug("phase4_embed_cache_miss", key=canonical_key, model=self.model)
         backend = self._ensure_backend()
-        vec = backend.embed_batch([text], self.model)[0]
+        vec = self._embed_with_retry(backend, [text])[0]
         cache_model[canonical_key] = vec
         return vec
 
@@ -145,16 +139,66 @@ class GeminiEmbeddingClient:
             for i in range(0, len(misses), batch_size):
                 chunk = misses[i : i + batch_size]
                 texts = [t for _, t in chunk]
-                try:
-                    vectors = backend.embed_batch(texts, self.model)
-                except Exception:
-                    logger.exception(
-                        "phase4_embed_batch_failed",
-                        model=self.model,
-                        batch_size=len(chunk),
-                    )
-                    raise
+                vectors = self._embed_with_retry(backend, texts)
                 for (key, _), vec in zip(chunk, vectors, strict=True):
                     cache_model[key] = vec
                     out[key] = vec
+                # Persist after each successful batch so partial runs are never lost.
+                try:
+                    self.save()
+                except OSError as exc:  # pragma: no cover - best-effort flush
+                    logger.warning(
+                        "phase4_embed_cache_save_failed",
+                        error=str(exc),
+                        path=str(self.cache_path),
+                    )
         return out
+
+    def _throttle(self) -> None:
+        """Client-side RPM guard so we stay comfortably under free-tier limits."""
+        if EMBED_RATE_LIMIT_PER_MIN <= 0:
+            return
+        now = time.monotonic()
+        window = 60.0
+        self._request_ts = [ts for ts in self._request_ts if now - ts < window]
+        if len(self._request_ts) >= EMBED_RATE_LIMIT_PER_MIN:
+            sleep_for = window - (now - self._request_ts[0]) + 0.5
+            if sleep_for > 0:
+                logger.info(
+                    "phase4_embed_rate_pause",
+                    sleep_seconds=round(sleep_for, 2),
+                    window_requests=len(self._request_ts),
+                )
+                time.sleep(sleep_for)
+                now = time.monotonic()
+                self._request_ts = [ts for ts in self._request_ts if now - ts < window]
+        self._request_ts.append(now)
+
+    def _embed_with_retry(
+        self, backend: EmbeddingBackend, texts: list[str]
+    ) -> list[list[float]]:
+        """Embed one batch, honoring 429 retry hints and persisting partial caches."""
+        attempt = 0
+        while True:
+            self._throttle()
+            try:
+                return backend.embed_batch(texts, self.model)
+            except Exception as exc:
+                if not is_rate_limited(exc) or attempt >= EMBED_MAX_RETRIES:
+                    logger.exception(
+                        "phase4_embed_batch_failed",
+                        model=self.model,
+                        batch_size=len(texts),
+                        attempt=attempt,
+                    )
+                    raise
+                delay = retry_after_seconds(exc) or 15.0
+                delay = min(max(delay + 1.0, 5.0), 90.0)
+                logger.warning(
+                    "phase4_embed_rate_limited",
+                    attempt=attempt + 1,
+                    sleep_seconds=round(delay, 2),
+                    batch_size=len(texts),
+                )
+                time.sleep(delay)
+                attempt += 1

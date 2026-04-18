@@ -25,7 +25,7 @@ from agnes.models.evidence import (
     SubstituteEvidenceLLM,
 )
 from agnes.models.substitutes import SubstituteCandidate, SubstituteCandidateReport
-from agnes.retrieval.gemini_grounded import GroundedExtractionError, GroundedLLM
+from agnes.retrieval.openai_grounded import GroundedExtractionError, GroundedLLM
 
 logger = structlog.get_logger(__name__)
 
@@ -115,7 +115,7 @@ class EvidenceCache:
         key = self.make_key(
             evidence.source_key,
             evidence.candidate_key,
-            evidence.gemini_model,
+            evidence.llm_model,
             evidence.schema_version,
         )
         self._data[key] = json.loads(evidence.model_dump_json())
@@ -205,6 +205,7 @@ def enrich_pairs(
     n_api_calls = 0
     n_failures = 0
     partial = False
+    quota_blocked = False
     sources_seen: set[str] = set()
 
     for idx, (source_key, candidate_key) in enumerate(pairs):
@@ -229,6 +230,8 @@ def enrich_pairs(
             continue
         if dry_run:
             continue
+        if quota_blocked:
+            continue
         if max_total is not None and n_api_calls >= max_total:
             partial = True
             logger.info(
@@ -236,7 +239,7 @@ def enrich_pairs(
                 max_total=max_total,
                 remaining=len(pairs) - idx,
             )
-            break
+            continue
 
         source_name, source_family, source_roles = _resolve_material(registry, source_key)
         cand_name, cand_family, cand_roles = _resolve_material(registry, candidate_key)
@@ -271,6 +274,25 @@ def enrich_pairs(
                 err=str(exc)[:200],
             )
             continue
+        except Exception as exc:  # noqa: BLE001 - quota or transport error; degrade gracefully
+            if "429" in str(exc) or "RESOURCE_EXHAUSTED" in str(exc):
+                partial = True
+                quota_blocked = True
+                logger.warning(
+                    "phase5_quota_exhausted_stop",
+                    processed=idx,
+                    remaining=len(pairs) - idx,
+                    err=str(exc)[:200],
+                )
+                continue
+            n_failures += 1
+            logger.warning(
+                "phase5_pair_failed_raw",
+                source=source_key,
+                candidate=candidate_key,
+                err=str(exc)[:200],
+            )
+            continue
         n_api_calls += 1
         parsed_claims = list(parsed.claims)
         if not parsed_claims and citations:
@@ -288,11 +310,15 @@ def enrich_pairs(
             n_citations=sum(len(c.citations) for c in parsed_claims),
             any_contradictions=any(c.polarity == "contradicts" for c in parsed_claims),
             retrieved_at=datetime.now(UTC),
-            gemini_model=resolved_model,
+            llm_model=resolved_model,
             schema_version=EVIDENCE_SCHEMA_VERSION,
         )
         cache.put(evidence)
         items.append(evidence)
+        try:
+            cache.save()
+        except OSError as exc:  # pragma: no cover - best-effort flush
+            logger.warning("phase5_cache_save_failed", err=str(exc))
         logger.info(
             "phase5_pair_ok",
             source=source_key,
@@ -306,7 +332,7 @@ def enrich_pairs(
     return EvidenceReport(
         schema_version=EVIDENCE_SCHEMA_VERSION,
         generated_at=datetime.now(UTC),
-        gemini_model=resolved_model,
+        llm_model=resolved_model,
         n_sources=len(sources_seen),
         n_pairs=len(pairs),
         n_cache_hits=n_cache_hits,

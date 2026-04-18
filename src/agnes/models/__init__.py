@@ -1,5 +1,12 @@
 """Pydantic domain and report models."""
 
+from agnes.models.assessment import (
+    ASSESSMENT_SCHEMA_VERSION,
+    AssessmentContext,
+    AssessmentReport,
+    SubstituteAssessment,
+    SubstituteAssessmentLLM,
+)
 from agnes.models.canonical import (
     CanonicalMaterial,
     CanonicalRegistry,
@@ -24,6 +31,13 @@ from agnes.models.evidence import (
     SubstituteEvidenceLLM,
 )
 from agnes.models.graph import GraphIngestReport, KGEdge, KGNode, node_id
+from agnes.models.recommendation import (
+    RECOMMENDATION_SCHEMA_VERSION,
+    ConsolidationOpportunity,
+    RecommendationReport,
+    SourcingRecommendation,
+    SourcingSignals,
+)
 from agnes.models.reports import (
     ColumnInfo,
     EntityCounts,
@@ -36,6 +50,14 @@ from agnes.models.reports import (
 )
 
 __all__ = [
+    "ASSESSMENT_SCHEMA_VERSION",
+    "RECOMMENDATION_SCHEMA_VERSION",
+    "ConsolidationOpportunity",
+    "RecommendationReport",
+    "SourcingRecommendation",
+    "SourcingSignals",
+    "AssessmentContext",
+    "AssessmentReport",
     "EVIDENCE_SCHEMA_VERSION",
     "BOMComponentRow",
     "BOMRow",
@@ -58,6 +80,8 @@ __all__ = [
     "RegistryCoverage",
     "RepeatedMaterial",
     "SchemaSummary",
+    "SubstituteAssessment",
+    "SubstituteAssessmentLLM",
     "SubstituteEvidence",
     "SubstituteEvidenceLLM",
     "SupplierFragmentation",

@@ -14,7 +14,7 @@ from agnes.models.substitutes import (
     SubstituteCandidate,
     TargetDiagnostics,
 )
-from agnes.substitutes.embeddings import GeminiEmbeddingClient, cosine
+from agnes.substitutes.embeddings import EmbeddingClient, cosine
 from agnes.substitutes.features import compute_features
 from agnes.substitutes.scoring import DEFAULT_WEIGHTS, normalize_weights, score_candidate
 
@@ -59,7 +59,7 @@ def generate_candidates(
     target_key: str,
     registry: CanonicalRegistry,
     graph_index: MaterialGraphIndex,
-    embeddings: GeminiEmbeddingClient | None,
+    embeddings: EmbeddingClient | None,
     top_k: int = 10,
     min_score: float = 0.55,
     cross_family: bool = False,

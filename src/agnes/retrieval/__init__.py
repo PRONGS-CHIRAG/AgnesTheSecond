@@ -1,1 +1,1 @@
-"""External retrieval (Gemini, search, evidence)."""
+"""External retrieval (OpenAI grounded extraction + web search tool)."""

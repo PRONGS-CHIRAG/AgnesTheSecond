@@ -128,6 +128,32 @@ def company_product_tree(engine: Engine) -> pd.DataFrame:
         return pd.read_sql(sql, conn)
 
 
+def supplier_products_by_company(engine: Engine) -> pd.DataFrame:
+    """
+    Per (company, raw-material, supplier): which suppliers serve which companies.
+
+    Derived via: Company -> finished Product -> BOM -> BOM_Component ->
+    raw Product -> Supplier_Product. Duplicates are collapsed.
+
+    Columns: CompanyId, SupplierId, RawProductId
+    """
+    sql = text("""
+        SELECT DISTINCT
+            pfg.CompanyId AS CompanyId,
+            sp.SupplierId AS SupplierId,
+            pr.Id AS RawProductId
+        FROM Product pfg
+        JOIN BOM b ON b.ProducedProductId = pfg.Id
+        JOIN BOM_Component bc ON bc.BOMId = b.Id
+        JOIN Product pr ON pr.Id = bc.ConsumedProductId AND pr.Type = 'raw-material'
+        JOIN Supplier_Product sp ON sp.ProductId = pr.Id
+        WHERE pfg.Type = 'finished-good'
+        ORDER BY pfg.CompanyId, sp.SupplierId, pr.Id
+    """)
+    with engine.connect() as conn:
+        return pd.read_sql(sql, conn)
+
+
 def entity_counts(engine: Engine) -> pd.DataFrame:
     """Return a single-row DataFrame with EntityCounts-compatible columns."""
     sql = text("""

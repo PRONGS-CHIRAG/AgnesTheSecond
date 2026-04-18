@@ -16,7 +16,7 @@ from agnes.models.canonical import (
 )
 from agnes.models.graph import KGEdge, KGNode, node_id
 from agnes.substitutes.candidate_generator import generate_candidates
-from agnes.substitutes.embeddings import EmbeddingBackend, GeminiEmbeddingClient
+from agnes.substitutes.embeddings import EmbeddingBackend, EmbeddingClient
 
 
 class _StubBackend:
@@ -136,9 +136,9 @@ def _fixture_index(reg: CanonicalRegistry) -> MaterialGraphIndex:
     return MaterialGraphIndex.from_payload(nodes_unique, edges)
 
 
-def _client(tmp_path: Path, backend: EmbeddingBackend) -> GeminiEmbeddingClient:
-    return GeminiEmbeddingClient(
-        Settings(gemini_api_key="test-key"),
+def _client(tmp_path: Path, backend: EmbeddingBackend) -> EmbeddingClient:
+    return EmbeddingClient(
+        Settings(openai_api_key="test-key"),
         model="stub-embed",
         cache_path=tmp_path / "phase4_embeddings.json",
         backend=backend,

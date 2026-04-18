@@ -7,7 +7,7 @@ from typing import Final, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-EVIDENCE_SCHEMA_VERSION: Final[str] = "v1"
+EVIDENCE_SCHEMA_VERSION: Final[str] = "v2"
 
 ClaimKey = Literal[
     "functional_equivalence",
@@ -58,7 +58,7 @@ class SubstituteEvidence(BaseModel):
     n_citations: int = Field(ge=0)
     any_contradictions: bool
     retrieved_at: datetime
-    gemini_model: str
+    llm_model: str
     schema_version: str = EVIDENCE_SCHEMA_VERSION
 
 
@@ -66,7 +66,7 @@ class SubstituteEvidenceLLM(BaseModel):
     """
     LLM-facing subset of ``SubstituteEvidence``. The grounded extraction prompt
     returns this shape; the enricher wraps it with server-side bookkeeping
-    (``retrieved_at``, ``gemini_model``, ``schema_version``).
+    (``retrieved_at``, ``llm_model``, ``schema_version``).
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -81,7 +81,7 @@ class EvidenceReport(BaseModel):
 
     schema_version: str = EVIDENCE_SCHEMA_VERSION
     generated_at: datetime
-    gemini_model: str
+    llm_model: str
     n_sources: int = Field(ge=0)
     n_pairs: int = Field(ge=0)
     n_cache_hits: int = Field(ge=0)

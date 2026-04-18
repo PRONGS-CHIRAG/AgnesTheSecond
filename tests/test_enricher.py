@@ -24,7 +24,7 @@ from agnes.models.evidence import (
     EvidenceClaim,
     SubstituteEvidenceLLM,
 )
-from agnes.retrieval.gemini_grounded import (
+from agnes.retrieval.openai_grounded import (
     GroundedBackend,
     GroundedLLM,
     GroundedResult,
@@ -128,14 +128,14 @@ def _grounded_response(
     return GroundedResult(
         text=json_text,
         citations=list(claim.citations),
-        model="gemini-2.5-flash",
+        model="gpt-4o-mini",
     )
 
 
 def _llm_with(backend: GroundedBackend) -> GroundedLLM:
     return GroundedLLM(
-        Settings(gemini_api_key="test-key"),
-        model="gemini-2.5-flash",
+        Settings(openai_api_key="test-key"),
+        model="gpt-4o-mini",
         backend=backend,
     )
 
@@ -320,4 +320,4 @@ def test_select_pairs_and_enrichment_compose(tmp_path: Path) -> None:
     )
     assert report.items[0].source_key == "calcium-citrate"
     assert report.items[0].candidate_key == "magnesium-citrate"
-    assert report.items[0].gemini_model == "gemini-2.5-flash"
+    assert report.items[0].llm_model == "gpt-4o-mini"

@@ -21,7 +21,7 @@ from agnes.evidence.enricher import (
 )
 from agnes.models.canonical import CanonicalRegistry
 from agnes.models.substitutes import SubstituteCandidateReport
-from agnes.retrieval.gemini_grounded import GroundedLLM
+from agnes.retrieval.openai_grounded import GroundedLLM
 from agnes.utils.logging import configure_logging
 
 OUT_DIR = Path("outputs/reports")
@@ -111,7 +111,7 @@ def _write_csv(path: Path, report) -> None:
                     "value": None,
                     "citations": json.dumps([]),
                     "retrieved_at": item.retrieved_at.isoformat(),
-                    "gemini_model": item.gemini_model,
+                    "llm_model": item.llm_model,
                 }
             )
             continue
@@ -127,7 +127,7 @@ def _write_csv(path: Path, report) -> None:
                     "value": claim.value,
                     "citations": json.dumps([c.url for c in claim.citations]),
                     "retrieved_at": item.retrieved_at.isoformat(),
-                    "gemini_model": item.gemini_model,
+                    "llm_model": item.llm_model,
                 }
             )
     if rows:
@@ -221,7 +221,7 @@ def main() -> int:
                 "n_failures": report.n_failures,
                 "partial": report.partial,
                 "duration_ms": report.duration_ms,
-                "gemini_model": report.gemini_model,
+                "llm_model": report.llm_model,
                 "report": str(json_path),
             }
         )

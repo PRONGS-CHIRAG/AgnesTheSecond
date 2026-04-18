@@ -1,40 +1,37 @@
-"""Google Gemini API client (google-genai SDK)."""
+"""OpenAI connectivity ping (used by the smoke script)."""
+
+from __future__ import annotations
 
 import time
 from typing import Any
 
-from google import genai
-from google.genai import types
-
 from agnes.config.settings import Settings
+from agnes.llm import make_client
 
 
 def ping(settings: Settings) -> dict[str, Any]:
-    """
-    Minimal connectivity check: one short generation call.
+    """Minimal connectivity check: one short chat completion.
 
-    Returns a dict with ok, model, latency_ms, and optional error.
+    Returns a dict with ``ok``, ``model``, ``latency_ms`` and optional ``error``.
     """
-    if not settings.gemini_api_key:
+    if not settings.openai_api_key:
         return {
             "ok": False,
-            "model": settings.gemini_model,
+            "model": settings.openai_model,
             "latency_ms": 0,
-            "error": "AGNES_GEMINI_API_KEY is not set",
+            "error": "AGNES_OPENAI_API_KEY is not set",
         }
 
-    client = genai.Client(api_key=settings.gemini_api_key)
-    model = settings.gemini_model
+    client = make_client(settings.openai_api_key)
+    model = settings.openai_model
 
     start = time.perf_counter()
     try:
-        response = client.models.generate_content(
+        resp = client.chat.completions.create(
             model=model,
-            contents="Reply with exactly: ok",
-            config=types.GenerateContentConfig(
-                max_output_tokens=16,
-                temperature=0.0,
-            ),
+            messages=[{"role": "user", "content": "Reply with exactly: ok"}],
+            max_tokens=8,
+            temperature=0.0,
         )
     except Exception as exc:  # noqa: BLE001 — surface any API error in smoke output
         latency_ms = int((time.perf_counter() - start) * 1000)
@@ -46,9 +43,7 @@ def ping(settings: Settings) -> dict[str, Any]:
         }
 
     latency_ms = int((time.perf_counter() - start) * 1000)
-    text = ""
-    if response.text:
-        text = response.text.strip()
+    text = (resp.choices[0].message.content or "").strip() if resp.choices else ""
     return {
         "ok": True,
         "model": model,

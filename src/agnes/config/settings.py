@@ -13,13 +13,20 @@ class Settings(BaseSettings):
         default=Path("data/raw/db.sqlite"),
         description="Path to challenge SQLite database.",
     )
-    gemini_api_key: str | None = Field(
+    openai_api_key: str | None = Field(
         default=None,
-        description="Google Gemini API key (google-genai).",
+        description="OpenAI API key (used by the openai SDK for all LLM + embedding calls).",
     )
-    gemini_model: str = Field(
-        default="gemini-2.5-flash",
-        description="Model id for Gemini API.",
+    openai_model: str = Field(
+        default="gpt-4o-mini",
+        description="Default chat model id used for smoke pings and generic LLM calls.",
+    )
+    tavily_api_key: str | None = Field(
+        default=None,
+        description=(
+            "Tavily Search API key for Phase 5 grounded search_web tool. "
+            "Required when Phase 5 needs to enrich new source/candidate pairs."
+        ),
     )
     cogwit_api_key: str | None = Field(
         default=None,
@@ -62,8 +69,8 @@ class Settings(BaseSettings):
         ),
     )
     phase4_embedding_model: str = Field(
-        default="gemini-embedding-001",
-        description="Gemini embedding model id used by Phase 4.",
+        default="text-embedding-3-small",
+        description="OpenAI embedding model id used by Phase 4.",
     )
     phase4_cross_family_default: bool = Field(
         default=False,
@@ -86,8 +93,94 @@ class Settings(BaseSettings):
         description="Phase 5: hard cap on *new* grounded API calls per run.",
     )
     phase5_grounded_model: str = Field(
-        default="gemini-2.5-flash",
-        description="Phase 5: Gemini model id used with the google_search tool.",
+        default="gpt-4o-mini",
+        description="Phase 5: OpenAI chat model id used with the search_web function-calling tool.",
+    )
+
+    phase6_claim_weights: str = Field(
+        default=(
+            '{"functional_equivalence":0.35,"regulatory":0.25,'
+            '"certification":0.15,"quality_sensory":0.10,'
+            '"price_availability":0.10,"typical_suppliers":0.05}'
+        ),
+        description=(
+            "Phase 6: JSON blob of per-claim weights used by the deterministic "
+            "acceptability scorer. Missing keys are treated as weight 0."
+        ),
+    )
+    phase6_accept_threshold: float = Field(
+        default=0.75,
+        ge=0.0,
+        le=1.0,
+        description="Phase 6: acceptability >= threshold => 'recommend'.",
+    )
+    phase6_reject_threshold: float = Field(
+        default=0.35,
+        ge=0.0,
+        le=1.0,
+        description="Phase 6: acceptability <= threshold => 'do_not_recommend'.",
+    )
+    phase6_min_grounded_claims: int = Field(
+        default=2,
+        ge=0,
+        description=(
+            "Phase 6: below this many grounded claims the tuple is "
+            "'insufficient_evidence'."
+        ),
+    )
+    phase6_max_llm_calls: int = Field(
+        default=25,
+        ge=0,
+        description="Phase 6: hard cap on new structured-LLM calls per run.",
+    )
+    phase6_llm_model: str = Field(
+        default="gpt-4o-mini",
+        description="Phase 6: OpenAI chat model id used for the structured JSON fallback.",
+    )
+
+    phase7_sourcing_weights: str = Field(
+        default=(
+            '{"diversification":0.40,"company_overlap":0.35,'
+            '"concentration_relief":0.25}'
+        ),
+        description=(
+            "Phase 7: JSON blob of weights for the structural sourcing-benefit mix."
+        ),
+    )
+    phase7_final_weights: str = Field(
+        default=(
+            '{"acceptability":0.55,"substitute":0.25,"sourcing":0.20}'
+        ),
+        description=(
+            "Phase 7: JSON blob combining acceptability, substitute score, and "
+            "sourcing benefit into the final score."
+        ),
+    )
+    phase7_safe_threshold: float = Field(
+        default=0.70,
+        ge=0.0,
+        le=1.0,
+        description="Phase 7: final_score >= threshold maps to 'safe_to_consolidate'.",
+    )
+    phase7_reject_threshold: float = Field(
+        default=0.30,
+        ge=0.0,
+        le=1.0,
+        description="Phase 7: final_score <= threshold maps to 'not_recommended'.",
+    )
+    phase7_top_n_polish: int = Field(
+        default=5,
+        ge=0,
+        description="Phase 7: number of top opportunities to polish with the LLM.",
+    )
+    phase7_max_llm_calls: int = Field(
+        default=10,
+        ge=0,
+        description="Phase 7: hard cap on new LLM polish calls per run.",
+    )
+    phase7_llm_model: str = Field(
+        default="gpt-4o-mini",
+        description="Phase 7: OpenAI chat model id used for the optional polish pass.",
     )
 
     model_config = SettingsConfigDict(

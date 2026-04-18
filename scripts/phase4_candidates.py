@@ -27,7 +27,7 @@ from agnes.models.substitutes import (
     TargetDiagnostics,
 )
 from agnes.substitutes.candidate_generator import generate_candidates
-from agnes.substitutes.embeddings import GeminiEmbeddingClient
+from agnes.substitutes.embeddings import EmbeddingClient
 from agnes.substitutes.scoring import normalize_weights
 from agnes.utils.logging import configure_logging
 
@@ -118,10 +118,10 @@ def main() -> int:
     cross_family = args.cross_family or settings.phase4_cross_family_default
     weights = _weights_from_settings(settings)
 
-    embeddings: GeminiEmbeddingClient | None = None
+    embeddings: EmbeddingClient | None = None
     if not args.dry_run:
         os.environ.setdefault("AGNES_PHASE4_EMBEDDING_MODEL", settings.phase4_embedding_model)
-        embeddings = GeminiEmbeddingClient(settings)
+        embeddings = EmbeddingClient(settings)
 
     if args.target:
         targets = [args.target]

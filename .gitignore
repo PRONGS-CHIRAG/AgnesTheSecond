@@ -26,6 +26,7 @@ data/raw/*.sqlite
 # Generated reports (run scripts locally)
 outputs/reports/*.csv
 outputs/reports/*.json
+outputs/logs/
 
 # Jupyter
 .ipynb_checkpoints/

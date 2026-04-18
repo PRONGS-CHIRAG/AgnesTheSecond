@@ -86,7 +86,7 @@ def test_substitute_evidence_extra_forbid() -> None:
         "n_citations": 0,
         "any_contradictions": False,
         "retrieved_at": "2026-04-18T00:00:00Z",
-        "gemini_model": "gemini-2.5-flash",
+        "llm_model": "gpt-4o-mini",
         "schema_version": EVIDENCE_SCHEMA_VERSION,
         "unexpected_field": "boom",
     }
@@ -105,7 +105,7 @@ def test_substitute_evidence_llm_is_subset() -> None:
 def test_evidence_report_defaults_schema_version() -> None:
     report = EvidenceReport(
         generated_at=datetime.now(UTC),
-        gemini_model="gemini-2.5-flash",
+        llm_model="gpt-4o-mini",
         n_sources=0,
         n_pairs=0,
         n_cache_hits=0,
