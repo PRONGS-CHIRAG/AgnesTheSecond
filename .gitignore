@@ -1,3 +1,9 @@
+# Cursor
+.cursor/
+.cursorrules
+.cursorignore
+.cursorindexingignore
+
 # Virtual environments
 .venv/
 venv/
