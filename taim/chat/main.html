@@ -446,6 +446,26 @@
   }
   .modal .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
   .modal .btn.primary:hover { background: #5b54e6; }
+
+  /* ── Clear Chat Button ───────────────────── */
+  .clear-chat-btn {
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Sora', sans-serif;
+    color: var(--text2);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 14px;
+    cursor: pointer;
+    transition: all .2s;
+    margin-right: 12px;
+  }
+  .clear-chat-btn:hover {
+    color: var(--danger);
+    border-color: var(--danger);
+    background: rgba(239,68,68,0.06);
+  }
 </style>
 </head>
 <body>
@@ -454,9 +474,11 @@
 <div class="topnav">
   <div class="logo">Agnes<span>TheSecond</span></div>
   <a href="/" class="active">Chat</a>
+  <a href="/cube/">Cube</a>
   <a href="/explorer/">Explorer</a>
   <a href="/agnes/">Insights</a>
   <div class="spacer"></div>
+  <button class="clear-chat-btn" id="clearChatBtn" onclick="clearChat()" title="Clear conversation">Clear Chat</button>
   <div class="key-status" onclick="openKeyModal()" title="Configure API Key">
     <div class="dot" id="keyDot"></div>
     <span id="keyLabel">No API key</span>
@@ -501,7 +523,44 @@
 <script>
 // ── State ──────────────────────────────────────
 let conversationHistory = [];
+let chatLog = [];
 let isBusy = false;
+
+function saveChatToSession() {
+  sessionStorage.setItem('agnes_chat_log', JSON.stringify(chatLog));
+  sessionStorage.setItem('agnes_chat_history', JSON.stringify(conversationHistory));
+}
+
+function loadChatFromSession() {
+  const stored = JSON.parse(sessionStorage.getItem('agnes_chat_log') || '[]');
+  const hist = JSON.parse(sessionStorage.getItem('agnes_chat_history') || '[]');
+  if (stored.length === 0) return;
+  conversationHistory = hist;
+  chatLog = stored;
+  for (const entry of stored) {
+    addMessage(entry.role, entry.content, entry.steps || null, true);
+  }
+}
+
+function clearChat() {
+  sessionStorage.removeItem('agnes_chat_log');
+  sessionStorage.removeItem('agnes_chat_history');
+  conversationHistory = [];
+  chatLog = [];
+  const container = document.getElementById('messages');
+  container.innerHTML = `
+    <div class="welcome" id="welcome">
+      <h2>Ask Agnes anything about your supply chain</h2>
+      <p>I can query the database, analyze BOMs, find ingredient substitutes, assess supplier risks, and more.</p>
+      <div class="suggestions">
+        <button onclick="askSuggestion(this)">Which ingredients are single-sourced?</button>
+        <button onclick="askSuggestion(this)">Find substitutes for glycerin</button>
+        <button onclick="askSuggestion(this)">Show the top 5 suppliers by product count</button>
+        <button onclick="askSuggestion(this)">What companies have the most complex BOMs?</button>
+        <button onclick="askSuggestion(this)">Analyze supply chain risks</button>
+      </div>
+    </div>`;
+}
 
 function getApiKey() { return localStorage.getItem('agnes_api_key') || ''; }
 function setApiKey(k) { localStorage.setItem('agnes_api_key', k); updateKeyStatus(); }
@@ -699,7 +758,7 @@ function buildReasoningBlock(steps) {
   return wrapper;
 }
 
-function addMessage(role, content, steps) {
+function addMessage(role, content, steps, isRestore) {
   const welcome = document.getElementById('welcome');
   if (welcome) welcome.remove();
 
@@ -738,6 +797,12 @@ function addMessage(role, content, steps) {
 
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
+
+  if (!isRestore) {
+    chatLog.push({ role, content, steps: steps || null });
+    saveChatToSession();
+  }
+
   return bubble;
 }
 
@@ -789,6 +854,7 @@ async function sendMessage() {
 
   addMessage('user', text);
   conversationHistory.push({ role: 'user', content: text });
+  saveChatToSession();
 
   addThinking();
 
@@ -815,6 +881,7 @@ async function sendMessage() {
       const steps = data.steps || [];
       addMessage('assistant', reply, steps);
       conversationHistory.push({ role: 'assistant', content: reply });
+      saveChatToSession();
     }
   } catch (err) {
     removeThinking();
@@ -828,6 +895,7 @@ async function sendMessage() {
 
 // ── Init ───────────────────────────────────────
 updateKeyStatus();
+loadChatFromSession();
 document.getElementById('input').focus();
 </script>
 </body>

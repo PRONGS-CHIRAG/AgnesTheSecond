@@ -26,8 +26,7 @@ build/
 .env.*.local
 
 # SQLite databases
-*.sqlite
-*.db
+
 data/raw/*.sqlite
 
 # Cognee local store

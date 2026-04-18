@@ -16,5 +16,9 @@ app.register_blueprint(explorer_bp)
 from insights.routes import agnes_bp
 app.register_blueprint(agnes_bp)
 
+# Register Voice Cube blueprint (serves at /cube/)
+from cube.routes import cube_bp
+app.register_blueprint(cube_bp)
+
 if __name__ == '__main__':
     app.run(debug=True, threaded=True)
