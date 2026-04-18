@@ -237,12 +237,13 @@ def build_pdf(
     story.append(line_table)
     story.append(Spacer(1, 6))
 
-    # Grand total
+    # Grand total — right-justified under the Unit price / Line total columns
+    # of the line-items table. Tight label+amount pair, no dead space between.
     grand_total = draft.get("grand_total")
     total_table = Table(
         [["Grand total", _fmt_money(grand_total)]],
-        colWidths=[130 * mm, 56 * mm],
-        hAlign="LEFT",
+        colWidths=[20 * mm, 24 * mm],
+        hAlign="RIGHT",
     )
     total_table.setStyle(
         TableStyle(
@@ -254,6 +255,8 @@ def build_pdf(
                 ("TEXTCOLOR", (1, 0), (1, 0), ACCENT),
                 ("TOPPADDING", (0, 0), (-1, -1), 10),
                 ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+                ("LEFTPADDING", (0, 0), (-1, -1), 2),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 2),
             ]
         )
     )
