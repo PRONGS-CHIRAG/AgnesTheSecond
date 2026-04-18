@@ -103,22 +103,16 @@
     width: 200px; height: 200px;
     position: relative;
     z-index: 2;
+    transition: transform 0.15s ease;
+  }
+  .cube-stage.pulsing {
+    animation: stagePulse 0.5s ease-in-out infinite;
   }
   .cube {
     width: 200px; height: 200px;
     position: relative;
     transform-style: preserve-3d;
-    animation: cubeIdle 12s ease-in-out infinite;
-    transition: transform 0.4s ease;
-  }
-  .cube.speaking {
-    animation: cubePulse 0.8s ease-in-out infinite, cubeSpin 6s linear infinite;
-  }
-  .cube.listening {
-    animation: cubeIdle 12s ease-in-out infinite;
-  }
-  .cube.thinking {
-    animation: cubeThink 1.5s ease-in-out infinite, cubeSpin 4s linear infinite;
+    animation: cubeFloat 24s linear infinite;
   }
 
   .cube-face {
@@ -172,29 +166,41 @@
     100% { background-position: 0% 50%; }
   }
 
-  @keyframes cubeIdle {
-    0%   { transform: rotateX(-15deg) rotateY(0deg)   translateY(0px); }
-    25%  { transform: rotateX(-10deg) rotateY(90deg)  translateY(-12px); }
-    50%  { transform: rotateX(-15deg) rotateY(180deg) translateY(0px); }
-    75%  { transform: rotateX(-10deg) rotateY(270deg) translateY(-12px); }
-    100% { transform: rotateX(-15deg) rotateY(360deg) translateY(0px); }
+  @keyframes cubeFloat {
+    0%    { transform: rotateX(-15deg) rotateY(0deg)   rotateZ(0deg)   translateY(0px)   translateX(0px); }
+    4%    { transform: rotateX(-10deg) rotateY(15deg)  rotateZ(1deg)   translateY(-6px)  translateX(3px); }
+    8%    { transform: rotateX(-3deg)  rotateY(30deg)  rotateZ(3deg)   translateY(-12px) translateX(5px); }
+    12%   { transform: rotateX(5deg)   rotateY(45deg)  rotateZ(2deg)   translateY(-16px) translateX(2px); }
+    16%   { transform: rotateX(12deg)  rotateY(60deg)  rotateZ(-1deg)  translateY(-10px) translateX(-3px); }
+    21%   { transform: rotateX(8deg)   rotateY(75deg)  rotateZ(-3deg)  translateY(-4px)  translateX(-6px); }
+    25%   { transform: rotateX(0deg)   rotateY(90deg)  rotateZ(-2deg)  translateY(2px)   translateX(-4px); }
+    29%   { transform: rotateX(-8deg)  rotateY(105deg) rotateZ(0deg)   translateY(-8px)  translateX(-1px); }
+    33%   { transform: rotateX(-14deg) rotateY(120deg) rotateZ(2deg)   translateY(-14px) translateX(4px); }
+    37%   { transform: rotateX(-6deg)  rotateY(135deg) rotateZ(4deg)   translateY(-18px) translateX(6px); }
+    42%   { transform: rotateX(4deg)   rotateY(150deg) rotateZ(3deg)   translateY(-12px) translateX(3px); }
+    46%   { transform: rotateX(10deg)  rotateY(165deg) rotateZ(1deg)   translateY(-6px)  translateX(-2px); }
+    50%   { transform: rotateX(15deg)  rotateY(180deg) rotateZ(0deg)   translateY(0px)   translateX(-5px); }
+    54%   { transform: rotateX(10deg)  rotateY(195deg) rotateZ(-2deg)  translateY(-5px)  translateX(-6px); }
+    58%   { transform: rotateX(3deg)   rotateY(210deg) rotateZ(-4deg)  translateY(-11px) translateX(-3px); }
+    62%   { transform: rotateX(-5deg)  rotateY(225deg) rotateZ(-3deg)  translateY(-17px) translateX(1px); }
+    67%   { transform: rotateX(-12deg) rotateY(240deg) rotateZ(-1deg)  translateY(-13px) translateX(5px); }
+    71%   { transform: rotateX(-8deg)  rotateY(255deg) rotateZ(1deg)   translateY(-7px)  translateX(6px); }
+    75%   { transform: rotateX(0deg)   rotateY(270deg) rotateZ(3deg)   translateY(-2px)  translateX(4px); }
+    79%   { transform: rotateX(7deg)   rotateY(285deg) rotateZ(2deg)   translateY(-9px)  translateX(1px); }
+    83%   { transform: rotateX(13deg)  rotateY(300deg) rotateZ(0deg)   translateY(-15px) translateX(-3px); }
+    87%   { transform: rotateX(6deg)   rotateY(315deg) rotateZ(-2deg)  translateY(-10px) translateX(-5px); }
+    92%   { transform: rotateX(-4deg)  rotateY(335deg) rotateZ(-3deg)  translateY(-5px)  translateX(-4px); }
+    96%   { transform: rotateX(-10deg) rotateY(350deg) rotateZ(-1deg)  translateY(-2px)  translateX(-1px); }
+    100%  { transform: rotateX(-15deg) rotateY(360deg) rotateZ(0deg)   translateY(0px)   translateX(0px); }
   }
 
-  @keyframes cubePulse {
-    0%   { transform: scale(1)   rotateX(-15deg); }
-    50%  { transform: scale(1.08) rotateX(-15deg); }
-    100% { transform: scale(1)   rotateX(-15deg); }
-  }
-
-  @keyframes cubeSpin {
-    from { transform: rotateY(0deg); }
-    to   { transform: rotateY(360deg); }
-  }
-
-  @keyframes cubeThink {
-    0%   { transform: scale(1)    rotateX(-15deg); }
-    50%  { transform: scale(0.94) rotateX(-15deg); }
-    100% { transform: scale(1)    rotateX(-15deg); }
+  @keyframes stagePulse {
+    0%   { transform: scale(1); }
+    20%  { transform: scale(1.12); }
+    40%  { transform: scale(0.96); }
+    60%  { transform: scale(1.07); }
+    80%  { transform: scale(0.98); }
+    100% { transform: scale(1); }
   }
 
   /* ── Particle ring ──────────────────────────── */
@@ -608,6 +614,7 @@
 //  State
 // ══════════════════════════════════════════════════
 const cube = document.getElementById('cube');
+const cubeStage = cube.parentElement;
 const glow = document.getElementById('glow');
 const statusLabel = document.getElementById('statusLabel');
 const transcriptEl = document.getElementById('transcript');
@@ -687,6 +694,11 @@ function closeModal(id) { document.getElementById(id).classList.remove('show'); 
 function setCubeState(state) {
   cube.className = 'cube ' + state;
   glow.className = 'ambient-glow ' + state;
+  if (state === 'speaking') {
+    cubeStage.classList.add('pulsing');
+  } else {
+    cubeStage.classList.remove('pulsing');
+  }
   if (!state || state === '') statusLabel.textContent = 'IDLE';
   else if (state !== 'thinking') statusLabel.textContent = state.toUpperCase();
 }
