@@ -308,6 +308,12 @@ function TurnBubble({ turn }: { turn: Turn }) {
             Reached the tool-use budget for this turn.
           </div>
         )}
+
+        {!isUser && turn.finishReason === "refused" && (
+          <div className="mt-2 rounded border border-rose-200 bg-rose-50 px-2 py-1 text-xs text-rose-700">
+            Out of scope — Agnes 2 only answers supply chain and procurement questions.
+          </div>
+        )}
       </div>
     </div>
   );

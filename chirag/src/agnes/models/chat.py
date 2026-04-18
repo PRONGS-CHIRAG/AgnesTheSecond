@@ -45,7 +45,7 @@ class ChatResponse(BaseModel):
     reply: str
     steps: list[ChatStep] = Field(default_factory=list)
     llm_model: str | None = None
-    finish_reason: Literal["stop", "max_iterations", "error"] = "stop"
+    finish_reason: Literal["stop", "max_iterations", "error", "refused"] = "stop"
     schema_version: str = CHAT_SCHEMA_VERSION
 
 

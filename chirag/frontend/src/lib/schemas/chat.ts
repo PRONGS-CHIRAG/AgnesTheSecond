@@ -32,6 +32,7 @@ export const ChatFinishReasonSchema = z.enum([
   "stop",
   "max_iterations",
   "error",
+  "refused",
 ]);
 export type ChatFinishReason = z.infer<typeof ChatFinishReasonSchema>;
 

@@ -30,6 +30,8 @@ from agnes.api.chat_tools import (
     tool_get_evidence,
     tool_get_recommendation,
     tool_get_risks,
+    tool_get_supplier_profile,
+    tool_list_suppliers,
 )
 from agnes.api.services.artifact_loader import ArtifactLoader
 from agnes.config.settings import Settings
@@ -41,6 +43,7 @@ from agnes.models.chat import (
     ChatResponse,
     ChatStep,
 )
+from agnes.services.scope_guard import run_scope_guard
 
 logger = logging.getLogger(__name__)
 
@@ -163,6 +166,67 @@ _TOOLS: list[dict[str, Any]] = [
             },
         },
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_supplier_profile",
+            "description": (
+                "Return a consolidated profile for one supplier — rating "
+                "(quality / compliance / reliability / risk tier), "
+                "procurement history (orders, total spend, on-time %, "
+                "quality pass rate), top 5 products by spend, and distinct "
+                "customer companies. Accepts either supplier_id or a name "
+                "fragment (case-insensitive)."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "supplier_id": {"type": "integer"},
+                    "name": {"type": "string"},
+                },
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "list_suppliers",
+            "description": (
+                "Return a ranked supplier roster with Supplier_Rating + "
+                "Procurement_History aggregates (spend, orders, on-time, "
+                "quality pass rate). Use this for questions like 'top "
+                "suppliers by spend', 'worst on-time suppliers', 'low-risk "
+                "suppliers with quality above 80'. Limit capped at 50."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "sort_by": {
+                        "type": "string",
+                        "enum": [
+                            "spend",
+                            "orders",
+                            "on_time",
+                            "quality",
+                            "reliability",
+                            "compliance",
+                            "lead_time",
+                            "name",
+                        ],
+                    },
+                    "risk_tier": {
+                        "type": "string",
+                        "description": "Filter by Supplier_Rating.RiskTier (case-insensitive).",
+                    },
+                    "min_quality": {
+                        "type": "number",
+                        "description": "Only suppliers with QualityScore >= this.",
+                    },
+                    "limit": {"type": "integer", "minimum": 1, "maximum": 50},
+                },
+            },
+        },
+    },
 ]
 
 
@@ -227,6 +291,32 @@ def _dispatch_tool(
             tool_analyze_bom(engine, search_term=args.get("search_term", "")),
             f"BOM: {args.get('search_term', '')}",
         )
+    if name == "get_supplier_profile":
+        sid = args.get("supplier_id")
+        nm = args.get("name")
+        return (
+            tool_get_supplier_profile(
+                engine,
+                supplier_id=int(sid) if isinstance(sid, (int, float, str)) and str(sid).strip() else None,
+                name=str(nm) if nm else None,
+            ),
+            f"Supplier profile: {nm or sid or '?'}",
+        )
+    if name == "list_suppliers":
+        return (
+            tool_list_suppliers(
+                engine,
+                sort_by=str(args.get("sort_by", "spend")),
+                risk_tier=(str(args["risk_tier"]) if args.get("risk_tier") else None),
+                min_quality=(
+                    float(args["min_quality"])
+                    if args.get("min_quality") is not None
+                    else None
+                ),
+                limit=int(args.get("limit", 10)),
+            ),
+            f"Suppliers by {args.get('sort_by', 'spend')}",
+        )
     return {"error": f"unknown_tool: {name}"}, f"unknown:{name}"
 
 
@@ -258,6 +348,32 @@ def chat(body: ChatRequest, request: Request) -> ChatResponse:
     client = make_client(settings.openai_api_key)
     engine = get_engine(settings)
 
+    steps: list[ChatStep] = []
+
+    # --- Scope guard: refuse off-topic requests before touching tools ---
+    scope = run_scope_guard(client=client, message=body.message)
+    steps.append(
+        ChatStep(
+            tool="scope_guard",
+            args={"message_preview": body.message[:120]},
+            label="Scope check",
+            ok=True,
+            result_preview=(
+                "in_scope=true" if scope.in_scope else "in_scope=false"
+            ),
+            duration_ms=scope.latency_ms,
+        )
+    )
+    if not scope.in_scope:
+        logger.info("chat.refused reason=out_of_scope message_preview=%r", body.message[:120])
+        return ChatResponse(
+            reply=scope.refusal,
+            steps=steps,
+            llm_model=settings.openai_model,
+            finish_reason="refused",
+            schema_version=CHAT_SCHEMA_VERSION,
+        )
+
     messages: list[dict[str, Any]] = [
         {"role": "system", "content": _load_system_prompt()}
     ]
@@ -265,7 +381,6 @@ def chat(body: ChatRequest, request: Request) -> ChatResponse:
         messages.append({"role": turn.role, "content": turn.content})
     messages.append({"role": "user", "content": body.message})
 
-    steps: list[ChatStep] = []
     finish_reason: str = "stop"
     reply = ""
 

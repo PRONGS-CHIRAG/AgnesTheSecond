@@ -46,6 +46,18 @@ class Settings(BaseSettings):
             "When set, exported as COGWIT_API_BASE so cogwit-sdk picks it up."
         ),
     )
+    elevenlabs_api_key: str | None = Field(
+        default=None,
+        description=(
+            "ElevenLabs API key for /api/voice/* (Scribe v1 STT + streaming TTS). "
+            "Falls back to the bare ELEVENLABS_API_KEY env var when unset."
+        ),
+    )
+    elevenlabs_voice_id: str = Field(
+        default="XB0fDUnXU5powFXDhCwa",
+        description="Default ElevenLabs voice id for Agnes 2 (Charlotte).",
+    )
+
     log_level: str = Field(default="INFO", description="Logging level.")
 
     procurement_required: bool = Field(

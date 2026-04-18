@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const NAV = [
+const NAV: { href: string; label: string; accent?: "brand" }[] = [
   { href: "/", label: "Home" },
   { href: "/chat", label: "Chat" },
   { href: "/procurement", label: "Procurement" },
   { href: "/risks", label: "Risks" },
+  { href: "/voicechat", label: "Agnes 2", accent: "brand" },
 ];
 
 export function TopNav() {
@@ -33,16 +34,30 @@ export function TopNav() {
               const active =
                 pathname === l.href ||
                 (l.href !== "/" && pathname?.startsWith(l.href));
+              const isBrand = l.accent === "brand";
+              const cls = isBrand
+                ? active
+                  ? "bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white shadow-sm"
+                  : "bg-gradient-to-r from-indigo-50 to-fuchsia-50 text-indigo-700 hover:from-indigo-100 hover:to-fuchsia-100"
+                : active
+                  ? "bg-slate-900 text-white shadow-sm"
+                  : "text-slate-600 hover:bg-slate-100";
               return (
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
-                      active
-                        ? "bg-slate-900 text-white shadow-sm"
-                        : "text-slate-600 hover:bg-slate-100"
-                    }`}
+                    className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition ${cls}`}
                   >
+                    {isBrand && (
+                      <span
+                        aria-hidden
+                        className={`text-xs ${
+                          active ? "text-white" : "text-indigo-500"
+                        }`}
+                      >
+                        ★
+                      </span>
+                    )}
                     {l.label}
                   </Link>
                 </li>

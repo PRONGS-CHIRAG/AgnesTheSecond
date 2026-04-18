@@ -15,6 +15,7 @@ from agnes.api.artifacts import router as artifacts_router
 from agnes.api.chat import router as chat_router
 from agnes.api.procurement import router as procurement_router
 from agnes.api.runs import router as runs_router
+from agnes.api.voice import router as voice_router
 from agnes.api.services.artifact_loader import ArtifactLoader
 from agnes.api.services.run_manager import RunManager
 from agnes.api.services.supply_network import SupplyNetworkService
@@ -81,6 +82,7 @@ def create_app() -> FastAPI:
     app.include_router(chat_router)
     app.include_router(procurement_router)
     app.include_router(runs_router)
+    app.include_router(voice_router)
     return app
 
 

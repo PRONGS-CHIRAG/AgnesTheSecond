@@ -6,3 +6,51 @@ html,
 body {
   height: 100%;
 }
+
+@keyframes agnes-star-spin {
+  from {
+    transform: rotateY(0deg) rotateX(12deg);
+  }
+  to {
+    transform: rotateY(360deg) rotateX(12deg);
+  }
+}
+
+@keyframes agnes-star-spin-reverse {
+  from {
+    transform: rotateY(0deg) rotateX(-8deg) scale(0.95) translateZ(-40px);
+  }
+  to {
+    transform: rotateY(-360deg) rotateX(-8deg) scale(0.95) translateZ(-40px);
+  }
+}
+
+@keyframes agnes-star-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 0.85;
+  }
+}
+
+.agnes-star-spin {
+  animation-name: agnes-star-spin;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  transform-style: preserve-3d;
+}
+
+.agnes-star-spin-reverse {
+  animation-name: agnes-star-spin-reverse;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  transform-style: preserve-3d;
+}
+
+.agnes-star-pulse {
+  animation: agnes-star-pulse 2.4s ease-in-out infinite;
+}

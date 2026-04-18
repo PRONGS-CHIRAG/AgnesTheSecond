@@ -62,6 +62,12 @@ from agnes.models.reports import (
     SupplierFragmentation,
     TableSummary,
 )
+from agnes.models.voice import (
+    VOICE_SCHEMA_VERSION,
+    VoiceRespondResponse,
+    VoiceTimings,
+    VoiceTtsRequest,
+)
 
 __all__ = [
     "ASSESSMENT_SCHEMA_VERSION",
@@ -112,5 +118,9 @@ __all__ = [
     "SupplierProductRow",
     "SupplierRow",
     "TableSummary",
+    "VOICE_SCHEMA_VERSION",
+    "VoiceRespondResponse",
+    "VoiceTimings",
+    "VoiceTtsRequest",
     "node_id",
 ]
