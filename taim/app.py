@@ -4,6 +4,10 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
+@app.route("/")
+def health():
+    return {"status": "ok", "message": "Agnes backend running on Vercel"}
+
 # Register Chat blueprint (main landing page at /)
 from chat.routes import chat_bp
 app.register_blueprint(chat_bp)
