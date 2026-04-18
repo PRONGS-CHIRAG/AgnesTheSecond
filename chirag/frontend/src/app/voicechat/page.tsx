@@ -85,7 +85,9 @@ function isEnglishCode(code: string): boolean {
 }
 
 const HISTORY_KEY = "agnes2-voice-history";
-const HISTORY_MAX = 12;
+// Cap the local transcript so localStorage stays well under 5MB even with
+// multi-sentence answers; at ~2KB per turn, 200 turns is ~400KB.
+const HISTORY_MAX = 200;
 
 function loadHistory(): Turn[] {
   if (typeof window === "undefined") return [];
@@ -124,6 +126,92 @@ type PhaseLog = {
   ms: number;
 };
 
+type TurnCardProps = {
+  transcript: string;
+  english_transcript: string;
+  detected_language: string;
+  detected_language_name: string;
+  answer_spoken: string;
+  answer_spoken_en: string;
+  answer_language: string;
+  isLive?: boolean;
+  phaseChips?: PhaseLog[];
+};
+
+function TurnCard(props: TurnCardProps) {
+  const userNonEnglish =
+    !!props.detected_language &&
+    !isEnglishCode(props.detected_language) &&
+    !!props.english_transcript &&
+    props.english_transcript !== props.transcript;
+  const replyNonEnglish =
+    !!props.answer_language &&
+    !isEnglishCode(props.answer_language) &&
+    !!props.answer_spoken_en &&
+    props.answer_spoken_en !== props.answer_spoken;
+  return (
+    <div className="space-y-2">
+      <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-4 text-sm shadow-sm">
+        <div className="flex items-center justify-between gap-2">
+          <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-400">
+            You said
+          </div>
+          {props.detected_language && (
+            <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500">
+              {languageFlag(props.detected_language)}{" "}
+              {props.detected_language_name ||
+                props.detected_language.toUpperCase()}
+            </span>
+          )}
+        </div>
+        <div className="mt-1 text-slate-700">{props.transcript}</div>
+        {userNonEnglish && (
+          <div className="mt-2 border-t border-slate-200/60 pt-2 text-xs italic text-slate-500">
+            <span className="mr-1 rounded-full bg-indigo-50 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-widest text-indigo-600">
+              EN
+            </span>
+            {props.english_transcript}
+          </div>
+        )}
+      </div>
+      <div className="rounded-2xl border border-indigo-200/70 bg-gradient-to-br from-indigo-50 via-white to-fuchsia-50 p-4 text-sm shadow-sm">
+        <div className="flex items-center justify-between gap-2">
+          <div className="text-[10px] font-semibold uppercase tracking-widest text-indigo-500">
+            Agnes 2 said
+          </div>
+          {props.answer_language && (
+            <span className="rounded-full bg-white/80 px-2 py-0.5 text-[10px] font-semibold text-indigo-500 shadow-sm">
+              {languageFlag(props.answer_language)}{" "}
+              {props.answer_language.toUpperCase()}
+            </span>
+          )}
+        </div>
+        <div className="mt-1 text-slate-800">{props.answer_spoken}</div>
+        {replyNonEnglish && (
+          <details className="mt-2 border-t border-indigo-200/50 pt-2 text-xs text-slate-500">
+            <summary className="cursor-pointer select-none font-medium text-indigo-500">
+              Show English version
+            </summary>
+            <div className="mt-1 italic">{props.answer_spoken_en}</div>
+          </details>
+        )}
+        {props.isLive && props.phaseChips && props.phaseChips.length > 0 && (
+          <div className="mt-3 flex flex-wrap gap-2 text-[10px] uppercase tracking-widest text-slate-400">
+            {props.phaseChips.map((p) => (
+              <span
+                key={p.label}
+                className="rounded-full bg-white/70 px-2 py-0.5 shadow-sm"
+              >
+                {p.label} {p.ms}ms
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function VoiceChatPage() {
   const [state, setState] = useState<StarState>("idle");
   const [message, setMessage] = useState<string>(
@@ -146,6 +234,7 @@ export default function VoiceChatPage() {
   const audioElRef = useRef<HTMLAudioElement | null>(null);
   const cancelledRef = useRef<boolean>(false);
   const startedAtRef = useRef<number>(0);
+  const transcriptRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     setHistory(loadHistory());
@@ -153,6 +242,13 @@ export default function VoiceChatPage() {
       .then((cfg) => setVoiceReady(cfg.ready))
       .catch(() => setVoiceReady(false));
   }, []);
+
+  // Keep the scrollable transcript pinned to the latest turn.
+  useEffect(() => {
+    const el = transcriptRef.current;
+    if (!el) return;
+    el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+  }, [history, current, state]);
 
   const cleanupCapture = useCallback(() => {
     if (vadRafRef.current != null) {
@@ -608,89 +704,68 @@ export default function VoiceChatPage() {
             </div>
           </header>
 
-          <div className="relative flex flex-1 flex-col items-center justify-center px-6 py-10">
+          <div className="relative flex flex-1 flex-col items-center overflow-hidden px-6 pt-8">
             <RotatingStar state={state} onClick={handleStarClick} />
 
-            <div className="mt-12 max-w-xl text-center text-sm text-slate-600">
+            <div className="mt-8 max-w-xl text-center text-sm text-slate-600">
               <p className="font-medium text-slate-700">{message}</p>
               {error && (
                 <p className="mt-2 text-xs text-rose-500">{error}</p>
               )}
             </div>
 
-            {current && (() => {
-              const userNonEnglish =
-                !!current.detected_language &&
-                !isEnglishCode(current.detected_language) &&
-                !!current.english_transcript &&
-                current.english_transcript !== current.transcript;
-              const replyNonEnglish =
-                !!current.answer_language &&
-                !isEnglishCode(current.answer_language) &&
-                !!current.answer_spoken_en &&
-                current.answer_spoken_en !== current.answer_spoken;
-              return (
-                <div className="mt-8 w-full max-w-2xl space-y-3">
-                  <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-4 text-sm shadow-sm">
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-400">
-                        You said
-                      </div>
-                      {current.detected_language && (
-                        <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500">
-                          {languageFlag(current.detected_language)}{" "}
-                          {current.detected_language_name ||
-                            current.detected_language.toUpperCase()}
-                        </span>
-                      )}
-                    </div>
-                    <div className="mt-1 text-slate-700">{current.transcript}</div>
-                    {userNonEnglish && (
-                      <div className="mt-2 border-t border-slate-200/60 pt-2 text-xs italic text-slate-500">
-                        <span className="mr-1 rounded-full bg-indigo-50 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-widest text-indigo-600">
-                          EN
-                        </span>
-                        {current.english_transcript}
-                      </div>
-                    )}
+            <div
+              ref={transcriptRef}
+              className="mt-6 w-full max-w-2xl flex-1 overflow-y-auto scroll-smooth pb-10 pr-1"
+            >
+              <div className="space-y-3">
+                {history.length === 0 && !current && (
+                  <div className="pt-10 text-center text-xs text-slate-400">
+                    Your conversation will appear here. Tap the star to start.
                   </div>
-                  <div className="rounded-2xl border border-indigo-200/70 bg-gradient-to-br from-indigo-50 via-white to-fuchsia-50 p-4 text-sm shadow-sm">
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="text-[10px] font-semibold uppercase tracking-widest text-indigo-500">
-                        Agnes 2 said
-                      </div>
-                      {current.answer_language && (
-                        <span className="rounded-full bg-white/80 px-2 py-0.5 text-[10px] font-semibold text-indigo-500 shadow-sm">
-                          {languageFlag(current.answer_language)}{" "}
-                          {current.answer_language.toUpperCase()}
-                        </span>
-                      )}
-                    </div>
-                    <div className="mt-1 text-slate-800">{current.answer_spoken}</div>
-                    {replyNonEnglish && (
-                      <details className="mt-2 border-t border-indigo-200/50 pt-2 text-xs text-slate-500">
-                        <summary className="cursor-pointer select-none font-medium text-indigo-500">
-                          Show English version
-                        </summary>
-                        <div className="mt-1 italic">{current.answer_spoken_en}</div>
-                      </details>
-                    )}
-                    {phases.length > 0 && (
-                      <div className="mt-3 flex flex-wrap gap-2 text-[10px] uppercase tracking-widest text-slate-400">
-                        {phases.map((p) => (
-                          <span
-                            key={p.label}
-                            className="rounded-full bg-white/70 px-2 py-0.5 shadow-sm"
-                          >
-                            {p.label} {p.ms}ms
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })()}
+                )}
+
+                {history
+                  .slice()
+                  .reverse()
+                  .map((h) => (
+                    <TurnCard
+                      key={h.id}
+                      transcript={h.transcript}
+                      english_transcript={h.english_transcript}
+                      detected_language={h.detected_language}
+                      detected_language_name={h.detected_language_name}
+                      answer_spoken={h.answer_spoken}
+                      answer_spoken_en={h.answer_spoken_en}
+                      answer_language={h.answer_language}
+                    />
+                  ))}
+
+                {current &&
+                  (() => {
+                    const latest = history[0];
+                    const alreadyPersisted =
+                      !!latest &&
+                      latest.transcript === current.transcript &&
+                      latest.answer_raw === current.answer_raw;
+                    if (alreadyPersisted) return null;
+                    return (
+                      <TurnCard
+                        key="live"
+                        transcript={current.transcript}
+                        english_transcript={current.english_transcript}
+                        detected_language={current.detected_language}
+                        detected_language_name={current.detected_language_name}
+                        answer_spoken={current.answer_spoken}
+                        answer_spoken_en={current.answer_spoken_en}
+                        answer_language={current.answer_language}
+                        isLive
+                        phaseChips={phases}
+                      />
+                    );
+                  })()}
+              </div>
+            </div>
           </div>
         </section>
       </div>
