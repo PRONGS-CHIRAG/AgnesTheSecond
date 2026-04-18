@@ -1,0 +1,520 @@
+"""
+Agnes AI Agent
+==============
+OpenAI-powered agent that answers natural-language supply chain questions
+by querying the SQLite database, finding substitutes via BOM analysis,
+and synthesising actionable answers.
+"""
+
+import sqlite3
+import os
+import re
+import json
+from openai import OpenAI
+
+DB_PATH = os.path.join(
+    os.path.dirname(__file__), '../../hackathon-tumai/db.sqlite'
+)
+DB_PATH = os.path.abspath(DB_PATH)
+
+SYSTEM_PROMPT = """You are Agnes, an expert AI supply-chain analyst for a CPG (Consumer Packaged Goods) company network.
+
+You have access to a SQLite database with this schema:
+
+  Company(Id INTEGER PK, Name TEXT)
+  Product(Id INTEGER PK, SKU TEXT, CompanyId INTEGER FK→Company, Type TEXT CHECK('finished-good','raw-material'))
+  BOM(Id INTEGER PK, ProducedProductId INTEGER FK→Product)  -- one BOM per finished good
+  BOM_Component(BOMId INTEGER FK→BOM, ConsumedProductId INTEGER FK→Product)  -- raw materials in a BOM
+  Supplier(Id INTEGER PK, Name TEXT)
+  Supplier_Product(SupplierId FK→Supplier, ProductId FK→Product)  -- which suppliers can supply which products
+
+  -- Procurement & quality data (historical mock data for analysis):
+  Supplier_Rating(SupplierId PK, QualityScore REAL 0-100, ComplianceScore REAL 0-100, ReliabilityScore REAL 0-100, LeadTimeDays INT, MinOrderQty INT, Certifications TEXT comma-separated, LastAuditDate TEXT, RiskTier TEXT 'low'|'medium'|'high')
+  Procurement_History(Id PK, SupplierId FK, ProductId FK, CompanyId FK, OrderDate TEXT, DeliveryDate TEXT, Quantity REAL, UnitPrice REAL $/kg, TotalCost REAL, Currency TEXT, OnTime INT 0|1, QualityPassRate REAL 0-100)
+  Price_Benchmark(BaseName TEXT PK, AvgMarketPrice REAL $/kg, MinPrice REAL, MaxPrice REAL, PriceVolatility REAL 0-1, LastUpdated TEXT)
+
+Key domain facts:
+- Product SKUs encode ingredient names: RM-C{companyId}-{ingredient-name}-{hex}  or  FG-{brand}-{id}
+- To get the human-readable ingredient name from a raw-material SKU, strip the RM-C##- prefix and the trailing -hexhash, then replace hyphens with spaces and title-case.
+- 61 companies, 1025 products (149 finished goods, 876 raw materials), 357 unique ingredients, 40 suppliers.
+- Each finished good has exactly one BOM. Each BOM lists its raw-material components.
+- Supplier_Product links suppliers to raw-material Products.
+- Procurement_History contains ~8000 historical orders over 2 years with pricing and delivery data.
+- Supplier_Rating contains quality, compliance, and reliability scores for all 40 suppliers, plus certifications.
+- Price_Benchmark has market reference prices per ingredient (by BaseName which is the lowercase hyphenated form).
+
+Substitution logic (IMPORTANT):
+- Two raw materials are VARIANT substitutes if they share the same core ingredient name (e.g. "vitamin-c-ascorbic-acid" vs "vitamin-c-sodium-ascorbate" — both are vitamin C).
+- Two raw materials are FUNCTIONAL substitutes if they appear in the same functional category (e.g. both are thickeners, both are sweeteners, both are preservatives) even if they have different names.
+- BOM co-occurrence is a strong signal: if two raw materials frequently appear in the same types of finished goods, they likely serve the same functional role.
+- When suggesting substitutes, always note caveats: formulation testing needed, allergen differences, regulatory considerations.
+
+Cost & Quality analysis:
+- A sourcing recommendation is only valid if quality and compliance constraints are still met.
+- Compare supplier prices against market benchmarks (Price_Benchmark table).
+- Factor in supplier quality scores, compliance scores, on-time delivery rates, and certifications.
+- When recommending supplier switches, verify the new supplier has adequate certifications (GMP at minimum).
+- Flag cost savings opportunities when price spreads exceed 15% across suppliers for the same ingredient.
+
+When answering questions:
+1. Use the execute_sql tool to query the database. Write clean SQL.
+2. Use find_substitutes tool to find potential replacements for ingredients.
+3. Use analyze_bom to inspect a product's bill of materials.
+4. Always ground your answers in actual data from tools — never fabricate numbers.
+5. Be specific: name companies, suppliers, ingredient names, counts, prices, quality scores.
+6. When relevant, mention risks (single-source, concentration, quality), costs, and opportunities (consolidation, substitution, savings).
+7. Format your answers in clear Markdown with headers, bullet points, and tables where helpful.
+8. If a query returns no results or you're uncertain, say so honestly.
+"""
+
+TOOLS = [
+    {
+        "type": "function",
+        "function": {
+            "name": "execute_sql",
+            "description": "Execute a read-only SQL SELECT query against the supply chain database. Returns up to 50 rows. Use this to look up companies, products, BOMs, suppliers, ingredient counts, etc.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "A SQL SELECT statement. Must be read-only (no INSERT/UPDATE/DELETE). Use LIMIT to cap results."
+                    }
+                },
+                "required": ["query"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "find_substitutes",
+            "description": "Find potential substitute ingredients for a given ingredient name. Searches by BOM co-occurrence (ingredients that appear alongside the target in finished goods), same functional category (name-based heuristic), and variant detection (similar names). Returns ranked candidates with reasoning.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "ingredient_name": {
+                        "type": "string",
+                        "description": "The ingredient name or partial name to find substitutes for (e.g. 'glycerin', 'vitamin c', 'soy lecithin')."
+                    }
+                },
+                "required": ["ingredient_name"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "analyze_bom",
+            "description": "Analyze a finished-good product's Bill of Materials: lists all raw-material components, their suppliers, and flags single-source risks. Can search by product SKU fragment or company name.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "search_term": {
+                        "type": "string",
+                        "description": "A product SKU fragment, product name, or company name to find and analyze the BOM for."
+                    }
+                },
+                "required": ["search_term"]
+            }
+        }
+    }
+]
+
+
+def _base_name(sku):
+    """Extract canonical ingredient name from SKU."""
+    if not sku:
+        return ''
+    cleaned = re.sub(r'^(FG|RM)-[A-Za-z0-9]+-', '', sku)
+    cleaned = re.sub(r'-[0-9a-f]{6,}$', '', cleaned, flags=re.IGNORECASE)
+    return cleaned.lower().strip('-')
+
+
+def _humanize(name):
+    return name.replace('-', ' ').strip().title()
+
+
+def _get_conn():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
+def tool_execute_sql(query):
+    """Execute a read-only SQL query and return results."""
+    q = query.strip()
+    # Safety: only allow SELECT
+    if not q.upper().startswith('SELECT'):
+        return {"error": "Only SELECT queries are allowed."}
+    try:
+        conn = _get_conn()
+        cursor = conn.execute(q)
+        columns = [desc[0] for desc in cursor.description] if cursor.description else []
+        rows = cursor.fetchmany(50)
+        result = [dict(zip(columns, row)) for row in rows]
+        total = len(result)
+        # Check if there are more
+        extra = cursor.fetchone()
+        if extra:
+            total_count = conn.execute(
+                f"SELECT COUNT(*) FROM ({q})"
+            ).fetchone()[0]
+            conn.close()
+            return {"columns": columns, "rows": result, "total": total_count, "truncated": True}
+        conn.close()
+        return {"columns": columns, "rows": result, "total": total, "truncated": False}
+    except Exception as e:
+        return {"error": str(e)}
+
+
+def tool_find_substitutes(ingredient_name):
+    """Find substitutes for an ingredient using BOM co-occurrence and name similarity."""
+    search = ingredient_name.lower().replace(' ', '-')
+    conn = _get_conn()
+
+    # 1. Find all product IDs matching this ingredient
+    all_rm = conn.execute(
+        "SELECT Id, SKU, CompanyId FROM Product WHERE Type = 'raw-material'"
+    ).fetchall()
+
+    matching_ids = []
+    for r in all_rm:
+        bn = _base_name(r['SKU'])
+        if search in bn or bn in search:
+            matching_ids.append(r['Id'])
+
+    if not matching_ids:
+        conn.close()
+        return {"error": f"No ingredient found matching '{ingredient_name}'."}
+
+    target_base = _base_name(
+        conn.execute("SELECT SKU FROM Product WHERE Id = ?", (matching_ids[0],)).fetchone()['SKU']
+    )
+
+    # 2. Find BOMs that use this ingredient
+    ph = ','.join('?' * len(matching_ids))
+    bom_rows = conn.execute(f"""
+        SELECT DISTINCT bc.BOMId
+        FROM BOM_Component bc
+        WHERE bc.ConsumedProductId IN ({ph})
+    """, matching_ids).fetchall()
+    bom_ids = [r['BOMId'] for r in bom_rows]
+
+    # 3. Find all other ingredients that appear in these same BOMs (co-occurrence)
+    co_occurring = {}
+    if bom_ids:
+        bph = ','.join('?' * len(bom_ids))
+        co_rows = conn.execute(f"""
+            SELECT bc.ConsumedProductId, p.SKU, COUNT(DISTINCT bc.BOMId) as bom_count
+            FROM BOM_Component bc
+            JOIN Product p ON p.Id = bc.ConsumedProductId
+            WHERE bc.BOMId IN ({bph})
+              AND bc.ConsumedProductId NOT IN ({ph})
+            GROUP BY bc.ConsumedProductId
+            ORDER BY bom_count DESC
+        """, bom_ids + matching_ids).fetchall()
+
+        for r in co_rows:
+            bn = _base_name(r['SKU'])
+            if bn not in co_occurring:
+                co_occurring[bn] = {
+                    'name': _humanize(bn),
+                    'bom_overlap': r['bom_count'],
+                    'product_ids': []
+                }
+            co_occurring[bn]['product_ids'].append(r['ConsumedProductId'])
+            co_occurring[bn]['bom_overlap'] = max(co_occurring[bn]['bom_overlap'], r['bom_count'])
+
+    # 4. Find name-similar ingredients (variant substitutes)
+    target_tokens = set(target_base.replace('-', ' ').split())
+    variants = []
+    functional = []
+
+    all_base_names = {}
+    for r in all_rm:
+        bn = _base_name(r['SKU'])
+        if bn and bn != target_base:
+            if bn not in all_base_names:
+                all_base_names[bn] = []
+            all_base_names[bn].append(r['Id'])
+
+    for bn, pids in all_base_names.items():
+        tokens = set(bn.replace('-', ' ').split())
+        overlap = target_tokens & tokens
+        jaccard = len(overlap) / len(target_tokens | tokens) if (target_tokens | tokens) else 0
+
+        if jaccard >= 0.3:
+            # Get suppliers for this ingredient
+            suppliers = conn.execute(f"""
+                SELECT DISTINCT s.Name
+                FROM Supplier_Product sp
+                JOIN Supplier s ON s.Id = sp.SupplierId
+                WHERE sp.ProductId IN ({','.join('?' * len(pids))})
+            """, pids).fetchall()
+
+            # Count companies using it
+            companies = conn.execute(f"""
+                SELECT COUNT(DISTINCT CompanyId) as cnt
+                FROM Product WHERE Id IN ({','.join('?' * len(pids))})
+            """, pids).fetchone()
+
+            variants.append({
+                'name': _humanize(bn),
+                'baseName': bn,
+                'similarity': round(jaccard, 2),
+                'supplierNames': [s['Name'] for s in suppliers],
+                'companyCount': companies['cnt'],
+                'inSameBoms': bn in co_occurring,
+            })
+
+    variants.sort(key=lambda x: (-x['similarity'], -x['companyCount']))
+
+    # 5. BOM co-occurrence candidates (functional substitutes)
+    # Ingredients that appear in many of the same BOMs but aren't name-similar
+    variant_names = {v['baseName'] for v in variants}
+    for bn, info in sorted(co_occurring.items(), key=lambda x: -x[1]['bom_overlap']):
+        if bn in variant_names:
+            continue
+        pids = info['product_ids']
+        suppliers = conn.execute(f"""
+            SELECT DISTINCT s.Name
+            FROM Supplier_Product sp
+            JOIN Supplier s ON s.Id = sp.SupplierId
+            WHERE sp.ProductId IN ({','.join('?' * len(pids))})
+        """, pids).fetchall()
+
+        companies = conn.execute(f"""
+            SELECT COUNT(DISTINCT CompanyId) as cnt
+            FROM Product WHERE Id IN ({','.join('?' * len(pids))})
+        """, pids).fetchone()
+
+        functional.append({
+            'name': info['name'],
+            'baseName': bn,
+            'bomOverlap': info['bom_overlap'],
+            'totalBoms': len(bom_ids),
+            'supplierNames': [s['Name'] for s in suppliers],
+            'companyCount': companies['cnt'],
+        })
+
+    functional.sort(key=lambda x: (-x['bomOverlap'], -x['companyCount']))
+
+    # Get suppliers for the target ingredient
+    target_suppliers = conn.execute(f"""
+        SELECT DISTINCT s.Name
+        FROM Supplier_Product sp
+        JOIN Supplier s ON s.Id = sp.SupplierId
+        WHERE sp.ProductId IN ({ph})
+    """, matching_ids).fetchall()
+
+    target_companies = conn.execute(f"""
+        SELECT COUNT(DISTINCT CompanyId) as cnt
+        FROM Product WHERE Id IN ({ph})
+    """, matching_ids).fetchone()
+
+    conn.close()
+
+    return {
+        "target": {
+            "name": _humanize(target_base),
+            "baseName": target_base,
+            "supplierNames": [s['Name'] for s in target_suppliers],
+            "companyCount": target_companies['cnt'],
+            "bomCount": len(bom_ids),
+        },
+        "variants": variants[:15],
+        "functional_candidates": functional[:20],
+    }
+
+
+def tool_analyze_bom(search_term):
+    """Analyze a product's BOM."""
+    conn = _get_conn()
+    search = f'%{search_term}%'
+
+    # Try to find a finished good matching the search
+    product = conn.execute("""
+        SELECT p.Id, p.SKU, p.CompanyId, c.Name as CompanyName
+        FROM Product p
+        JOIN Company c ON c.Id = p.CompanyId
+        WHERE p.Type = 'finished-good'
+          AND (p.SKU LIKE ? OR c.Name LIKE ?)
+        LIMIT 1
+    """, (search, search)).fetchone()
+
+    if not product:
+        conn.close()
+        return {"error": f"No finished good found matching '{search_term}'."}
+
+    bom = conn.execute(
+        "SELECT Id FROM BOM WHERE ProducedProductId = ?", (product['Id'],)
+    ).fetchone()
+
+    if not bom:
+        conn.close()
+        return {"error": f"No BOM found for product {product['SKU']}."}
+
+    # Get components
+    components = conn.execute("""
+        SELECT p.Id, p.SKU
+        FROM BOM_Component bc
+        JOIN Product p ON p.Id = bc.ConsumedProductId
+        WHERE bc.BOMId = ?
+        ORDER BY p.SKU
+    """, (bom['Id'],)).fetchall()
+
+    result_components = []
+    for comp in components:
+        bn = _base_name(comp['SKU'])
+        # Get suppliers with ratings
+        suppliers = conn.execute("""
+            SELECT s.Id, s.Name FROM Supplier_Product sp
+            JOIN Supplier s ON s.Id = sp.SupplierId
+            WHERE sp.ProductId = ?
+        """, (comp['Id'],)).fetchall()
+
+        sup_details = []
+        for s in suppliers:
+            rating = conn.execute("""
+                SELECT QualityScore, ComplianceScore, ReliabilityScore,
+                       RiskTier, Certifications, LeadTimeDays
+                FROM Supplier_Rating WHERE SupplierId = ?
+            """, (s['Id'],)).fetchone()
+            # Avg price for this supplier-product combo
+            price_row = conn.execute("""
+                SELECT AVG(UnitPrice) as avg_price, SUM(TotalCost) as total_spend,
+                       COUNT(*) as order_count, AVG(OnTime)*100 as on_time_pct
+                FROM Procurement_History
+                WHERE SupplierId = ? AND ProductId = ?
+            """, (s['Id'], comp['Id'])).fetchone()
+            sd = {'id': s['Id'], 'name': s['Name']}
+            if rating:
+                sd['qualityScore'] = rating['QualityScore']
+                sd['complianceScore'] = rating['ComplianceScore']
+                sd['riskTier'] = rating['RiskTier']
+                sd['certifications'] = rating['Certifications']
+                sd['leadTimeDays'] = rating['LeadTimeDays']
+            if price_row and price_row['avg_price']:
+                sd['avgPrice'] = round(price_row['avg_price'], 2)
+                sd['totalSpend'] = round(price_row['total_spend'], 2)
+                sd['onTimeRate'] = round(price_row['on_time_pct'], 1)
+            sup_details.append(sd)
+
+        # Get market benchmark
+        benchmark = conn.execute(
+            "SELECT AvgMarketPrice FROM Price_Benchmark WHERE BaseName = ?",
+            (bn,)
+        ).fetchone()
+
+        comp_entry = {
+            'name': _humanize(bn),
+            'baseName': bn,
+            'sku': comp['SKU'],
+            'supplierCount': len(suppliers),
+            'suppliers': sup_details,
+            'singleSource': len(suppliers) == 1,
+        }
+        if benchmark:
+            comp_entry['marketPrice'] = benchmark['AvgMarketPrice']
+        result_components.append(comp_entry)
+
+    single_source_count = sum(1 for c in result_components if c['singleSource'])
+
+    conn.close()
+    return {
+        "product": {
+            "id": product['Id'],
+            "sku": product['SKU'],
+            "company": product['CompanyName'],
+        },
+        "componentCount": len(result_components),
+        "singleSourceCount": single_source_count,
+        "components": result_components,
+    }
+
+
+# ── Agent runner ──────────────────────────────────────────────────
+
+TOOL_DISPATCH = {
+    "execute_sql": lambda args: tool_execute_sql(args["query"]),
+    "find_substitutes": lambda args: tool_find_substitutes(args["ingredient_name"]),
+    "analyze_bom": lambda args: tool_analyze_bom(args["search_term"]),
+}
+
+
+def _tool_label(name, args):
+    """Human-readable label for a tool call."""
+    if name == "execute_sql":
+        return f"SQL: {args.get('query', '')[:120]}"
+    if name == "find_substitutes":
+        return f"Finding substitutes for \"{args.get('ingredient_name', '')}\""
+    if name == "analyze_bom":
+        return f"Analyzing BOM for \"{args.get('search_term', '')}\""
+    return name
+
+
+def run_agent(user_message, conversation_history=None, api_key=None):
+    """
+    Run the Agnes agent on a user message.
+    Returns dict: {"reply": str, "steps": [{"tool", "args", "label", "result_preview"}]}
+    """
+    if not api_key:
+        return {"reply": "Error: OpenAI API key not configured. Set OPENAI_API_KEY environment variable.", "steps": []}
+
+    client = OpenAI(api_key=api_key)
+    steps = []
+
+    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    if conversation_history:
+        messages.extend(conversation_history)
+    messages.append({"role": "user", "content": user_message})
+
+    # Agentic loop: keep calling until we get a final text response
+    max_iterations = 10
+    for _ in range(max_iterations):
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=messages,
+            tools=TOOLS,
+            temperature=0.3,
+        )
+
+        choice = response.choices[0]
+
+        if choice.finish_reason == "tool_calls":
+            # Execute each tool call
+            messages.append(choice.message)
+            for tool_call in choice.message.tool_calls:
+                fn_name = tool_call.function.name
+                try:
+                    fn_args = json.loads(tool_call.function.arguments)
+                except json.JSONDecodeError:
+                    fn_args = {}
+
+                if fn_name in TOOL_DISPATCH:
+                    result = TOOL_DISPATCH[fn_name](fn_args)
+                else:
+                    result = {"error": f"Unknown tool: {fn_name}"}
+
+                result_json = json.dumps(result, default=str)
+
+                # Send full result to frontend for proper formatting
+                steps.append({
+                    "tool": fn_name,
+                    "args": fn_args,
+                    "label": _tool_label(fn_name, fn_args),
+                    "result_preview": result_json,
+                })
+
+                messages.append({
+                    "role": "tool",
+                    "tool_call_id": tool_call.id,
+                    "content": result_json,
+                })
+        else:
+            # Final text response
+            reply = choice.message.content or "I wasn't able to generate a response."
+            return {"reply": reply, "steps": steps}
+
+    return {"reply": "I reached the maximum number of reasoning steps. Please try a simpler question.", "steps": steps}

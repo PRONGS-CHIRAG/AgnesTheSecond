@@ -1,1 +1,43 @@
-taim/
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# SQLite databases
+*.sqlite
+*.db
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
+.DS_Store?
+
+# Word temp files
+~$*
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+*.log
+
+# Node (if any)
+node_modules/
