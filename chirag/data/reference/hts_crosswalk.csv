@@ -1,0 +1,13 @@
+canonical_key,hts_code,hts_digits,description,notes
+cyanocobalamin,293626,6,Vitamin B12 and its derivatives (cobalamins),HS 2936.26 per WCO; all cobalamin forms roll up here
+cyanocobalamin-vitamin-b12,293626,6,Vitamin B12 and its derivatives (cobalamins),alias of cyanocobalamin
+vitamin-b12,293626,6,Vitamin B12 and its derivatives (cobalamins),alias of cyanocobalamin
+vitamin-b12-cyanocobalamin,293626,6,Vitamin B12 and its derivatives (cobalamins),alias of cyanocobalamin
+pyridoxine-hydrochloride-vitamin-b6,293625,6,Vitamin B6 (pyridoxine) and its derivatives,HS 2936.25; covers pyridoxine HCl + pyridoxal phosphate
+vitamin-b6,293625,6,Vitamin B6 (pyridoxine) and its derivatives,alias of pyridoxine
+vitamin-b6-pyridoxine-hydrochloride,293625,6,Vitamin B6 (pyridoxine) and its derivatives,alias of pyridoxine
+vitamin-b6-pyridoxal-5-phosphate,293625,6,Vitamin B6 (pyridoxine) and its derivatives,pyridoxal-5-phosphate is a B6 vitamer; same HS heading
+retinyl-palmitate-vitamin-a,293621,6,Vitamin A and its derivatives (retinoids),HS 2936.21; covers retinol + retinyl esters
+vitamin-a,293621,6,Vitamin A and its derivatives (retinoids),alias of retinyl palmitate
+vitamin-a-acetate,293621,6,Vitamin A and its derivatives (retinoids),retinyl acetate; same HS heading
+vitamin-a-retinyl-palmitate,293621,6,Vitamin A and its derivatives (retinoids),alias of retinyl palmitate

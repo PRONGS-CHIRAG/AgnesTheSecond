@@ -18,9 +18,8 @@ from agnes.recommendation.llm_polish import (
     SummaryLLM,
 )
 from agnes.recommendation.scorer import (
-    DEFAULT_FINAL_WEIGHTS,
-    DEFAULT_SOURCING_WEIGHTS,
     DEFAULT_THRESHOLDS,
+    DEFAULT_WEIGHTS,
 )
 from agnes.recommendation.signals import SupplierIndex
 
@@ -96,8 +95,7 @@ def _rows_and_opps() -> tuple[list, list]:
         assessments,
         supplier_index=_supplier_index(),
         candidates_report=None,
-        sourcing_weights=DEFAULT_SOURCING_WEIGHTS,
-        final_cfg=DEFAULT_FINAL_WEIGHTS,
+        prioritization_weights=DEFAULT_WEIGHTS,
         thresholds=DEFAULT_THRESHOLDS,
     )
     opportunities = rollup_opportunities(rows)
@@ -154,8 +152,7 @@ def test_top_n_limits_polish_scope(tmp_path: Path) -> None:
         assessments,
         supplier_index=idx,
         candidates_report=None,
-        sourcing_weights=DEFAULT_SOURCING_WEIGHTS,
-        final_cfg=DEFAULT_FINAL_WEIGHTS,
+        prioritization_weights=DEFAULT_WEIGHTS,
         thresholds=DEFAULT_THRESHOLDS,
     )
     opps = rollup_opportunities(rows)
@@ -243,8 +240,7 @@ def test_budget_exhaustion_marks_partial(tmp_path: Path) -> None:
         assessments,
         supplier_index=idx,
         candidates_report=None,
-        sourcing_weights=DEFAULT_SOURCING_WEIGHTS,
-        final_cfg=DEFAULT_FINAL_WEIGHTS,
+        prioritization_weights=DEFAULT_WEIGHTS,
         thresholds=DEFAULT_THRESHOLDS,
     )
     opps = rollup_opportunities(rows)

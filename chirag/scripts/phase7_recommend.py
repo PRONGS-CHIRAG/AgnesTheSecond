@@ -34,11 +34,9 @@ from agnes.recommendation.llm_polish import (
     load_prompt_template,
 )
 from agnes.recommendation.scorer import (
-    DEFAULT_FINAL_WEIGHTS,
-    DEFAULT_SOURCING_WEIGHTS,
-    FinalScoreConfig,
+    DEFAULT_WEIGHTS,
     GradeThresholds,
-    SourcingWeights,
+    PrioritizationWeights,
 )
 from agnes.recommendation.signals import build_supplier_index
 from agnes.utils.logging import configure_logging
@@ -153,35 +151,26 @@ def _merge_weights(defaults: dict[str, float], raw: str) -> dict[str, float]:
     return merged
 
 
-def _sourcing_weights(settings: Settings) -> SourcingWeights:
+def _prioritization_weights(settings: Settings) -> PrioritizationWeights:
     merged = _merge_weights(
-        DEFAULT_SOURCING_WEIGHTS.as_dict(), settings.phase7_sourcing_weights
+        DEFAULT_WEIGHTS.as_dict(), settings.phase7_prioritization_weights
     )
-    return SourcingWeights(
-        diversification=merged.get(
-            "diversification", DEFAULT_SOURCING_WEIGHTS.diversification
+    return PrioritizationWeights(
+        consolidation_benefit=merged.get(
+            "consolidation_benefit", DEFAULT_WEIGHTS.consolidation_benefit
         ),
-        company_overlap=merged.get(
-            "company_overlap", DEFAULT_SOURCING_WEIGHTS.company_overlap
+        evidence_confidence=merged.get(
+            "evidence_confidence", DEFAULT_WEIGHTS.evidence_confidence
         ),
-        concentration_relief=merged.get(
-            "concentration_relief", DEFAULT_SOURCING_WEIGHTS.concentration_relief
+        compliance_fit=merged.get(
+            "compliance_fit", DEFAULT_WEIGHTS.compliance_fit
         ),
-    )
-
-
-def _final_weights(settings: Settings) -> FinalScoreConfig:
-    merged = _merge_weights(
-        DEFAULT_FINAL_WEIGHTS.as_dict(), settings.phase7_final_weights
-    )
-    return FinalScoreConfig(
-        alpha_acceptability=merged.get(
-            "acceptability", DEFAULT_FINAL_WEIGHTS.alpha_acceptability
+        supplier_diversification=merged.get(
+            "supplier_diversification", DEFAULT_WEIGHTS.supplier_diversification
         ),
-        alpha_substitute=merged.get(
-            "substitute", DEFAULT_FINAL_WEIGHTS.alpha_substitute
+        switching_feasibility=merged.get(
+            "switching_feasibility", DEFAULT_WEIGHTS.switching_feasibility
         ),
-        alpha_sourcing=merged.get("sourcing", DEFAULT_FINAL_WEIGHTS.alpha_sourcing),
     )
 
 
@@ -205,6 +194,12 @@ def _rows_csv(path: Path, items: list[SourcingRecommendation]) -> None:
                     "" if item.substitute_score is None else item.substitute_score
                 ),
                 "sourcing_benefit": item.sourcing_benefit,
+                "dim_consolidation_benefit": item.dimension_scores.consolidation_benefit,
+                "dim_evidence_confidence": item.dimension_scores.evidence_confidence,
+                "dim_compliance_fit": item.dimension_scores.compliance_fit,
+                "dim_supplier_diversification": item.dimension_scores.supplier_diversification,
+                "dim_switching_feasibility": item.dimension_scores.switching_feasibility,
+                "concentration_risk_downgrade": item.concentration_risk_downgrade,
                 "source_supplier_count": item.signals.source_supplier_count,
                 "candidate_supplier_count": item.signals.candidate_supplier_count,
                 "company_supplier_overlap": item.signals.company_supplier_overlap,
@@ -241,6 +236,14 @@ def _opportunities_csv(path: Path, opps: list[ConsolidationOpportunity]) -> None
                 "n_companies_covered": opp.n_companies_covered,
                 "aggregate_final_score": opp.aggregate_final_score,
                 "aggregate_sourcing_benefit": opp.aggregate_sourcing_benefit,
+                "agg_consolidation_benefit": opp.aggregate_dimension_scores.consolidation_benefit,
+                "agg_evidence_confidence": opp.aggregate_dimension_scores.evidence_confidence,
+                "agg_compliance_fit": opp.aggregate_dimension_scores.compliance_fit,
+                "agg_supplier_diversification": (
+                    opp.aggregate_dimension_scores.supplier_diversification
+                ),
+                "agg_switching_feasibility": opp.aggregate_dimension_scores.switching_feasibility,
+                "any_concentration_risk_downgrade": opp.any_concentration_risk_downgrade,
                 "review_required": opp.review_required,
                 "tradeoff_summary": opp.tradeoff_summary,
                 "risk_notes": json.dumps(opp.risk_notes),
@@ -334,19 +337,18 @@ def main() -> int:  # noqa: PLR0915
     company_df = supplier_products_by_company(engine)
     index = build_supplier_index(registry, suppliers_df, company_df)
 
-    sourcing_weights = _sourcing_weights(settings)
-    final_cfg = _final_weights(settings)
+    prioritization_weights = _prioritization_weights(settings)
     thresholds = GradeThresholds(
         safe=settings.phase7_safe_threshold,
         reject=settings.phase7_reject_threshold,
+        diversification_floor=settings.phase7_diversification_floor,
     )
 
     rows = build_rows(
         assessment_report.items,
         supplier_index=index,
         candidates_report=candidates_report,
-        sourcing_weights=sourcing_weights,
-        final_cfg=final_cfg,
+        prioritization_weights=prioritization_weights,
         thresholds=thresholds,
         llm_model=assessment_report.llm_model,
     )
@@ -377,10 +379,7 @@ def main() -> int:  # noqa: PLR0915
         llm = SummaryLLM(settings, model=model_id)
 
     cache = RecommendationCache(args.cache_path)
-    weights_blob = {
-        **{f"sourcing.{k}": v for k, v in sourcing_weights.as_dict().items()},
-        **{f"final.{k}": v for k, v in final_cfg.as_dict().items()},
-    }
+    weights_blob = prioritization_weights.as_dict()
     thresholds_blob = thresholds.as_dict()
 
     report = generate_report(

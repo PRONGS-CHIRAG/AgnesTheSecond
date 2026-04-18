@@ -9,10 +9,23 @@ from pydantic import ValidationError
 
 from agnes.models.recommendation import (
     ConsolidationOpportunity,
+    DimensionScores,
     RecommendationReport,
     SourcingRecommendation,
     SourcingSignals,
 )
+
+
+def _dims(**overrides: float) -> DimensionScores:
+    base = {
+        "consolidation_benefit": 0.6,
+        "evidence_confidence": 0.7,
+        "compliance_fit": 0.8,
+        "supplier_diversification": 0.5,
+        "switching_feasibility": 0.6,
+    }
+    base.update(overrides)
+    return DimensionScores(**base)
 
 
 def _signals(**overrides: object) -> SourcingSignals:
@@ -42,6 +55,7 @@ def _row(**overrides: object) -> SourcingRecommendation:
         "substitute_score": 0.7,
         "sourcing_benefit": 0.6,
         "signals": _signals(),
+        "dimension_scores": _dims(),
         "current_suppliers": ["Alpha"],
         "recommended_suppliers": ["Beta", "Gamma"],
         "caveats": [],
@@ -98,6 +112,7 @@ def test_opportunity_round_trip() -> None:
         n_companies_covered=1,
         aggregate_final_score=0.7,
         aggregate_sourcing_benefit=0.5,
+        aggregate_dimension_scores=_dims(),
         recommendation_grade="safe_to_consolidate",
         unique_current_suppliers=["Alpha"],
         unique_recommended_suppliers=["Beta"],

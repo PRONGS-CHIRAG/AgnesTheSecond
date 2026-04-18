@@ -9,9 +9,8 @@ from agnes.models.assessment import SubstituteAssessment
 from agnes.models.evidence import CitationRef
 from agnes.recommendation.builder import build_rows, rollup_opportunities
 from agnes.recommendation.scorer import (
-    DEFAULT_FINAL_WEIGHTS,
-    DEFAULT_SOURCING_WEIGHTS,
     DEFAULT_THRESHOLDS,
+    DEFAULT_WEIGHTS,
 )
 from agnes.recommendation.signals import SupplierIndex
 
@@ -100,8 +99,7 @@ def test_build_rows_passes_through_citations_and_caveats() -> None:
         [assessment],
         supplier_index=index,
         candidates_report=None,
-        sourcing_weights=DEFAULT_SOURCING_WEIGHTS,
-        final_cfg=DEFAULT_FINAL_WEIGHTS,
+        prioritization_weights=DEFAULT_WEIGHTS,
         thresholds=DEFAULT_THRESHOLDS,
     )
     assert len(rows) == 1
@@ -126,8 +124,7 @@ def test_build_rows_applies_phase6_veto() -> None:
         [assessment],
         supplier_index=_index(),
         candidates_report=None,
-        sourcing_weights=DEFAULT_SOURCING_WEIGHTS,
-        final_cfg=DEFAULT_FINAL_WEIGHTS,
+        prioritization_weights=DEFAULT_WEIGHTS,
         thresholds=DEFAULT_THRESHOLDS,
     )
     assert rows[0].recommendation_grade == "not_recommended"
@@ -166,8 +163,7 @@ def test_rollup_picks_best_candidate_per_source() -> None:
         assessments,
         supplier_index=index,
         candidates_report=None,
-        sourcing_weights=DEFAULT_SOURCING_WEIGHTS,
-        final_cfg=DEFAULT_FINAL_WEIGHTS,
+        prioritization_weights=DEFAULT_WEIGHTS,
         thresholds=DEFAULT_THRESHOLDS,
     )
     opportunities = rollup_opportunities(rows)
@@ -205,8 +201,7 @@ def test_rollup_is_stable_under_row_shuffling() -> None:
         assessments,
         supplier_index=index,
         candidates_report=None,
-        sourcing_weights=DEFAULT_SOURCING_WEIGHTS,
-        final_cfg=DEFAULT_FINAL_WEIGHTS,
+        prioritization_weights=DEFAULT_WEIGHTS,
         thresholds=DEFAULT_THRESHOLDS,
     )
     rng = random.Random(42)
@@ -216,8 +211,7 @@ def test_rollup_is_stable_under_row_shuffling() -> None:
         shuffled,
         supplier_index=index,
         candidates_report=None,
-        sourcing_weights=DEFAULT_SOURCING_WEIGHTS,
-        final_cfg=DEFAULT_FINAL_WEIGHTS,
+        prioritization_weights=DEFAULT_WEIGHTS,
         thresholds=DEFAULT_THRESHOLDS,
     )
     opps1 = rollup_opportunities(rows1)

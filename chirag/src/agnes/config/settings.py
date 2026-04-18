@@ -138,22 +138,15 @@ class Settings(BaseSettings):
         description="Phase 6: OpenAI chat model id used for the structured JSON fallback.",
     )
 
-    phase7_sourcing_weights: str = Field(
+    phase7_prioritization_weights: str = Field(
         default=(
-            '{"diversification":0.40,"company_overlap":0.35,'
-            '"concentration_relief":0.25}'
+            '{"consolidation_benefit":0.35,"evidence_confidence":0.25,'
+            '"compliance_fit":0.20,"supplier_diversification":0.10,'
+            '"switching_feasibility":0.10}'
         ),
         description=(
-            "Phase 7: JSON blob of weights for the structural sourcing-benefit mix."
-        ),
-    )
-    phase7_final_weights: str = Field(
-        default=(
-            '{"acceptability":0.55,"substitute":0.25,"sourcing":0.20}'
-        ),
-        description=(
-            "Phase 7: JSON blob combining acceptability, substitute score, and "
-            "sourcing benefit into the final score."
+            "Phase 7: JSON blob of weights for the 5-dimension prioritization "
+            "framework. Must sum to ~1.0; missing keys fall back to defaults."
         ),
     )
     phase7_safe_threshold: float = Field(
@@ -168,6 +161,16 @@ class Settings(BaseSettings):
         le=1.0,
         description="Phase 7: final_score <= threshold maps to 'not_recommended'.",
     )
+    phase7_diversification_floor: float = Field(
+        default=0.30,
+        ge=0.0,
+        le=1.0,
+        description=(
+            "Phase 7: supplier_diversification below this floor downgrades a "
+            "'safe_to_consolidate' grade to 'likely_safe_review_required' "
+            "(the anti-monopoly veto)."
+        ),
+    )
     phase7_top_n_polish: int = Field(
         default=5,
         ge=0,
@@ -181,6 +184,35 @@ class Settings(BaseSettings):
     phase7_llm_model: str = Field(
         default="gpt-4o-mini",
         description="Phase 7: OpenAI chat model id used for the optional polish pass.",
+    )
+
+    usitc_api_token: str | None = Field(
+        default=None,
+        description=(
+            "USITC DataWeb API bearer token (JWT). Register + copy from "
+            "https://dataweb.usitc.gov. Required for live price fetches; "
+            "tests run offline without it."
+        ),
+    )
+    usitc_base_url: str = Field(
+        default="https://datawebws.usitc.gov/dataweb",
+        description="USITC DataWeb base URL; runReport lives at {base}/api/v2/report2/runReport.",
+    )
+    usitc_default_year: str = Field(
+        default="2023",
+        description="Default trade year queried when the CLI does not supply --year.",
+    )
+    usitc_timeout_seconds: float = Field(
+        default=60.0,
+        ge=1.0,
+        description=(
+            "Per-request timeout for the DataWeb runReport endpoint. Kept generous "
+            "since aggregate trade queries can take tens of seconds server-side."
+        ),
+    )
+    usitc_cache_path: Path = Field(
+        default=Path(".cache/usitc_prices.json"),
+        description="On-disk JSON cache for DataWeb responses, keyed by (hts,year,trade_type).",
     )
 
     model_config = SettingsConfigDict(
