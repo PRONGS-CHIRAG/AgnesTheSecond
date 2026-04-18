@@ -9,7 +9,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from agnes.models.evidence import CitationRef
 
-RECOMMENDATION_SCHEMA_VERSION: Final[str] = "v2"
+RECOMMENDATION_SCHEMA_VERSION: Final[str] = "v3"
 
 RecommendationGrade = Literal[
     "safe_to_consolidate",
@@ -53,6 +53,8 @@ class SourcingRecommendation(BaseModel):
     acceptability: float = Field(ge=0.0, le=1.0)
     substitute_score: float | None = None
     sourcing_benefit: float = Field(ge=0.0, le=1.0)
+    savings_signal: float = Field(default=0.0, ge=0.0, le=1.0)
+    estimated_savings_usd: float | None = Field(default=None, ge=0.0)
     signals: SourcingSignals
 
     current_suppliers: list[str] = Field(default_factory=list)
@@ -90,6 +92,8 @@ class ConsolidationOpportunity(BaseModel):
     n_companies_covered: int = Field(ge=0)
     aggregate_final_score: float = Field(ge=0.0, le=1.0)
     aggregate_sourcing_benefit: float = Field(ge=0.0, le=1.0)
+    aggregate_savings_signal: float = Field(default=0.0, ge=0.0, le=1.0)
+    total_estimated_savings_usd: float = Field(default=0.0, ge=0.0)
     recommendation_grade: RecommendationGrade
 
     unique_current_suppliers: list[str] = Field(default_factory=list)

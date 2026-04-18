@@ -12,6 +12,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 
 from agnes.api.artifacts import router as artifacts_router
+from agnes.api.chat import router as chat_router
+from agnes.api.procurement import router as procurement_router
 from agnes.api.runs import router as runs_router
 from agnes.api.services.artifact_loader import ArtifactLoader
 from agnes.api.services.run_manager import RunManager
@@ -76,6 +78,8 @@ def create_app() -> FastAPI:
         return {"status": "ok"}
 
     app.include_router(artifacts_router)
+    app.include_router(chat_router)
+    app.include_router(procurement_router)
     app.include_router(runs_router)
     return app
 

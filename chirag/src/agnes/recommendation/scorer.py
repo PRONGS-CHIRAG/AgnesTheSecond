@@ -31,17 +31,25 @@ class SourcingWeights:
 
 @dataclass(frozen=True)
 class FinalScoreConfig:
-    """Weights for combining acceptability + substitute score + sourcing benefit."""
+    """Weights for combining acceptability + substitute score + sourcing + savings.
+
+    ``alpha_savings`` defaults to ``0.0`` so existing deployments — which may
+    not yet have procurement data seeded — score identically to Phase 7 v2.
+    Operators enabling the cost-savings signal should bump ``alpha_savings``
+    and rebalance the other weights so they sum to ``1.0``.
+    """
 
     alpha_acceptability: float = 0.55
     alpha_substitute: float = 0.25
     alpha_sourcing: float = 0.20
+    alpha_savings: float = 0.0
 
     def as_dict(self) -> dict[str, float]:
         return {
             "acceptability": self.alpha_acceptability,
             "substitute": self.alpha_substitute,
             "sourcing": self.alpha_sourcing,
+            "savings": self.alpha_savings,
         }
 
 
@@ -69,6 +77,7 @@ class ScoringInputs:
     substitute_score: float | None
     sourcing_benefit: float
     signals: SourcingSignals
+    savings_signal: float = 0.0
     has_high_weight_contradiction: bool = False
     contradictions: list[str] = field(default_factory=list)
 
@@ -113,33 +122,37 @@ def final_score(
     substitute_score: float | None,
     sourcing_benefit_value: float,
     cfg: FinalScoreConfig = DEFAULT_FINAL_WEIGHTS,
+    *,
+    savings_signal: float = 0.0,
 ) -> float:
     """
-    Weighted mix of acceptability, Phase 4 substitute score, and sourcing benefit.
+    Weighted mix of acceptability, Phase 4 substitute score, sourcing benefit,
+    and (optionally) the procurement savings signal.
 
-    ``substitute_score`` may be ``None`` (no Phase 4 row) — in that case its weight
-    is redistributed proportionally onto the other two components.
+    ``substitute_score`` may be ``None`` (no Phase 4 row). The missing weight is
+    redistributed proportionally across the remaining active components so the
+    overall score stays anchored in ``[0, 1]`` regardless of which signals fire.
     """
     acc = max(0.0, min(1.0, acceptability))
     src = max(0.0, min(1.0, sourcing_benefit_value))
-    if substitute_score is None:
-        total = cfg.alpha_acceptability + cfg.alpha_sourcing
-        if total <= 0:
-            return 0.0
-        return max(
-            0.0,
-            min(
-                1.0,
-                (cfg.alpha_acceptability * acc + cfg.alpha_sourcing * src) / total,
-            ),
+    sav = max(0.0, min(1.0, savings_signal))
+
+    active_pairs: list[tuple[float, float]] = [
+        (cfg.alpha_acceptability, acc),
+        (cfg.alpha_sourcing, src),
+        (cfg.alpha_savings, sav),
+    ]
+    if substitute_score is not None:
+        active_pairs.append(
+            (cfg.alpha_substitute, max(0.0, min(1.0, substitute_score)))
         )
-    sub = max(0.0, min(1.0, substitute_score))
-    score = (
-        cfg.alpha_acceptability * acc
-        + cfg.alpha_substitute * sub
-        + cfg.alpha_sourcing * src
-    )
-    return max(0.0, min(1.0, score))
+
+    total_weight = sum(w for w, _ in active_pairs if w > 0.0)
+    if total_weight <= 0.0:
+        return 0.0
+
+    weighted = sum(w * v for w, v in active_pairs if w > 0.0)
+    return max(0.0, min(1.0, weighted / total_weight))
 
 
 def map_grade(

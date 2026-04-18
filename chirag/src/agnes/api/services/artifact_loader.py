@@ -19,6 +19,7 @@ from agnes.models.assessment import AssessmentReport
 from agnes.models.canonical import CanonicalRegistry
 from agnes.models.evidence import EvidenceReport
 from agnes.models.recommendation import RecommendationReport
+from agnes.models.risk import SupplyRiskReport
 from agnes.models.substitutes import SubstituteCandidateReport
 
 TReport = TypeVar("TReport", bound=BaseModel)
@@ -52,6 +53,7 @@ _REPORT_FILES: dict[str, tuple[str, type[BaseModel]]] = {
     "evidence": ("substitute_evidence.json", EvidenceReport),
     "assessments": ("substitute_assessments.json", AssessmentReport),
     "recommendations": ("sourcing_recommendations.json", RecommendationReport),
+    "risks": ("supply_risks.json", SupplyRiskReport),
 }
 
 
@@ -107,6 +109,9 @@ class ArtifactLoader:
 
     def get_recommendations(self) -> RecommendationReport:
         return self._load("recommendations", RecommendationReport)
+
+    def get_risks(self) -> SupplyRiskReport:
+        return self._load("risks", SupplyRiskReport)
 
     def invalidate(self, name: str | None = None) -> None:
         with self._lock:

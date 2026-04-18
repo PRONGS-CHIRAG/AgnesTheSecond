@@ -12,6 +12,7 @@ from agnes.graph.schema import GRAPH_SCHEMA_VERSION
 from agnes.models.canonical import CanonicalRegistry
 from agnes.models.substitutes import (
     SubstituteCandidate,
+    SubstitutionType,
     TargetDiagnostics,
 )
 from agnes.substitutes.embeddings import EmbeddingClient, cosine
@@ -19,6 +20,32 @@ from agnes.substitutes.features import compute_features
 from agnes.substitutes.scoring import DEFAULT_WEIGHTS, normalize_weights, score_candidate
 
 logger = structlog.get_logger(__name__)
+
+
+def classify_substitution_type(
+    source_key: str,
+    candidate_key: str,
+    features,
+) -> tuple[SubstitutionType, float]:
+    """Label the source/candidate pair with taim's 3-way typology.
+
+    - ``direct`` (confidence 1.0): identical canonical keys / base names. In
+      practice the generator excludes self-pairs so this mostly surfaces when
+      keys differ only in trivial suffixes.
+    - ``variant`` (0.75): same family + lexical Jaccard >= 0.4 (shared tokens).
+    - ``functional`` (0.5): same family only.
+
+    When families differ the candidate is still ``functional`` but with a
+    lower confidence (0.25) since it's cross-family.
+    """
+    if source_key == candidate_key:
+        return "direct", 1.0
+    family_match = bool(features.family_match)
+    if family_match and features.lexical_sim >= 0.4:
+        return "variant", 0.75
+    if family_match:
+        return "functional", 0.5
+    return "functional", 0.25
 
 
 def _display_text_for(registry_by_key, key: str) -> str:
@@ -131,6 +158,7 @@ def generate_candidates(
             continue
         fam = graph_index.family_of(cand)
         role = graph_index.role_of(cand)
+        sub_type, sub_conf = classify_substitution_type(target_key, cand, feats)
         scored.append(
             SubstituteCandidate(
                 source_key=target_key,
@@ -139,6 +167,8 @@ def generate_candidates(
                 roles=[role] if role else [],
                 score=round(score, 6),
                 features=feats,
+                substitution_type=sub_type,
+                type_confidence=sub_conf,
                 embedding_model=embedding_model_used,
                 taxonomy_version=TAXONOMY_VERSION,
                 graph_schema_version=GRAPH_SCHEMA_VERSION,
@@ -180,5 +210,6 @@ def generate_candidates(
 
 __all__ = [
     "DEFAULT_WEIGHTS",
+    "classify_substitution_type",
     "generate_candidates",
 ]

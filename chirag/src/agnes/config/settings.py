@@ -48,6 +48,15 @@ class Settings(BaseSettings):
     )
     log_level: str = Field(default="INFO", description="Logging level.")
 
+    procurement_required: bool = Field(
+        default=False,
+        description=(
+            "When true, procurement loaders raise if Supplier_Rating / "
+            "Price_Benchmark / Procurement_History tables are missing; "
+            "when false callers degrade gracefully to empty collections."
+        ),
+    )
+
     phase4_top_k: int = Field(
         default=10,
         ge=1,

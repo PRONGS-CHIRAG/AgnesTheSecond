@@ -36,6 +36,7 @@ def test_summary_artifacts_block(client: TestClient) -> None:
         "evidence",
         "assessments",
         "recommendations",
+        "risks",
     ]
 
 
@@ -148,6 +149,47 @@ def test_dashboard_bundle_shape(client: TestClient) -> None:
             # rows are always a subset of the opportunity's source_key
             for r in det["rows"]:
                 assert r["source_key"] == det["opportunity"]["source_key"]
+
+
+@pytest.mark.skipif(
+    not (REPORTS / "supply_risks.json").is_file(),
+    reason="Phase 6.5 supply_risks artifact not present",
+)
+def test_risks_endpoint(client: TestClient) -> None:
+    resp = client.get("/api/risks")
+    assert resp.status_code == 200
+    body = resp.json()
+    assert "items" in body
+    assert "schema_version" in body
+    assert "taxonomy_version" in body
+    assert "by_severity" in body
+    assert "by_type" in body
+    assert body["n_total"] == len(body["items"])
+    counted_sev = sum(body["by_severity"].values())
+    counted_type = sum(body["by_type"].values())
+    assert counted_sev == body["n_total"]
+    assert counted_type == body["n_total"]
+    for item in body["items"]:
+        assert item["severity"] in {"high", "medium", "low"}
+        assert item["type"] in {
+            "single_source",
+            "supplier_concentration",
+            "critical_ingredient",
+            "supplier_quality",
+            "price_volatility",
+        }
+        assert 0.0 <= item["score"] <= 1.0
+
+
+def test_risks_missing_returns_404(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """If supply_risks.json is absent, /api/risks returns 404 with structured detail."""
+    monkeypatch.setenv("AGNES_REPORTS_DIR", str(tmp_path))
+    app = create_app()
+    with TestClient(app) as c:
+        resp = c.get("/api/risks")
+    assert resp.status_code == 404
+    detail = resp.json()["detail"]
+    assert detail == {"error": "artifact_missing", "artifact": "risks"}
 
 
 @pytest.mark.skipif(

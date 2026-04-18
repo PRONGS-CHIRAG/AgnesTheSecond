@@ -3,13 +3,15 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Final
+from typing import Final, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-SUBSTITUTES_SCHEMA_VERSION: Final[str] = "v1"
+SUBSTITUTES_SCHEMA_VERSION: Final[str] = "v2"
 
 UnassignedReason = str  # one of: no_family, singleton_family, all_below_threshold
+
+SubstitutionType = Literal["direct", "variant", "functional"]
 
 
 class CandidateFeatures(BaseModel):
@@ -37,6 +39,8 @@ class SubstituteCandidate(BaseModel):
     roles: list[str] = Field(default_factory=list)
     score: float
     features: CandidateFeatures
+    substitution_type: SubstitutionType = "functional"
+    type_confidence: float = Field(default=0.5, ge=0.0, le=1.0)
     embedding_model: str | None = None
     taxonomy_version: str
     graph_schema_version: str

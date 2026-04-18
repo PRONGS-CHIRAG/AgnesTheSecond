@@ -15,7 +15,11 @@ from agnes.models.canonical import (
     RegistryCoverage,
 )
 from agnes.models.graph import KGEdge, KGNode, node_id
-from agnes.substitutes.candidate_generator import generate_candidates
+from agnes.substitutes.candidate_generator import (
+    classify_substitution_type,
+    generate_candidates,
+)
+from agnes.models.substitutes import CandidateFeatures
 from agnes.substitutes.embeddings import EmbeddingBackend, EmbeddingClient
 
 
@@ -237,6 +241,59 @@ def test_deterministic_across_runs(tmp_path: Path) -> None:
         cross_family=False,
     )
     assert [c.model_dump() for c in cands_a] == [c.model_dump() for c in cands_b]
+
+
+def _feats(*, family: bool, lex: float) -> CandidateFeatures:
+    return CandidateFeatures(
+        family_match=family,
+        role_match=True,
+        lexical_sim=lex,
+        embed_sim=None,
+        supplier_overlap=0.0,
+        co_company_overlap=0.0,
+        missing_signals=[],
+    )
+
+
+def test_substitution_type_direct() -> None:
+    t, c = classify_substitution_type("a", "a", _feats(family=True, lex=0.9))
+    assert (t, c) == ("direct", 1.0)
+
+
+def test_substitution_type_variant_when_family_match_and_high_lex() -> None:
+    t, c = classify_substitution_type("a-b", "a-c", _feats(family=True, lex=0.5))
+    assert t == "variant"
+    assert c == 0.75
+
+
+def test_substitution_type_functional_when_family_match_but_low_lex() -> None:
+    t, c = classify_substitution_type("a", "b", _feats(family=True, lex=0.1))
+    assert (t, c) == ("functional", 0.5)
+
+
+def test_substitution_type_low_confidence_cross_family() -> None:
+    t, c = classify_substitution_type("a", "b", _feats(family=False, lex=0.1))
+    assert (t, c) == ("functional", 0.25)
+
+
+def test_generate_candidates_attaches_substitution_type(tmp_path: Path) -> None:
+    reg = _fixture_registry()
+    idx = _fixture_index(reg)
+    client = _client(tmp_path, _StubBackend())
+
+    cands, _ = generate_candidates(
+        target_key="calcium-citrate",
+        registry=reg,
+        graph_index=idx,
+        embeddings=client,
+        top_k=5,
+        min_score=0.0,
+        cross_family=True,
+    )
+    assert cands
+    for cand in cands:
+        assert cand.substitution_type in {"direct", "variant", "functional"}
+        assert 0.0 <= cand.type_confidence <= 1.0
 
 
 @pytest.mark.parametrize("embeddings_enabled", [True, False])

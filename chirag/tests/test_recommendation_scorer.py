@@ -7,6 +7,7 @@ from agnes.recommendation.scorer import (
     DEFAULT_FINAL_WEIGHTS,
     DEFAULT_SOURCING_WEIGHTS,
     DEFAULT_THRESHOLDS,
+    FinalScoreConfig,
     ScoringInputs,
     final_score,
     map_grade,
@@ -136,8 +137,45 @@ def test_defaults_sum_to_one() -> None:
         + DEFAULT_SOURCING_WEIGHTS.company_overlap
         + DEFAULT_SOURCING_WEIGHTS.concentration_relief
     ) == 1.0
+    # alpha_savings defaults to 0.0 so legacy configs match v2 behaviour exactly.
+    assert DEFAULT_FINAL_WEIGHTS.alpha_savings == 0.0
     assert (
         DEFAULT_FINAL_WEIGHTS.alpha_acceptability
         + DEFAULT_FINAL_WEIGHTS.alpha_substitute
         + DEFAULT_FINAL_WEIGHTS.alpha_sourcing
+        + DEFAULT_FINAL_WEIGHTS.alpha_savings
     ) == 1.0
+
+
+def test_savings_signal_ignored_at_default_weight() -> None:
+    """With ``alpha_savings=0`` (default), savings_signal must not change score."""
+    base = final_score(0.7, 0.6, 0.5)
+    with_sav = final_score(0.7, 0.6, 0.5, savings_signal=1.0)
+    assert base == with_sav
+
+
+def test_savings_signal_raises_score_when_weight_active() -> None:
+    cfg = FinalScoreConfig(
+        alpha_acceptability=0.4,
+        alpha_substitute=0.2,
+        alpha_sourcing=0.2,
+        alpha_savings=0.2,
+    )
+    low = final_score(0.5, 0.5, 0.5, cfg, savings_signal=0.0)
+    high = final_score(0.5, 0.5, 0.5, cfg, savings_signal=1.0)
+    assert high > low
+    assert 0.0 <= low <= 1.0 and 0.0 <= high <= 1.0
+
+
+def test_final_score_normalises_when_substitute_missing() -> None:
+    """Dropping substitute_score should not collapse the normalised blend."""
+    cfg = FinalScoreConfig(
+        alpha_acceptability=0.4,
+        alpha_substitute=0.2,
+        alpha_sourcing=0.2,
+        alpha_savings=0.2,
+    )
+    with_sub = final_score(0.8, 0.8, 0.8, cfg, savings_signal=0.8)
+    without_sub = final_score(0.8, None, 0.8, cfg, savings_signal=0.8)
+    assert abs(with_sub - 0.8) < 1e-9
+    assert abs(without_sub - 0.8) < 1e-9

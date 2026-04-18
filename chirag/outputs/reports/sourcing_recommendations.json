@@ -1,14 +1,15 @@
 {
-  "schema_version": "v2",
-  "generated_at": "2026-04-18T07:06:55.776593Z",
-  "llm_model": "gpt-4o-mini",
+  "schema_version": "v3",
+  "generated_at": "2026-04-18T08:49:06.314932Z",
+  "llm_model": null,
   "weights": {
     "sourcing.diversification": 0.4,
     "sourcing.company_overlap": 0.35,
     "sourcing.concentration_relief": 0.25,
     "final.acceptability": 0.55,
     "final.substitute": 0.25,
-    "final.sourcing": 0.2
+    "final.sourcing": 0.2,
+    "final.savings": 0.0
   },
   "thresholds": {
     "safe": 0.7,
@@ -17,12 +18,12 @@
   "n_tuples": 33,
   "n_opportunities": 5,
   "n_cache_hits": 0,
-  "n_api_calls": 5,
+  "n_api_calls": 0,
   "n_failures": 0,
   "counts_by_grade": {
     "safe_to_consolidate": 33
   },
-  "duration_ms": 11441,
+  "duration_ms": 0,
   "partial": false,
   "items": [
     {
@@ -39,6 +40,8 @@
       "acceptability": 0.8923,
       "substitute_score": 0.9794,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -62,13 +65,9 @@
         "requires certification documentation",
         "requires quality sensory evaluation"
       ],
-      "risk_notes": [
-        "Requires certification documentation",
-        "Requires quality sensory evaluation",
-        "Requires certification verification"
-      ],
+      "risk_notes": [],
       "review_required": false,
-      "tradeoff_summary": "The recommended candidate for cyanocobalamin vitamin B12 is deemed safe to consolidate. While the sourcing benefit is moderate at 0.48, it is essential to ensure that certification documentation, quality sensory evaluation, and certification verification are completed. Please initiate the necessary steps to gather these requirements.",
+      "tradeoff_summary": "Consolidation looks safe: swap cyanocobalamin vitamin b12 for vitamin b12 cyanocobalamin. Acceptability 0.89, sourcing benefit 0.48. Source suppliers: 2, candidate suppliers: 2, company overlap: 100%. Caveat: requires certification documentation",
       "citations": [
         {
           "url": "https://en.wikipedia.org/wiki/Cyanocobalamin",
@@ -96,8 +95,8 @@
         }
       ],
       "decision_path": "llm",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.335377Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": "gpt-4o-mini"
     },
     {
@@ -114,6 +113,8 @@
       "acceptability": 0.8923,
       "substitute_score": 0.9794,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -136,13 +137,9 @@
       "caveats": [
         "requires certification verification"
       ],
-      "risk_notes": [
-        "Requires certification documentation",
-        "Requires quality sensory evaluation",
-        "Requires certification verification"
-      ],
+      "risk_notes": [],
       "review_required": false,
-      "tradeoff_summary": "The recommended candidate for cyanocobalamin vitamin B12 is deemed safe to consolidate. While the sourcing benefit is moderate at 0.48, it is essential to ensure that certification documentation, quality sensory evaluation, and certification verification are completed. Please initiate the necessary steps to gather these requirements.",
+      "tradeoff_summary": "Consolidation looks safe: swap cyanocobalamin vitamin b12 for vitamin b12 cyanocobalamin. Acceptability 0.89, sourcing benefit 0.48. Source suppliers: 2, candidate suppliers: 2, company overlap: 100%. Caveat: requires certification verification",
       "citations": [
         {
           "url": "https://en.wikipedia.org/wiki/Cyanocobalamin",
@@ -170,8 +167,8 @@
         }
       ],
       "decision_path": "llm",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.335377Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": "gpt-4o-mini"
     },
     {
@@ -188,6 +185,8 @@
       "acceptability": 0.88,
       "substitute_score": 0.923,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -250,8 +249,8 @@
         }
       ],
       "decision_path": "rules",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": null
     },
     {
@@ -268,6 +267,8 @@
       "acceptability": 0.88,
       "substitute_score": 0.923,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -330,8 +331,8 @@
         }
       ],
       "decision_path": "rules",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": null
     },
     {
@@ -348,6 +349,8 @@
       "acceptability": 0.835,
       "substitute_score": 0.9171,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -410,8 +413,8 @@
         }
       ],
       "decision_path": "rules",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": null
     },
     {
@@ -428,6 +431,8 @@
       "acceptability": 0.835,
       "substitute_score": 0.9171,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -490,8 +495,8 @@
         }
       ],
       "decision_path": "rules",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": null
     },
     {
@@ -508,6 +513,8 @@
       "acceptability": 0.8533,
       "substitute_score": 0.9046,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -530,7 +537,7 @@
       "caveats": [],
       "risk_notes": [],
       "review_required": false,
-      "tradeoff_summary": "The recommended candidate, vitamin B6, has been assessed as safe to consolidate. With an acceptability score of 0.85 and a sourcing benefit of 0.48, this option presents a favorable trade-off. Please proceed with discussions with the current suppliers, Prinova USA and PureBulk, to finalize the consolidation.",
+      "tradeoff_summary": "Consolidation looks safe: swap pyridoxine hydrochloride vitamin b6 for vitamin b6. Acceptability 0.85, sourcing benefit 0.48. Source suppliers: 2, candidate suppliers: 2, company overlap: 100%.",
       "citations": [
         {
           "url": "https://www.ncbi.nlm.nih.gov/books/NBK557436/",
@@ -551,10 +558,10 @@
           "retrieved_at": "2023-10-01T00:00:00Z"
         }
       ],
-      "decision_path": "llm",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:48.831887Z",
-      "llm_model": "gpt-4o-mini"
+      "decision_path": "rules",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
+      "llm_model": null
     },
     {
       "company_id": 62,
@@ -570,6 +577,8 @@
       "acceptability": 0.8533,
       "substitute_score": 0.9046,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -592,7 +601,7 @@
       "caveats": [],
       "risk_notes": [],
       "review_required": false,
-      "tradeoff_summary": "The recommended candidate, vitamin B6, has been assessed as safe to consolidate. With an acceptability score of 0.85 and a sourcing benefit of 0.48, this option presents a favorable trade-off. Please proceed with discussions with the current suppliers, Prinova USA and PureBulk, to finalize the consolidation.",
+      "tradeoff_summary": "Consolidation looks safe: swap pyridoxine hydrochloride vitamin b6 for vitamin b6. Acceptability 0.85, sourcing benefit 0.48. Source suppliers: 2, candidate suppliers: 2, company overlap: 100%.",
       "citations": [
         {
           "url": "https://www.ncbi.nlm.nih.gov/books/NBK557436/",
@@ -613,10 +622,10 @@
           "retrieved_at": "2023-10-01T00:00:00Z"
         }
       ],
-      "decision_path": "llm",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:48.831887Z",
-      "llm_model": "gpt-4o-mini"
+      "decision_path": "rules",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
+      "llm_model": null
     },
     {
       "company_id": 40,
@@ -632,6 +641,8 @@
       "acceptability": 0.7818,
       "substitute_score": 0.9765,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -690,8 +701,8 @@
         }
       ],
       "decision_path": "llm",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": "gpt-4o-mini"
     },
     {
@@ -708,6 +719,8 @@
       "acceptability": 0.7818,
       "substitute_score": 0.9765,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -766,8 +779,8 @@
         }
       ],
       "decision_path": "llm",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": "gpt-4o-mini"
     },
     {
@@ -784,6 +797,8 @@
       "acceptability": 0.78,
       "substitute_score": 0.8938,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -870,8 +885,8 @@
         }
       ],
       "decision_path": "rules",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": null
     },
     {
@@ -888,6 +903,8 @@
       "acceptability": 0.78,
       "substitute_score": 0.8938,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -974,8 +991,8 @@
         }
       ],
       "decision_path": "rules",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": null
     },
     {
@@ -992,6 +1009,8 @@
       "acceptability": 0.8364,
       "substitute_score": 0.9808,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -1050,8 +1069,8 @@
         }
       ],
       "decision_path": "llm",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": "gpt-4o-mini"
     },
     {
@@ -1068,6 +1087,8 @@
       "acceptability": 0.8533,
       "substitute_score": 0.8836,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -1090,7 +1111,7 @@
       "caveats": [],
       "risk_notes": [],
       "review_required": false,
-      "tradeoff_summary": "The recommended substitute, vitamin A acetate, has been graded as safe to consolidate. With an acceptability score of 0.85 and a sourcing benefit of 0.48, this transition appears favorable. Please proceed with discussions with current suppliers, Prinova USA and PureBulk, to implement this change.",
+      "tradeoff_summary": "Consolidation looks safe: swap retinyl palmitate vitamin a for vitamin a acetate. Acceptability 0.85, sourcing benefit 0.48. Source suppliers: 2, candidate suppliers: 2, company overlap: 100%.",
       "citations": [
         {
           "url": "https://en.wikipedia.org/wiki/Retinyl_acetate",
@@ -1129,10 +1150,10 @@
           "retrieved_at": "2023-10-01T12:00:00Z"
         }
       ],
-      "decision_path": "llm",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:53.585164Z",
-      "llm_model": "gpt-4o-mini"
+      "decision_path": "rules",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
+      "llm_model": null
     },
     {
       "company_id": 40,
@@ -1148,6 +1169,8 @@
       "acceptability": 0.7867,
       "substitute_score": 0.893,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -1192,8 +1215,8 @@
         }
       ],
       "decision_path": "rules",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": null
     },
     {
@@ -1210,6 +1233,8 @@
       "acceptability": 0.8133,
       "substitute_score": 0.9808,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -1232,7 +1257,7 @@
       "caveats": [],
       "risk_notes": [],
       "review_required": false,
-      "tradeoff_summary": "The recommended candidate, retinyl palmitate vitamin a, has been graded as safe to consolidate. With an acceptability score of 0.81 and a sourcing benefit of 0.48, this option presents a favorable trade-off for our procurement strategy. Please proceed with finalizing the sourcing arrangements with Prinova USA and PureBulk.",
+      "tradeoff_summary": "Consolidation looks safe: swap vitamin a retinyl palmitate for retinyl palmitate vitamin a. Acceptability 0.81, sourcing benefit 0.48. Source suppliers: 2, candidate suppliers: 2, company overlap: 100%.",
       "citations": [
         {
           "url": "https://xtendlife.com/blogs/supplement-ingredients/vitamin-a-retinyl-palmitate?srsltid=AfmBOorvDnGsQ6X86QUEjQDd743EltO7wHIGM00177DtDYK2uR6txSA8",
@@ -1271,10 +1296,10 @@
           "retrieved_at": "2023-10-01T12:00:00Z"
         }
       ],
-      "decision_path": "llm",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:51.419712Z",
-      "llm_model": "gpt-4o-mini"
+      "decision_path": "rules",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
+      "llm_model": null
     },
     {
       "company_id": 44,
@@ -1290,6 +1315,8 @@
       "acceptability": 0.8,
       "substitute_score": 0.9025,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -1364,8 +1391,8 @@
         }
       ],
       "decision_path": "rules",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": null
     },
     {
@@ -1382,6 +1409,8 @@
       "acceptability": 0.7333,
       "substitute_score": 0.8965,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -1462,8 +1491,8 @@
         }
       ],
       "decision_path": "llm",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": "gpt-4o-mini"
     },
     {
@@ -1480,6 +1509,8 @@
       "acceptability": 0.88,
       "substitute_score": 0.9794,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -1502,7 +1533,7 @@
       "caveats": [],
       "risk_notes": [],
       "review_required": false,
-      "tradeoff_summary": "The recommended candidate for vitamin B12 cyanocobalamin is safe to consolidate, with an acceptability score of 0.88 and a sourcing benefit of 0.48. Both current and recommended suppliers remain the same: Prinova USA and PureBulk. Please proceed with the consolidation process.",
+      "tradeoff_summary": "Consolidation looks safe: swap vitamin b12 cyanocobalamin for cyanocobalamin vitamin b12. Acceptability 0.88, sourcing benefit 0.48. Source suppliers: 2, candidate suppliers: 2, company overlap: 100%.",
       "citations": [
         {
           "url": "https://en.wikipedia.org/wiki/Cyanocobalamin",
@@ -1541,10 +1572,10 @@
           "retrieved_at": "2023-10-01T00:00:00Z"
         }
       ],
-      "decision_path": "llm",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:46.647004Z",
-      "llm_model": "gpt-4o-mini"
+      "decision_path": "rules",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
+      "llm_model": null
     },
     {
       "company_id": 27,
@@ -1560,6 +1591,8 @@
       "acceptability": 0.88,
       "substitute_score": 0.9794,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -1582,7 +1615,7 @@
       "caveats": [],
       "risk_notes": [],
       "review_required": false,
-      "tradeoff_summary": "The recommended candidate for vitamin B12 cyanocobalamin is safe to consolidate, with an acceptability score of 0.88 and a sourcing benefit of 0.48. Both current and recommended suppliers remain the same: Prinova USA and PureBulk. Please proceed with the consolidation process.",
+      "tradeoff_summary": "Consolidation looks safe: swap vitamin b12 cyanocobalamin for cyanocobalamin vitamin b12. Acceptability 0.88, sourcing benefit 0.48. Source suppliers: 2, candidate suppliers: 2, company overlap: 100%.",
       "citations": [
         {
           "url": "https://en.wikipedia.org/wiki/Cyanocobalamin",
@@ -1621,10 +1654,10 @@
           "retrieved_at": "2023-10-01T00:00:00Z"
         }
       ],
-      "decision_path": "llm",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:46.647004Z",
-      "llm_model": "gpt-4o-mini"
+      "decision_path": "rules",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
+      "llm_model": null
     },
     {
       "company_id": 27,
@@ -1640,6 +1673,8 @@
       "acceptability": 0.88,
       "substitute_score": 0.9794,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -1662,7 +1697,7 @@
       "caveats": [],
       "risk_notes": [],
       "review_required": false,
-      "tradeoff_summary": "The recommended candidate for vitamin B12 cyanocobalamin is safe to consolidate, with an acceptability score of 0.88 and a sourcing benefit of 0.48. Both current and recommended suppliers remain the same: Prinova USA and PureBulk. Please proceed with the consolidation process.",
+      "tradeoff_summary": "Consolidation looks safe: swap vitamin b12 cyanocobalamin for cyanocobalamin vitamin b12. Acceptability 0.88, sourcing benefit 0.48. Source suppliers: 2, candidate suppliers: 2, company overlap: 100%.",
       "citations": [
         {
           "url": "https://en.wikipedia.org/wiki/Cyanocobalamin",
@@ -1701,10 +1736,10 @@
           "retrieved_at": "2023-10-01T00:00:00Z"
         }
       ],
-      "decision_path": "llm",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:46.647004Z",
-      "llm_model": "gpt-4o-mini"
+      "decision_path": "rules",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
+      "llm_model": null
     },
     {
       "company_id": 27,
@@ -1720,6 +1755,8 @@
       "acceptability": 0.88,
       "substitute_score": 0.9794,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -1742,7 +1779,7 @@
       "caveats": [],
       "risk_notes": [],
       "review_required": false,
-      "tradeoff_summary": "The recommended candidate for vitamin B12 cyanocobalamin is safe to consolidate, with an acceptability score of 0.88 and a sourcing benefit of 0.48. Both current and recommended suppliers remain the same: Prinova USA and PureBulk. Please proceed with the consolidation process.",
+      "tradeoff_summary": "Consolidation looks safe: swap vitamin b12 cyanocobalamin for cyanocobalamin vitamin b12. Acceptability 0.88, sourcing benefit 0.48. Source suppliers: 2, candidate suppliers: 2, company overlap: 100%.",
       "citations": [
         {
           "url": "https://en.wikipedia.org/wiki/Cyanocobalamin",
@@ -1781,10 +1818,10 @@
           "retrieved_at": "2023-10-01T00:00:00Z"
         }
       ],
-      "decision_path": "llm",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:46.647004Z",
-      "llm_model": "gpt-4o-mini"
+      "decision_path": "rules",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
+      "llm_model": null
     },
     {
       "company_id": 27,
@@ -1800,6 +1837,8 @@
       "acceptability": 0.88,
       "substitute_score": 0.9794,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -1822,7 +1861,7 @@
       "caveats": [],
       "risk_notes": [],
       "review_required": false,
-      "tradeoff_summary": "The recommended candidate for vitamin B12 cyanocobalamin is safe to consolidate, with an acceptability score of 0.88 and a sourcing benefit of 0.48. Both current and recommended suppliers remain the same: Prinova USA and PureBulk. Please proceed with the consolidation process.",
+      "tradeoff_summary": "Consolidation looks safe: swap vitamin b12 cyanocobalamin for cyanocobalamin vitamin b12. Acceptability 0.88, sourcing benefit 0.48. Source suppliers: 2, candidate suppliers: 2, company overlap: 100%.",
       "citations": [
         {
           "url": "https://en.wikipedia.org/wiki/Cyanocobalamin",
@@ -1861,10 +1900,10 @@
           "retrieved_at": "2023-10-01T00:00:00Z"
         }
       ],
-      "decision_path": "llm",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:46.647004Z",
-      "llm_model": "gpt-4o-mini"
+      "decision_path": "rules",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
+      "llm_model": null
     },
     {
       "company_id": 27,
@@ -1880,6 +1919,8 @@
       "acceptability": 0.85,
       "substitute_score": 0.9003,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -1942,8 +1983,8 @@
         }
       ],
       "decision_path": "rules",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": null
     },
     {
@@ -1960,6 +2001,8 @@
       "acceptability": 0.85,
       "substitute_score": 0.9003,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -2022,8 +2065,8 @@
         }
       ],
       "decision_path": "rules",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": null
     },
     {
@@ -2040,6 +2083,8 @@
       "acceptability": 0.85,
       "substitute_score": 0.9003,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -2102,8 +2147,8 @@
         }
       ],
       "decision_path": "rules",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": null
     },
     {
@@ -2120,6 +2165,8 @@
       "acceptability": 0.85,
       "substitute_score": 0.9003,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -2182,8 +2229,8 @@
         }
       ],
       "decision_path": "rules",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": null
     },
     {
@@ -2200,6 +2247,8 @@
       "acceptability": 0.85,
       "substitute_score": 0.9003,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -2262,8 +2311,8 @@
         }
       ],
       "decision_path": "rules",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": null
     },
     {
@@ -2280,6 +2329,8 @@
       "acceptability": 0.8133,
       "substitute_score": 0.9319,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -2324,8 +2375,8 @@
         }
       ],
       "decision_path": "rules",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": null
     },
     {
@@ -2342,6 +2393,8 @@
       "acceptability": 0.8133,
       "substitute_score": 0.9319,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -2386,8 +2439,8 @@
         }
       ],
       "decision_path": "rules",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": null
     },
     {
@@ -2404,6 +2457,8 @@
       "acceptability": 0.8133,
       "substitute_score": 0.9319,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -2448,8 +2503,8 @@
         }
       ],
       "decision_path": "rules",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": null
     },
     {
@@ -2466,6 +2521,8 @@
       "acceptability": 0.8133,
       "substitute_score": 0.9319,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -2510,8 +2567,8 @@
         }
       ],
       "decision_path": "rules",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": null
     },
     {
@@ -2528,6 +2585,8 @@
       "acceptability": 0.8133,
       "substitute_score": 0.9319,
       "sourcing_benefit": 0.4833,
+      "savings_signal": 0.0,
+      "estimated_savings_usd": null,
       "signals": {
         "source_supplier_count": 2,
         "candidate_supplier_count": 2,
@@ -2572,8 +2631,8 @@
         }
       ],
       "decision_path": "rules",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.331884Z",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.313489Z",
       "llm_model": null
     }
   ],
@@ -2587,6 +2646,8 @@
       "n_companies_covered": 2,
       "aggregate_final_score": 0.8323,
       "aggregate_sourcing_benefit": 0.4833,
+      "aggregate_savings_signal": 0.0,
+      "total_estimated_savings_usd": 0.0,
       "recommendation_grade": "safe_to_consolidate",
       "unique_current_suppliers": [
         "Prinova USA",
@@ -2597,20 +2658,16 @@
         "PureBulk"
       ],
       "review_required": false,
-      "tradeoff_summary": "The recommended candidate for cyanocobalamin vitamin B12 is deemed safe to consolidate. While the sourcing benefit is moderate at 0.48, it is essential to ensure that certification documentation, quality sensory evaluation, and certification verification are completed. Please initiate the necessary steps to gather these requirements.",
-      "risk_notes": [
-        "Requires certification documentation",
-        "Requires quality sensory evaluation",
-        "Requires certification verification"
-      ],
+      "tradeoff_summary": "Consolidate cyanocobalamin vitamin b12 onto vitamin b12 cyanocobalamin across 2 product(s) and 2 companies. Average acceptability 0.89, final score 0.83.",
+      "risk_notes": [],
       "top_row_keys": [
         "40|58|cyanocobalamin-vitamin-b12|vitamin-b12-cyanocobalamin",
         "62|96|cyanocobalamin-vitamin-b12|vitamin-b12-cyanocobalamin"
       ],
-      "decision_path": "llm",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:44.335377Z",
-      "llm_model": "gpt-4o-mini"
+      "decision_path": "rules",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.314704Z",
+      "llm_model": null
     },
     {
       "source_key": "vitamin-b12-cyanocobalamin",
@@ -2621,6 +2678,8 @@
       "n_companies_covered": 1,
       "aggregate_final_score": 0.8255,
       "aggregate_sourcing_benefit": 0.4833,
+      "aggregate_savings_signal": 0.0,
+      "total_estimated_savings_usd": 0.0,
       "recommendation_grade": "safe_to_consolidate",
       "unique_current_suppliers": [
         "Prinova USA",
@@ -2631,7 +2690,7 @@
         "PureBulk"
       ],
       "review_required": false,
-      "tradeoff_summary": "The recommended candidate for vitamin B12 cyanocobalamin is safe to consolidate, with an acceptability score of 0.88 and a sourcing benefit of 0.48. Both current and recommended suppliers remain the same: Prinova USA and PureBulk. Please proceed with the consolidation process.",
+      "tradeoff_summary": "Consolidate vitamin b12 cyanocobalamin onto cyanocobalamin vitamin b12 across 5 product(s) and 1 company. Average acceptability 0.88, final score 0.83.",
       "risk_notes": [],
       "top_row_keys": [
         "27|7|vitamin-b12-cyanocobalamin|cyanocobalamin-vitamin-b12",
@@ -2640,10 +2699,10 @@
         "27|129|vitamin-b12-cyanocobalamin|cyanocobalamin-vitamin-b12",
         "27|134|vitamin-b12-cyanocobalamin|cyanocobalamin-vitamin-b12"
       ],
-      "decision_path": "llm",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:46.647004Z",
-      "llm_model": "gpt-4o-mini"
+      "decision_path": "rules",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.314704Z",
+      "llm_model": null
     },
     {
       "source_key": "pyridoxine-hydrochloride-vitamin-b6",
@@ -2654,6 +2713,8 @@
       "n_companies_covered": 2,
       "aggregate_final_score": 0.7922,
       "aggregate_sourcing_benefit": 0.4833,
+      "aggregate_savings_signal": 0.0,
+      "total_estimated_savings_usd": 0.0,
       "recommendation_grade": "safe_to_consolidate",
       "unique_current_suppliers": [
         "Prinova USA",
@@ -2664,16 +2725,16 @@
         "PureBulk"
       ],
       "review_required": false,
-      "tradeoff_summary": "The recommended candidate, vitamin B6, has been assessed as safe to consolidate. With an acceptability score of 0.85 and a sourcing benefit of 0.48, this option presents a favorable trade-off. Please proceed with discussions with the current suppliers, Prinova USA and PureBulk, to finalize the consolidation.",
+      "tradeoff_summary": "Consolidate pyridoxine hydrochloride vitamin b6 onto vitamin b6 across 2 product(s) and 2 companies. Average acceptability 0.85, final score 0.79.",
       "risk_notes": [],
       "top_row_keys": [
         "40|58|pyridoxine-hydrochloride-vitamin-b6|vitamin-b6",
         "62|96|pyridoxine-hydrochloride-vitamin-b6|vitamin-b6"
       ],
-      "decision_path": "llm",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:48.831887Z",
-      "llm_model": "gpt-4o-mini"
+      "decision_path": "rules",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.314704Z",
+      "llm_model": null
     },
     {
       "source_key": "vitamin-a-retinyl-palmitate",
@@ -2684,6 +2745,8 @@
       "n_companies_covered": 1,
       "aggregate_final_score": 0.7892,
       "aggregate_sourcing_benefit": 0.4833,
+      "aggregate_savings_signal": 0.0,
+      "total_estimated_savings_usd": 0.0,
       "recommendation_grade": "safe_to_consolidate",
       "unique_current_suppliers": [
         "Prinova USA",
@@ -2694,15 +2757,15 @@
         "PureBulk"
       ],
       "review_required": false,
-      "tradeoff_summary": "The recommended candidate, retinyl palmitate vitamin a, has been graded as safe to consolidate. With an acceptability score of 0.81 and a sourcing benefit of 0.48, this option presents a favorable trade-off for our procurement strategy. Please proceed with finalizing the sourcing arrangements with Prinova USA and PureBulk.",
+      "tradeoff_summary": "Consolidate vitamin a retinyl palmitate onto retinyl palmitate vitamin a across 1 product(s) and 1 company. Average acceptability 0.81, final score 0.79.",
       "risk_notes": [],
       "top_row_keys": [
         "44|21|vitamin-a-retinyl-palmitate|retinyl-palmitate-vitamin-a"
       ],
-      "decision_path": "llm",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:51.419712Z",
-      "llm_model": "gpt-4o-mini"
+      "decision_path": "rules",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.314704Z",
+      "llm_model": null
     },
     {
       "source_key": "retinyl-palmitate-vitamin-a",
@@ -2713,6 +2776,8 @@
       "n_companies_covered": 1,
       "aggregate_final_score": 0.7869,
       "aggregate_sourcing_benefit": 0.4833,
+      "aggregate_savings_signal": 0.0,
+      "total_estimated_savings_usd": 0.0,
       "recommendation_grade": "safe_to_consolidate",
       "unique_current_suppliers": [
         "Prinova USA",
@@ -2723,15 +2788,15 @@
         "PureBulk"
       ],
       "review_required": false,
-      "tradeoff_summary": "The recommended substitute, vitamin A acetate, has been graded as safe to consolidate. With an acceptability score of 0.85 and a sourcing benefit of 0.48, this transition appears favorable. Please proceed with discussions with current suppliers, Prinova USA and PureBulk, to implement this change.",
+      "tradeoff_summary": "Consolidate retinyl palmitate vitamin a onto vitamin a acetate across 1 product(s) and 1 company. Average acceptability 0.85, final score 0.79.",
       "risk_notes": [],
       "top_row_keys": [
         "40|58|retinyl-palmitate-vitamin-a|vitamin-a-acetate"
       ],
-      "decision_path": "llm",
-      "schema_version": "v2",
-      "generated_at": "2026-04-18T07:06:53.585164Z",
-      "llm_model": "gpt-4o-mini"
+      "decision_path": "rules",
+      "schema_version": "v3",
+      "generated_at": "2026-04-18T08:49:06.314704Z",
+      "llm_model": null
     }
   ]
 }

@@ -7,6 +7,13 @@ from agnes.models.assessment import (
     SubstituteAssessment,
     SubstituteAssessmentLLM,
 )
+from agnes.models.chat import (
+    CHAT_SCHEMA_VERSION,
+    ChatMessage,
+    ChatRequest,
+    ChatResponse,
+    ChatStep,
+)
 from agnes.models.canonical import (
     CanonicalMaterial,
     CanonicalRegistry,
@@ -31,6 +38,13 @@ from agnes.models.evidence import (
     SubstituteEvidenceLLM,
 )
 from agnes.models.graph import GraphIngestReport, KGEdge, KGNode, node_id
+from agnes.models.procurement import (
+    PROCUREMENT_SCHEMA_VERSION,
+    PriceBenchmark,
+    ProcurementOrder,
+    RiskTier,
+    SupplierRating,
+)
 from agnes.models.recommendation import (
     RECOMMENDATION_SCHEMA_VERSION,
     ConsolidationOpportunity,
@@ -51,6 +65,16 @@ from agnes.models.reports import (
 
 __all__ = [
     "ASSESSMENT_SCHEMA_VERSION",
+    "CHAT_SCHEMA_VERSION",
+    "ChatMessage",
+    "ChatRequest",
+    "ChatResponse",
+    "ChatStep",
+    "PROCUREMENT_SCHEMA_VERSION",
+    "PriceBenchmark",
+    "ProcurementOrder",
+    "RiskTier",
+    "SupplierRating",
     "RECOMMENDATION_SCHEMA_VERSION",
     "ConsolidationOpportunity",
     "RecommendationReport",

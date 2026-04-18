@@ -35,6 +35,7 @@ from agnes.recommendation.scorer import (
     sourcing_benefit,
 )
 from agnes.recommendation.signals import SupplierIndex, compute_signals
+from agnes.services.cost import CostSignal
 
 logger = structlog.get_logger(__name__)
 
@@ -130,6 +131,7 @@ def build_rows(
     final_cfg: FinalScoreConfig,
     thresholds: GradeThresholds,
     llm_model: str | None = None,
+    cost_signal_by_key: dict[str, CostSignal] | None = None,
 ) -> list[SourcingRecommendation]:
     """
     Build one :class:`SourcingRecommendation` per Phase 6 assessment row.
@@ -141,6 +143,7 @@ def build_rows(
     score_lookup = _substitute_score_by_pair(candidates_report)
     rows: list[SourcingRecommendation] = []
     now = datetime.now(UTC)
+    cost_signals = cost_signal_by_key or {}
 
     for assessment in assessments:
         signals = compute_signals(
@@ -155,11 +158,21 @@ def build_rows(
             sub_score = score_lookup.get(
                 (assessment.source_key, assessment.candidate_key)
             )
+
+        cost_signal = cost_signals.get(assessment.candidate_key)
+        savings_signal_value = cost_signal.signal if cost_signal is not None else 0.0
+        estimated_savings = (
+            cost_signal.estimated_savings_usd
+            if cost_signal is not None and cost_signal.meets_gates
+            else None
+        )
+
         score_value = final_score(
             assessment.acceptability,
             sub_score,
             benefit,
             final_cfg,
+            savings_signal=savings_signal_value,
         )
         has_high_weight = any(
             k in HIGH_WEIGHT_CONTRADICTION_KEYS for k in assessment.contradictions
@@ -169,6 +182,7 @@ def build_rows(
             substitute_score=sub_score,
             sourcing_benefit=benefit,
             signals=signals,
+            savings_signal=savings_signal_value,
             has_high_weight_contradiction=has_high_weight,
             contradictions=list(assessment.contradictions),
         )
@@ -194,6 +208,9 @@ def build_rows(
             caveats=list(assessment.caveats),
         )
         risk_notes = _risk_notes_from_assessment(assessment, signals)
+        caveats_with_cost = list(assessment.caveats)
+        if cost_signal is not None and cost_signal.meets_gates and cost_signal.evidence:
+            caveats_with_cost.extend(cost_signal.evidence)
         row = SourcingRecommendation(
             company_id=assessment.company_id,
             company_name=assessment.company_name,
@@ -210,10 +227,14 @@ def build_rows(
                 None if sub_score is None else round(max(0.0, min(1.0, sub_score)), 4)
             ),
             sourcing_benefit=round(benefit, 4),
+            savings_signal=round(savings_signal_value, 4),
+            estimated_savings_usd=(
+                None if estimated_savings is None else round(estimated_savings, 2)
+            ),
             signals=signals,
             current_suppliers=list(current_suppliers),
             recommended_suppliers=list(recommended_suppliers),
-            caveats=list(assessment.caveats),
+            caveats=caveats_with_cost,
             risk_notes=risk_notes,
             review_required=review_required,
             tradeoff_summary=summary,
@@ -315,6 +336,14 @@ def rollup_opportunities(
             if chosen_rows
             else 0.0
         )
+        agg_savings = (
+            sum(r.savings_signal for r in chosen_rows) / len(chosen_rows)
+            if chosen_rows
+            else 0.0
+        )
+        total_savings_usd = sum(
+            (r.estimated_savings_usd or 0.0) for r in chosen_rows
+        )
         current = _dedupe_preserve_order(
             [s for r in chosen_rows for s in r.current_suppliers]
         )
@@ -350,6 +379,8 @@ def rollup_opportunities(
                 n_companies_covered=len(companies),
                 aggregate_final_score=round(agg_final, 4),
                 aggregate_sourcing_benefit=round(agg_sourcing, 4),
+                aggregate_savings_signal=round(agg_savings, 4),
+                total_estimated_savings_usd=round(total_savings_usd, 2),
                 recommendation_grade=grade,
                 unique_current_suppliers=current,
                 unique_recommended_suppliers=recommended,

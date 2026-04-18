@@ -10,9 +10,20 @@ from pathlib import Path
 
 import pandas as pd
 
+from agnes.canonicalization.taxonomy import TAXONOMY_VERSION  # noqa: F401
 from agnes.config.settings import Settings
-from agnes.data.db_loader import get_engine
-from agnes.data.queries import raw_material_suppliers, supplier_products_by_company
+from agnes.data.db_loader import (
+    get_engine,
+    load_price_benchmarks,
+    load_procurement_history,
+    load_supplier_ratings,
+    procurement_tables_present,
+)
+from agnes.data.queries import (
+    load_suppliers,
+    raw_material_suppliers,
+    supplier_products_by_company,
+)
 from agnes.models.assessment import AssessmentReport
 from agnes.models.canonical import CanonicalRegistry
 from agnes.models.recommendation import (
@@ -41,6 +52,11 @@ from agnes.recommendation.scorer import (
     SourcingWeights,
 )
 from agnes.recommendation.signals import build_supplier_index
+from agnes.services.cost import (
+    CostSignal,
+    build_supplier_pricing,
+    compute_cost_signal,
+)
 from agnes.utils.logging import configure_logging
 
 OUT_DIR = Path("outputs/reports")
@@ -182,7 +198,64 @@ def _final_weights(settings: Settings) -> FinalScoreConfig:
             "substitute", DEFAULT_FINAL_WEIGHTS.alpha_substitute
         ),
         alpha_sourcing=merged.get("sourcing", DEFAULT_FINAL_WEIGHTS.alpha_sourcing),
+        alpha_savings=merged.get("savings", DEFAULT_FINAL_WEIGHTS.alpha_savings),
     )
+
+
+def _build_cost_signals(
+    settings: Settings,
+    registry: CanonicalRegistry,
+) -> dict[str, CostSignal]:
+    """Compute a :class:`CostSignal` per canonical key, if procurement data is present.
+
+    Returns an empty dict when any required table is missing — Phase 7 then
+    degrades gracefully to the 3-signal behaviour (sourcing + acceptability +
+    substitute_score).
+    """
+    engine = get_engine(settings)
+    if not procurement_tables_present(engine):
+        return {}
+
+    ratings_by_supplier = load_supplier_ratings(engine, settings)
+    benchmark_by_base = load_price_benchmarks(engine, settings)
+    orders = list(load_procurement_history(engine, settings))
+    if not orders:
+        return {}
+
+    suppliers_df = load_suppliers(engine)
+    supplier_names: dict[int, str] = {
+        int(row["Id"]): str(row["Name"]) for _, row in suppliers_df.iterrows()
+    }
+
+    orders_by_product: dict[int, list] = {}
+    for o in orders:
+        orders_by_product.setdefault(o.ProductId, []).append(o)
+
+    raw_ids_by_key: dict[str, set[int]] = {}
+    bases_by_key: dict[str, str] = {}
+    labels_by_key: dict[str, str] = {}
+    for m in registry.materials:
+        raw_ids_by_key.setdefault(m.canonical_key, set()).add(m.raw_product_id)
+        bases_by_key.setdefault(m.canonical_key, m.canonical_key.split("::")[-1])
+        labels_by_key.setdefault(m.canonical_key, m.normalized_name)
+
+    out: dict[str, CostSignal] = {}
+    for canonical_key, raw_ids in raw_ids_by_key.items():
+        key_orders = [o for rid in raw_ids for o in orders_by_product.get(rid, [])]
+        if not key_orders:
+            continue
+        pricings = build_supplier_pricing(
+            key_orders,
+            ratings_by_supplier=ratings_by_supplier,
+            supplier_names=supplier_names,
+        )
+        benchmark = benchmark_by_base.get(bases_by_key.get(canonical_key, ""))
+        out[canonical_key] = compute_cost_signal(
+            pricings,
+            benchmark=benchmark,
+            ingredient_label=labels_by_key.get(canonical_key),
+        )
+    return out
 
 
 def _rows_csv(path: Path, items: list[SourcingRecommendation]) -> None:
@@ -205,6 +278,10 @@ def _rows_csv(path: Path, items: list[SourcingRecommendation]) -> None:
                     "" if item.substitute_score is None else item.substitute_score
                 ),
                 "sourcing_benefit": item.sourcing_benefit,
+                "savings_signal": item.savings_signal,
+                "estimated_savings_usd": (
+                    "" if item.estimated_savings_usd is None else item.estimated_savings_usd
+                ),
                 "source_supplier_count": item.signals.source_supplier_count,
                 "candidate_supplier_count": item.signals.candidate_supplier_count,
                 "company_supplier_overlap": item.signals.company_supplier_overlap,
@@ -241,6 +318,8 @@ def _opportunities_csv(path: Path, opps: list[ConsolidationOpportunity]) -> None
                 "n_companies_covered": opp.n_companies_covered,
                 "aggregate_final_score": opp.aggregate_final_score,
                 "aggregate_sourcing_benefit": opp.aggregate_sourcing_benefit,
+                "aggregate_savings_signal": opp.aggregate_savings_signal,
+                "total_estimated_savings_usd": opp.total_estimated_savings_usd,
                 "review_required": opp.review_required,
                 "tradeoff_summary": opp.tradeoff_summary,
                 "risk_notes": json.dumps(opp.risk_notes),
@@ -341,6 +420,8 @@ def main() -> int:  # noqa: PLR0915
         reject=settings.phase7_reject_threshold,
     )
 
+    cost_signal_by_key = _build_cost_signals(settings, registry)
+
     rows = build_rows(
         assessment_report.items,
         supplier_index=index,
@@ -349,6 +430,7 @@ def main() -> int:  # noqa: PLR0915
         final_cfg=final_cfg,
         thresholds=thresholds,
         llm_model=assessment_report.llm_model,
+        cost_signal_by_key=cost_signal_by_key,
     )
     rows = _filter_rows(
         rows,

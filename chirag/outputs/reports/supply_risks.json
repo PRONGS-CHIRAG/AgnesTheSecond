@@ -1,0 +1,1503 @@
+{
+  "schema_version": "v1",
+  "taxonomy_version": "v2",
+  "generated_at": "2026-04-18T08:39:37.733948Z",
+  "items": [
+    {
+      "type": "single_source",
+      "severity": "high",
+      "key": "glycerin",
+      "label": "Glycerin",
+      "description": "Glycerin is supplied by only Ingredion, affecting 8 companies and 8 products.",
+      "recommendation": "Qualify at least one additional supplier for Glycerin to mitigate single-source risk.",
+      "score": 1.0,
+      "n_companies_affected": 8,
+      "n_products_affected": 8,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole supplier: Ingredion (id=18)"
+      ]
+    },
+    {
+      "type": "single_source",
+      "severity": "high",
+      "key": "maltodextrin",
+      "label": "Maltodextrin",
+      "description": "Maltodextrin is supplied by only Ingredion, affecting 8 companies and 8 products.",
+      "recommendation": "Qualify at least one additional supplier for Maltodextrin to mitigate single-source risk.",
+      "score": 1.0,
+      "n_companies_affected": 8,
+      "n_products_affected": 8,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole supplier: Ingredion (id=18)"
+      ]
+    },
+    {
+      "type": "single_source",
+      "severity": "high",
+      "key": "natural-flavor",
+      "label": "Natural Flavor",
+      "description": "Natural Flavor is supplied by only Gold Coast Ingredients, affecting 8 companies and 8 products.",
+      "recommendation": "Qualify at least one additional supplier for Natural Flavor to mitigate single-source risk.",
+      "score": 1.0,
+      "n_companies_affected": 8,
+      "n_products_affected": 8,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole supplier: Gold Coast Ingredients (id=15)"
+      ]
+    },
+    {
+      "type": "single_source",
+      "severity": "high",
+      "key": "natural-flavors",
+      "label": "Natural Flavors",
+      "description": "Natural Flavors is supplied by only Gold Coast Ingredients, affecting 8 companies and 8 products.",
+      "recommendation": "Qualify at least one additional supplier for Natural Flavors to mitigate single-source risk.",
+      "score": 1.0,
+      "n_companies_affected": 8,
+      "n_products_affected": 8,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole supplier: Gold Coast Ingredients (id=15)"
+      ]
+    },
+    {
+      "type": "single_source",
+      "severity": "high",
+      "key": "xanthan-gum",
+      "label": "Xanthan Gum",
+      "description": "Xanthan Gum is supplied by only Ingredion, affecting 8 companies and 8 products.",
+      "recommendation": "Qualify at least one additional supplier for Xanthan Gum to mitigate single-source risk.",
+      "score": 1.0,
+      "n_companies_affected": 8,
+      "n_products_affected": 8,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole supplier: Ingredion (id=18)"
+      ]
+    },
+    {
+      "type": "single_source",
+      "severity": "high",
+      "key": "natural-and-artificial-flavors",
+      "label": "Natural And Artificial Flavors",
+      "description": "Natural And Artificial Flavors is supplied by only Gold Coast Ingredients, affecting 6 companies and 6 products.",
+      "recommendation": "Qualify at least one additional supplier for Natural And Artificial Flavors to mitigate single-source risk.",
+      "score": 1.0,
+      "n_companies_affected": 6,
+      "n_products_affected": 6,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole supplier: Gold Coast Ingredients (id=15)"
+      ]
+    },
+    {
+      "type": "single_source",
+      "severity": "high",
+      "key": "cellulose-gum",
+      "label": "Cellulose Gum",
+      "description": "Cellulose Gum is supplied by only Ingredion, affecting 4 companies and 4 products.",
+      "recommendation": "Qualify at least one additional supplier for Cellulose Gum to mitigate single-source risk.",
+      "score": 1.0,
+      "n_companies_affected": 4,
+      "n_products_affected": 4,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole supplier: Ingredion (id=18)"
+      ]
+    },
+    {
+      "type": "single_source",
+      "severity": "high",
+      "key": "starch",
+      "label": "Starch",
+      "description": "Starch is supplied by only Ingredion, affecting 4 companies and 4 products.",
+      "recommendation": "Qualify at least one additional supplier for Starch to mitigate single-source risk.",
+      "score": 1.0,
+      "n_companies_affected": 4,
+      "n_products_affected": 4,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole supplier: Ingredion (id=18)"
+      ]
+    },
+    {
+      "type": "single_source",
+      "severity": "high",
+      "key": "vegetable-glycerin",
+      "label": "Vegetable Glycerin",
+      "description": "Vegetable Glycerin is supplied by only Ingredion, affecting 3 companies and 3 products.",
+      "recommendation": "Qualify at least one additional supplier for Vegetable Glycerin to mitigate single-source risk.",
+      "score": 1.0,
+      "n_companies_affected": 3,
+      "n_products_affected": 3,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole supplier: Ingredion (id=18)"
+      ]
+    },
+    {
+      "type": "single_source",
+      "severity": "high",
+      "key": "vitamin-k2-menaquinone-7",
+      "label": "Vitamin K2 Menaquinone 7",
+      "description": "Vitamin K2 Menaquinone 7 is supplied by only Balchem, affecting 3 companies and 3 products.",
+      "recommendation": "Qualify at least one additional supplier for Vitamin K2 Menaquinone 7 to mitigate single-source risk.",
+      "score": 1.0,
+      "n_companies_affected": 3,
+      "n_products_affected": 3,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole supplier: Balchem (id=6)"
+      ]
+    },
+    {
+      "type": "single_source",
+      "severity": "high",
+      "key": "artificial-flavor",
+      "label": "Artificial Flavor",
+      "description": "Artificial Flavor is supplied by only Gold Coast Ingredients, affecting 2 companies and 2 products.",
+      "recommendation": "Qualify at least one additional supplier for Artificial Flavor to mitigate single-source risk.",
+      "score": 1.0,
+      "n_companies_affected": 2,
+      "n_products_affected": 2,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole supplier: Gold Coast Ingredients (id=15)"
+      ]
+    },
+    {
+      "type": "single_source",
+      "severity": "high",
+      "key": "cocoa-processed-with-alkali",
+      "label": "Cocoa Processed With Alkali",
+      "description": "Cocoa Processed With Alkali is supplied by only Ingredion, affecting 2 companies and 2 products.",
+      "recommendation": "Qualify at least one additional supplier for Cocoa Processed With Alkali to mitigate single-source risk.",
+      "score": 1.0,
+      "n_companies_affected": 2,
+      "n_products_affected": 2,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole supplier: Ingredion (id=18)"
+      ]
+    },
+    {
+      "type": "single_source",
+      "severity": "high",
+      "key": "concentrace-trace-minerals",
+      "label": "Concentrace Trace Minerals",
+      "description": "Concentrace Trace Minerals is supplied by only Trace Minerals, affecting 2 companies and 2 products.",
+      "recommendation": "Qualify at least one additional supplier for Concentrace Trace Minerals to mitigate single-source risk.",
+      "score": 1.0,
+      "n_companies_affected": 2,
+      "n_products_affected": 2,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole supplier: Trace Minerals (id=37)"
+      ]
+    },
+    {
+      "type": "single_source",
+      "severity": "high",
+      "key": "organic-gum-acacia",
+      "label": "Organic Gum Acacia",
+      "description": "Organic Gum Acacia is supplied by only Ingredion, affecting 2 companies and 2 products.",
+      "recommendation": "Qualify at least one additional supplier for Organic Gum Acacia to mitigate single-source risk.",
+      "score": 1.0,
+      "n_companies_affected": 2,
+      "n_products_affected": 2,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole supplier: Ingredion (id=18)"
+      ]
+    },
+    {
+      "type": "single_source",
+      "severity": "high",
+      "key": "organic-stevia",
+      "label": "Organic Stevia",
+      "description": "Organic Stevia is supplied by only Sawgrass Nutra Labs, affecting 2 companies and 2 products.",
+      "recommendation": "Qualify at least one additional supplier for Organic Stevia to mitigate single-source risk.",
+      "score": 1.0,
+      "n_companies_affected": 2,
+      "n_products_affected": 2,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole supplier: Sawgrass Nutra Labs (id=29)"
+      ]
+    },
+    {
+      "type": "single_source",
+      "severity": "high",
+      "key": "rice-flour",
+      "label": "Rice Flour",
+      "description": "Rice Flour is supplied by only Ingredion, affecting 2 companies and 2 products.",
+      "recommendation": "Qualify at least one additional supplier for Rice Flour to mitigate single-source risk.",
+      "score": 1.0,
+      "n_companies_affected": 2,
+      "n_products_affected": 2,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole supplier: Ingredion (id=18)"
+      ]
+    },
+    {
+      "type": "single_source",
+      "severity": "high",
+      "key": "rice-powder",
+      "label": "Rice Powder",
+      "description": "Rice Powder is supplied by only Ingredion, affecting 2 companies and 2 products.",
+      "recommendation": "Qualify at least one additional supplier for Rice Powder to mitigate single-source risk.",
+      "score": 1.0,
+      "n_companies_affected": 2,
+      "n_products_affected": 2,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole supplier: Ingredion (id=18)"
+      ]
+    },
+    {
+      "type": "single_source",
+      "severity": "high",
+      "key": "sodium-starch-glycolate",
+      "label": "Sodium Starch Glycolate",
+      "description": "Sodium Starch Glycolate is supplied by only Ingredion, affecting 2 companies and 2 products.",
+      "recommendation": "Qualify at least one additional supplier for Sodium Starch Glycolate to mitigate single-source risk.",
+      "score": 1.0,
+      "n_companies_affected": 2,
+      "n_products_affected": 2,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole supplier: Ingredion (id=18)"
+      ]
+    },
+    {
+      "type": "supplier_concentration",
+      "severity": "high",
+      "key": "supplier:15",
+      "label": "Gold Coast Ingredients",
+      "description": "Gold Coast Ingredients is the sole supplier for 14 ingredients. Loss of this supplier would create critical shortages.",
+      "recommendation": "Develop alternative supplier relationships for the 14 ingredients solely sourced from Gold Coast Ingredients.",
+      "score": 1.0,
+      "n_companies_affected": 0,
+      "n_products_affected": 0,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole source for: orange-flavor, natural-flavor, artificial-flavor, natural-flavors, natural-and-artificial-flavors...",
+        "total ingredients offered: 26"
+      ]
+    },
+    {
+      "type": "supplier_concentration",
+      "severity": "high",
+      "key": "supplier:18",
+      "label": "Ingredion",
+      "description": "Ingredion is the sole supplier for 27 ingredients. Loss of this supplier would create critical shortages.",
+      "recommendation": "Develop alternative supplier relationships for the 27 ingredients solely sourced from Ingredion.",
+      "score": 1.0,
+      "n_companies_affected": 0,
+      "n_products_affected": 0,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole source for: rice-bran, maltodextrin, xanthan-gum, carrageenan, cellulose-gum...",
+        "total ingredients offered: 47"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "vitamin-d3-cholecalciferol",
+      "label": "Vitamin D3 Cholecalciferol",
+      "description": "Vitamin D3 Cholecalciferol serves 17 companies but has only 2 supplier(s). Demand/supply ratio: 8.5x",
+      "recommendation": "Qualify additional suppliers for Vitamin D3 Cholecalciferol to better balance demand across 17 companies.",
+      "score": 1.0,
+      "n_companies_affected": 17,
+      "n_products_affected": 17,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=17",
+        "suppliers_offering=2",
+        "ratio=8.5"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "microcrystalline-cellulose",
+      "label": "Microcrystalline Cellulose",
+      "description": "Microcrystalline Cellulose serves 13 companies but has only 2 supplier(s). Demand/supply ratio: 6.5x",
+      "recommendation": "Qualify additional suppliers for Microcrystalline Cellulose to better balance demand across 13 companies.",
+      "score": 0.8500000000000001,
+      "n_companies_affected": 13,
+      "n_products_affected": 13,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=13",
+        "suppliers_offering=2",
+        "ratio=6.5"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "vitamin-c",
+      "label": "Vitamin C",
+      "description": "Vitamin C serves 13 companies but has only 2 supplier(s). Demand/supply ratio: 6.5x",
+      "recommendation": "Qualify additional suppliers for Vitamin C to better balance demand across 13 companies.",
+      "score": 0.8500000000000001,
+      "n_companies_affected": 13,
+      "n_products_affected": 13,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=13",
+        "suppliers_offering=2",
+        "ratio=6.5"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "citric-acid",
+      "label": "Citric Acid",
+      "description": "Citric Acid serves 12 companies but has only 2 supplier(s). Demand/supply ratio: 6.0x",
+      "recommendation": "Qualify additional suppliers for Citric Acid to better balance demand across 12 companies.",
+      "score": 0.8,
+      "n_companies_affected": 12,
+      "n_products_affected": 12,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=12",
+        "suppliers_offering=2",
+        "ratio=6.0"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "citric-acid",
+      "label": "Citric Acid",
+      "description": "Citric Acid has 33% price volatility affecting 12 companies. Avg price: $2.99/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Citric Acid to stabilize costs.",
+      "score": 0.668,
+      "n_companies_affected": 12,
+      "n_products_affected": 12,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.33",
+        "avg_market_price=$2.99",
+        "range=$2.08-$4.17"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "gelatin",
+      "label": "Gelatin",
+      "description": "Gelatin serves 11 companies but has only 2 supplier(s). Demand/supply ratio: 5.5x",
+      "recommendation": "Qualify additional suppliers for Gelatin to better balance demand across 11 companies.",
+      "score": 0.75,
+      "n_companies_affected": 11,
+      "n_products_affected": 11,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=11",
+        "suppliers_offering=2",
+        "ratio=5.5"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "magnesium",
+      "label": "Magnesium",
+      "description": "Magnesium serves 11 companies but has only 2 supplier(s). Demand/supply ratio: 5.5x",
+      "recommendation": "Qualify additional suppliers for Magnesium to better balance demand across 11 companies.",
+      "score": 0.75,
+      "n_companies_affected": 11,
+      "n_products_affected": 11,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=11",
+        "suppliers_offering=2",
+        "ratio=5.5"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "magnesium-stearate",
+      "label": "Magnesium Stearate",
+      "description": "Magnesium Stearate serves 11 companies but has only 2 supplier(s). Demand/supply ratio: 5.5x",
+      "recommendation": "Qualify additional suppliers for Magnesium Stearate to better balance demand across 11 companies.",
+      "score": 0.75,
+      "n_companies_affected": 11,
+      "n_products_affected": 11,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=11",
+        "suppliers_offering=2",
+        "ratio=5.5"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "whey-protein-isolate",
+      "label": "Whey Protein Isolate",
+      "description": "Whey Protein Isolate serves 11 companies but has only 2 supplier(s). Demand/supply ratio: 5.5x",
+      "recommendation": "Qualify additional suppliers for Whey Protein Isolate to better balance demand across 11 companies.",
+      "score": 0.75,
+      "n_companies_affected": 11,
+      "n_products_affected": 11,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=11",
+        "suppliers_offering=2",
+        "ratio=5.5"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "zinc",
+      "label": "Zinc",
+      "description": "Zinc serves 11 companies but has only 2 supplier(s). Demand/supply ratio: 5.5x",
+      "recommendation": "Qualify additional suppliers for Zinc to better balance demand across 11 companies.",
+      "score": 0.75,
+      "n_companies_affected": 11,
+      "n_products_affected": 11,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=11",
+        "suppliers_offering=2",
+        "ratio=5.5"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "gelatin",
+      "label": "Gelatin",
+      "description": "Gelatin has 35% price volatility affecting 11 companies. Avg price: $20.07/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Gelatin to stabilize costs.",
+      "score": 0.7,
+      "n_companies_affected": 11,
+      "n_products_affected": 11,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.35",
+        "avg_market_price=$20.07",
+        "range=$13.06-$27.11"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "zinc",
+      "label": "Zinc",
+      "description": "Zinc has 32% price volatility affecting 11 companies. Avg price: $31.91/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Zinc to stabilize costs.",
+      "score": 0.646,
+      "n_companies_affected": 11,
+      "n_products_affected": 11,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.32",
+        "avg_market_price=$31.91",
+        "range=$20.94-$40.87"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "magnesium-oxide",
+      "label": "Magnesium Oxide",
+      "description": "Magnesium Oxide serves 10 companies but has only 2 supplier(s). Demand/supply ratio: 5.0x",
+      "recommendation": "Qualify additional suppliers for Magnesium Oxide to better balance demand across 10 companies.",
+      "score": 0.7,
+      "n_companies_affected": 10,
+      "n_products_affected": 10,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=10",
+        "suppliers_offering=2",
+        "ratio=5.0"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "potassium",
+      "label": "Potassium",
+      "description": "Potassium serves 10 companies but has only 2 supplier(s). Demand/supply ratio: 5.0x",
+      "recommendation": "Qualify additional suppliers for Potassium to better balance demand across 10 companies.",
+      "score": 0.7,
+      "n_companies_affected": 10,
+      "n_products_affected": 10,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=10",
+        "suppliers_offering=2",
+        "ratio=5.0"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "silicon-dioxide",
+      "label": "Silicon Dioxide",
+      "description": "Silicon Dioxide serves 10 companies but has only 2 supplier(s). Demand/supply ratio: 5.0x",
+      "recommendation": "Qualify additional suppliers for Silicon Dioxide to better balance demand across 10 companies.",
+      "score": 0.7,
+      "n_companies_affected": 10,
+      "n_products_affected": 10,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=10",
+        "suppliers_offering=2",
+        "ratio=5.0"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "vitamin-a",
+      "label": "Vitamin A",
+      "description": "Vitamin A serves 10 companies but has only 2 supplier(s). Demand/supply ratio: 5.0x",
+      "recommendation": "Qualify additional suppliers for Vitamin A to better balance demand across 10 companies.",
+      "score": 0.7,
+      "n_companies_affected": 10,
+      "n_products_affected": 10,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=10",
+        "suppliers_offering=2",
+        "ratio=5.0"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "vitamin-e",
+      "label": "Vitamin E",
+      "description": "Vitamin E serves 10 companies but has only 2 supplier(s). Demand/supply ratio: 5.0x",
+      "recommendation": "Qualify additional suppliers for Vitamin E to better balance demand across 10 companies.",
+      "score": 0.7,
+      "n_companies_affected": 10,
+      "n_products_affected": 10,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=10",
+        "suppliers_offering=2",
+        "ratio=5.0"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "vitamin-a",
+      "label": "Vitamin A",
+      "description": "Vitamin A has 31% price volatility affecting 10 companies. Avg price: $221.31/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Vitamin A to stabilize costs.",
+      "score": 0.624,
+      "n_companies_affected": 10,
+      "n_products_affected": 10,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.31",
+        "avg_market_price=$221.31",
+        "range=$153.12-$292.16"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "vitamin-e",
+      "label": "Vitamin E",
+      "description": "Vitamin E has 31% price volatility affecting 10 companies. Avg price: $216.36/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Vitamin E to stabilize costs.",
+      "score": 0.616,
+      "n_companies_affected": 10,
+      "n_products_affected": 10,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.31",
+        "avg_market_price=$216.36",
+        "range=$151.59-$286.40"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "magnesium-oxide",
+      "label": "Magnesium Oxide",
+      "description": "Magnesium Oxide has 26% price volatility affecting 10 companies. Avg price: $21.67/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Magnesium Oxide to stabilize costs.",
+      "score": 0.518,
+      "n_companies_affected": 10,
+      "n_products_affected": 10,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.26",
+        "avg_market_price=$21.67",
+        "range=$16.68-$28.37"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "sucralose",
+      "label": "Sucralose",
+      "description": "Sucralose has 33% price volatility affecting 9 companies. Avg price: $14.87/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Sucralose to stabilize costs.",
+      "score": 0.668,
+      "n_companies_affected": 9,
+      "n_products_affected": 9,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.33",
+        "avg_market_price=$14.87",
+        "range=$10.20-$20.44"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "b-vitamins",
+      "label": "B Vitamins",
+      "description": "B Vitamins serves 9 companies but has only 2 supplier(s). Demand/supply ratio: 4.5x",
+      "recommendation": "Qualify additional suppliers for B Vitamins to better balance demand across 9 companies.",
+      "score": 0.65,
+      "n_companies_affected": 9,
+      "n_products_affected": 9,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=9",
+        "suppliers_offering=2",
+        "ratio=4.5"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "silica",
+      "label": "Silica",
+      "description": "Silica serves 9 companies but has only 2 supplier(s). Demand/supply ratio: 4.5x",
+      "recommendation": "Qualify additional suppliers for Silica to better balance demand across 9 companies.",
+      "score": 0.65,
+      "n_companies_affected": 9,
+      "n_products_affected": 9,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=9",
+        "suppliers_offering=2",
+        "ratio=4.5"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "sucralose",
+      "label": "Sucralose",
+      "description": "Sucralose serves 9 companies but has only 2 supplier(s). Demand/supply ratio: 4.5x",
+      "recommendation": "Qualify additional suppliers for Sucralose to better balance demand across 9 companies.",
+      "score": 0.65,
+      "n_companies_affected": 9,
+      "n_products_affected": 9,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=9",
+        "suppliers_offering=2",
+        "ratio=4.5"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "b-vitamins",
+      "label": "B Vitamins",
+      "description": "B Vitamins has 26% price volatility affecting 9 companies. Avg price: $90.41/kg.",
+      "recommendation": "Consider long-term contracts or hedging for B Vitamins to stabilize costs.",
+      "score": 0.524,
+      "n_companies_affected": 9,
+      "n_products_affected": 9,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.26",
+        "avg_market_price=$90.41",
+        "range=$65.39-$111.83"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "glycerin",
+      "label": "Glycerin",
+      "description": "Glycerin serves 8 companies but has only 1 supplier(s). Demand/supply ratio: 8.0x",
+      "recommendation": "Qualify additional suppliers for Glycerin to better balance demand across 8 companies.",
+      "score": 1.0,
+      "n_companies_affected": 8,
+      "n_products_affected": 8,
+      "n_suppliers": 1,
+      "evidence": [
+        "companies_using=8",
+        "suppliers_offering=1",
+        "ratio=8.0"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "maltodextrin",
+      "label": "Maltodextrin",
+      "description": "Maltodextrin serves 8 companies but has only 1 supplier(s). Demand/supply ratio: 8.0x",
+      "recommendation": "Qualify additional suppliers for Maltodextrin to better balance demand across 8 companies.",
+      "score": 1.0,
+      "n_companies_affected": 8,
+      "n_products_affected": 8,
+      "n_suppliers": 1,
+      "evidence": [
+        "companies_using=8",
+        "suppliers_offering=1",
+        "ratio=8.0"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "natural-flavor",
+      "label": "Natural Flavor",
+      "description": "Natural Flavor serves 8 companies but has only 1 supplier(s). Demand/supply ratio: 8.0x",
+      "recommendation": "Qualify additional suppliers for Natural Flavor to better balance demand across 8 companies.",
+      "score": 1.0,
+      "n_companies_affected": 8,
+      "n_products_affected": 8,
+      "n_suppliers": 1,
+      "evidence": [
+        "companies_using=8",
+        "suppliers_offering=1",
+        "ratio=8.0"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "natural-flavors",
+      "label": "Natural Flavors",
+      "description": "Natural Flavors serves 8 companies but has only 1 supplier(s). Demand/supply ratio: 8.0x",
+      "recommendation": "Qualify additional suppliers for Natural Flavors to better balance demand across 8 companies.",
+      "score": 1.0,
+      "n_companies_affected": 8,
+      "n_products_affected": 8,
+      "n_suppliers": 1,
+      "evidence": [
+        "companies_using=8",
+        "suppliers_offering=1",
+        "ratio=8.0"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "xanthan-gum",
+      "label": "Xanthan Gum",
+      "description": "Xanthan Gum serves 8 companies but has only 1 supplier(s). Demand/supply ratio: 8.0x",
+      "recommendation": "Qualify additional suppliers for Xanthan Gum to better balance demand across 8 companies.",
+      "score": 1.0,
+      "n_companies_affected": 8,
+      "n_products_affected": 8,
+      "n_suppliers": 1,
+      "evidence": [
+        "companies_using=8",
+        "suppliers_offering=1",
+        "ratio=8.0"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "vitamin-d3",
+      "label": "Vitamin D3",
+      "description": "Vitamin D3 has 30% price volatility affecting 8 companies. Avg price: $243.82/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Vitamin D3 to stabilize costs.",
+      "score": 0.602,
+      "n_companies_affected": 8,
+      "n_products_affected": 8,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.30",
+        "avg_market_price=$243.82",
+        "range=$169.21-$314.79"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "acesulfame-potassium",
+      "label": "Acesulfame Potassium",
+      "description": "Acesulfame Potassium serves 8 companies but has only 2 supplier(s). Demand/supply ratio: 4.0x",
+      "recommendation": "Qualify additional suppliers for Acesulfame Potassium to better balance demand across 8 companies.",
+      "score": 0.6000000000000001,
+      "n_companies_affected": 8,
+      "n_products_affected": 8,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=8",
+        "suppliers_offering=2",
+        "ratio=4.0"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "calcium-carbonate",
+      "label": "Calcium Carbonate",
+      "description": "Calcium Carbonate serves 8 companies but has only 2 supplier(s). Demand/supply ratio: 4.0x",
+      "recommendation": "Qualify additional suppliers for Calcium Carbonate to better balance demand across 8 companies.",
+      "score": 0.6000000000000001,
+      "n_companies_affected": 8,
+      "n_products_affected": 8,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=8",
+        "suppliers_offering=2",
+        "ratio=4.0"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "croscarmellose-sodium",
+      "label": "Croscarmellose Sodium",
+      "description": "Croscarmellose Sodium serves 8 companies but has only 2 supplier(s). Demand/supply ratio: 4.0x",
+      "recommendation": "Qualify additional suppliers for Croscarmellose Sodium to better balance demand across 8 companies.",
+      "score": 0.6000000000000001,
+      "n_companies_affected": 8,
+      "n_products_affected": 8,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=8",
+        "suppliers_offering=2",
+        "ratio=4.0"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "magnesium-citrate",
+      "label": "Magnesium Citrate",
+      "description": "Magnesium Citrate serves 8 companies but has only 2 supplier(s). Demand/supply ratio: 4.0x",
+      "recommendation": "Qualify additional suppliers for Magnesium Citrate to better balance demand across 8 companies.",
+      "score": 0.6000000000000001,
+      "n_companies_affected": 8,
+      "n_products_affected": 8,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=8",
+        "suppliers_offering=2",
+        "ratio=4.0"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "riboflavin",
+      "label": "Riboflavin",
+      "description": "Riboflavin serves 8 companies but has only 2 supplier(s). Demand/supply ratio: 4.0x",
+      "recommendation": "Qualify additional suppliers for Riboflavin to better balance demand across 8 companies.",
+      "score": 0.6000000000000001,
+      "n_companies_affected": 8,
+      "n_products_affected": 8,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=8",
+        "suppliers_offering=2",
+        "ratio=4.0"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "vitamin-d3",
+      "label": "Vitamin D3",
+      "description": "Vitamin D3 serves 8 companies but has only 2 supplier(s). Demand/supply ratio: 4.0x",
+      "recommendation": "Qualify additional suppliers for Vitamin D3 to better balance demand across 8 companies.",
+      "score": 0.6000000000000001,
+      "n_companies_affected": 8,
+      "n_products_affected": 8,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=8",
+        "suppliers_offering=2",
+        "ratio=4.0"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "whey-protein-concentrate",
+      "label": "Whey Protein Concentrate",
+      "description": "Whey Protein Concentrate serves 8 companies but has only 2 supplier(s). Demand/supply ratio: 4.0x",
+      "recommendation": "Qualify additional suppliers for Whey Protein Concentrate to better balance demand across 8 companies.",
+      "score": 0.6000000000000001,
+      "n_companies_affected": 8,
+      "n_products_affected": 8,
+      "n_suppliers": 2,
+      "evidence": [
+        "companies_using=8",
+        "suppliers_offering=2",
+        "ratio=4.0"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "croscarmellose-sodium",
+      "label": "Croscarmellose Sodium",
+      "description": "Croscarmellose Sodium has 28% price volatility affecting 8 companies. Avg price: $22.79/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Croscarmellose Sodium to stabilize costs.",
+      "score": 0.556,
+      "n_companies_affected": 8,
+      "n_products_affected": 8,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.28",
+        "avg_market_price=$22.79",
+        "range=$16.65-$29.50"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "natural-flavors",
+      "label": "Natural Flavors",
+      "description": "Natural Flavors has 26% price volatility affecting 8 companies. Avg price: $68.18/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Natural Flavors to stabilize costs.",
+      "score": 0.512,
+      "n_companies_affected": 8,
+      "n_products_affected": 8,
+      "n_suppliers": 1,
+      "evidence": [
+        "volatility=0.26",
+        "avg_market_price=$68.18",
+        "range=$48.65-$82.16"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "magnesium-glycinate",
+      "label": "Magnesium Glycinate",
+      "description": "Magnesium Glycinate has 26% price volatility affecting 7 companies. Avg price: $17.81/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Magnesium Glycinate to stabilize costs.",
+      "score": 0.516,
+      "n_companies_affected": 7,
+      "n_products_affected": 7,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.26",
+        "avg_market_price=$17.81",
+        "range=$13.50-$22.89"
+      ]
+    },
+    {
+      "type": "critical_ingredient",
+      "severity": "medium",
+      "key": "natural-and-artificial-flavors",
+      "label": "Natural And Artificial Flavors",
+      "description": "Natural And Artificial Flavors serves 6 companies but has only 1 supplier(s). Demand/supply ratio: 6.0x",
+      "recommendation": "Qualify additional suppliers for Natural And Artificial Flavors to better balance demand across 6 companies.",
+      "score": 0.8,
+      "n_companies_affected": 6,
+      "n_products_affected": 6,
+      "n_suppliers": 1,
+      "evidence": [
+        "companies_using=6",
+        "suppliers_offering=1",
+        "ratio=6.0"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "zinc-oxide",
+      "label": "Zinc Oxide",
+      "description": "Zinc Oxide has 35% price volatility affecting 6 companies. Avg price: $43.77/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Zinc Oxide to stabilize costs.",
+      "score": 0.7,
+      "n_companies_affected": 6,
+      "n_products_affected": 6,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.35",
+        "avg_market_price=$43.77",
+        "range=$27.98-$58.09"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "selenium",
+      "label": "Selenium",
+      "description": "Selenium has 34% price volatility affecting 6 companies. Avg price: $37.81/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Selenium to stabilize costs.",
+      "score": 0.688,
+      "n_companies_affected": 6,
+      "n_products_affected": 6,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.34",
+        "avg_market_price=$37.81",
+        "range=$24.81-$50.85"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "vitamin-k",
+      "label": "Vitamin K",
+      "description": "Vitamin K has 27% price volatility affecting 6 companies. Avg price: $109.26/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Vitamin K to stabilize costs.",
+      "score": 0.532,
+      "n_companies_affected": 6,
+      "n_products_affected": 6,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.27",
+        "avg_market_price=$109.26",
+        "range=$78.21-$134.79"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "soy-lecithin",
+      "label": "Soy Lecithin",
+      "description": "Soy Lecithin has 30% price volatility affecting 5 companies. Avg price: $8.50/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Soy Lecithin to stabilize costs.",
+      "score": 0.61,
+      "n_companies_affected": 5,
+      "n_products_affected": 5,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.30",
+        "avg_market_price=$8.50",
+        "range=$6.10-$11.45"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "cyanocobalamin",
+      "label": "Cyanocobalamin",
+      "description": "Cyanocobalamin has 25% price volatility affecting 5 companies. Avg price: $110.35/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Cyanocobalamin to stabilize costs.",
+      "score": 0.506,
+      "n_companies_affected": 5,
+      "n_products_affected": 5,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.25",
+        "avg_market_price=$110.35",
+        "range=$78.80-$132.23"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "hydroxypropyl-methylcellulose",
+      "label": "Hydroxypropyl Methylcellulose",
+      "description": "Hydroxypropyl Methylcellulose has 34% price volatility affecting 4 companies. Avg price: $31.67/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Hydroxypropyl Methylcellulose to stabilize costs.",
+      "score": 0.682,
+      "n_companies_affected": 4,
+      "n_products_affected": 4,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.34",
+        "avg_market_price=$31.67",
+        "range=$20.79-$42.36"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "copper",
+      "label": "Copper",
+      "description": "Copper has 33% price volatility affecting 4 companies. Avg price: $21.61/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Copper to stabilize costs.",
+      "score": 0.66,
+      "n_companies_affected": 4,
+      "n_products_affected": 4,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.33",
+        "avg_market_price=$21.61",
+        "range=$14.46-$28.73"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "carboxymethylcellulose-sodium",
+      "label": "Carboxymethylcellulose Sodium",
+      "description": "Carboxymethylcellulose Sodium has 30% price volatility affecting 4 companies. Avg price: $4.37/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Carboxymethylcellulose Sodium to stabilize costs.",
+      "score": 0.608,
+      "n_companies_affected": 4,
+      "n_products_affected": 4,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.30",
+        "avg_market_price=$4.37",
+        "range=$3.13-$5.87"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "medium-chain-triglycerides",
+      "label": "Medium Chain Triglycerides",
+      "description": "Medium Chain Triglycerides has 30% price volatility affecting 4 companies. Avg price: $13.62/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Medium Chain Triglycerides to stabilize costs.",
+      "score": 0.598,
+      "n_companies_affected": 4,
+      "n_products_affected": 4,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.30",
+        "avg_market_price=$13.62",
+        "range=$9.79-$18.14"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "dicalcium-phosphate",
+      "label": "Dicalcium Phosphate",
+      "description": "Dicalcium Phosphate has 32% price volatility affecting 3 companies. Avg price: $6.82/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Dicalcium Phosphate to stabilize costs.",
+      "score": 0.642,
+      "n_companies_affected": 3,
+      "n_products_affected": 3,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.32",
+        "avg_market_price=$6.82",
+        "range=$4.73-$9.21"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "sodium-citrate",
+      "label": "Sodium Citrate",
+      "description": "Sodium Citrate has 32% price volatility affecting 3 companies. Avg price: $8.39/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Sodium Citrate to stabilize costs.",
+      "score": 0.64,
+      "n_companies_affected": 3,
+      "n_products_affected": 3,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.32",
+        "avg_market_price=$8.39",
+        "range=$5.60-$10.88"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "pyridoxine-hydrochloride",
+      "label": "Pyridoxine Hydrochloride",
+      "description": "Pyridoxine Hydrochloride has 30% price volatility affecting 3 companies. Avg price: $169.92/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Pyridoxine Hydrochloride to stabilize costs.",
+      "score": 0.594,
+      "n_companies_affected": 3,
+      "n_products_affected": 3,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.30",
+        "avg_market_price=$169.92",
+        "range=$114.46-$211.05"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "vegetable-glycerin",
+      "label": "Vegetable Glycerin",
+      "description": "Vegetable Glycerin has 26% price volatility affecting 3 companies. Avg price: $18.31/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Vegetable Glycerin to stabilize costs.",
+      "score": 0.522,
+      "n_companies_affected": 3,
+      "n_products_affected": 3,
+      "n_suppliers": 1,
+      "evidence": [
+        "volatility=0.26",
+        "avg_market_price=$18.31",
+        "range=$13.53-$23.09"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "thiamine-mononitrate",
+      "label": "Thiamine Mononitrate",
+      "description": "Thiamine Mononitrate has 26% price volatility affecting 3 companies. Avg price: $61.14/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Thiamine Mononitrate to stabilize costs.",
+      "score": 0.512,
+      "n_companies_affected": 3,
+      "n_products_affected": 3,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.26",
+        "avg_market_price=$61.14",
+        "range=$45.30-$76.43"
+      ]
+    },
+    {
+      "type": "price_volatility",
+      "severity": "medium",
+      "key": "dipotassium-phosphate",
+      "label": "Dipotassium Phosphate",
+      "description": "Dipotassium Phosphate has 25% price volatility affecting 3 companies. Avg price: $4.29/kg.",
+      "recommendation": "Consider long-term contracts or hedging for Dipotassium Phosphate to stabilize costs.",
+      "score": 0.5,
+      "n_companies_affected": 3,
+      "n_products_affected": 3,
+      "n_suppliers": 2,
+      "evidence": [
+        "volatility=0.25",
+        "avg_market_price=$4.29",
+        "range=$3.14-$5.23"
+      ]
+    },
+    {
+      "type": "supplier_quality",
+      "severity": "medium",
+      "key": "supplier:34",
+      "label": "Stauber",
+      "description": "Stauber has a quality score of 70/100 and compliance score of 100/100, classified as medium-risk. Supplies 1 products.",
+      "recommendation": "Conduct quality audit of Stauber and develop contingency sourcing for their 1 supplied products.",
+      "score": 0.987,
+      "n_companies_affected": 0,
+      "n_products_affected": 1,
+      "n_suppliers": 1,
+      "evidence": [
+        "quality_score=70.4",
+        "compliance_score=100.0",
+        "reliability_score=93.0",
+        "risk_tier=medium"
+      ]
+    },
+    {
+      "type": "supplier_quality",
+      "severity": "medium",
+      "key": "supplier:33",
+      "label": "Spectrum Chemical",
+      "description": "Spectrum Chemical has a quality score of 71/100 and compliance score of 89/100, classified as medium-risk. Supplies 7 products.",
+      "recommendation": "Conduct quality audit of Spectrum Chemical and develop contingency sourcing for their 7 supplied products.",
+      "score": 0.957,
+      "n_companies_affected": 0,
+      "n_products_affected": 7,
+      "n_suppliers": 1,
+      "evidence": [
+        "quality_score=71.3",
+        "compliance_score=89.1",
+        "reliability_score=77.7",
+        "risk_tier=medium"
+      ]
+    },
+    {
+      "type": "supplier_quality",
+      "severity": "medium",
+      "key": "supplier:40",
+      "label": "Vitaquest",
+      "description": "Vitaquest has a quality score of 72/100 and compliance score of 86/100, classified as medium-risk. Supplies 2 products.",
+      "recommendation": "Conduct quality audit of Vitaquest and develop contingency sourcing for their 2 supplied products.",
+      "score": 0.95,
+      "n_companies_affected": 0,
+      "n_products_affected": 2,
+      "n_suppliers": 1,
+      "evidence": [
+        "quality_score=71.5",
+        "compliance_score=86.5",
+        "reliability_score=94.4",
+        "risk_tier=medium"
+      ]
+    },
+    {
+      "type": "supplier_quality",
+      "severity": "medium",
+      "key": "supplier:6",
+      "label": "Balchem",
+      "description": "Balchem has a quality score of 73/100 and compliance score of 96/100, classified as medium-risk. Supplies 22 products.",
+      "recommendation": "Conduct quality audit of Balchem and develop contingency sourcing for their 22 supplied products.",
+      "score": 0.907,
+      "n_companies_affected": 0,
+      "n_products_affected": 22,
+      "n_suppliers": 1,
+      "evidence": [
+        "quality_score=72.8",
+        "compliance_score=96.1",
+        "reliability_score=88.5",
+        "risk_tier=medium"
+      ]
+    },
+    {
+      "type": "supplier_quality",
+      "severity": "medium",
+      "key": "supplier:13",
+      "label": "Darling Ingredients / Rousselot",
+      "description": "Darling Ingredients / Rousselot has a quality score of 74/100 and compliance score of 100/100, classified as medium-risk. Supplies 18 products.",
+      "recommendation": "Conduct quality audit of Darling Ingredients / Rousselot and develop contingency sourcing for their 18 supplied products.",
+      "score": 0.88,
+      "n_companies_affected": 0,
+      "n_products_affected": 18,
+      "n_suppliers": 1,
+      "evidence": [
+        "quality_score=73.6",
+        "compliance_score=100.0",
+        "reliability_score=85.1",
+        "risk_tier=medium"
+      ]
+    },
+    {
+      "type": "supplier_quality",
+      "severity": "medium",
+      "key": "supplier:23",
+      "label": "Mueggenburg USA",
+      "description": "Mueggenburg USA has a quality score of 75/100 and compliance score of 72/100, classified as medium-risk. Supplies 30 products.",
+      "recommendation": "Conduct quality audit of Mueggenburg USA and develop contingency sourcing for their 30 supplied products.",
+      "score": 0.847,
+      "n_companies_affected": 0,
+      "n_products_affected": 30,
+      "n_suppliers": 1,
+      "evidence": [
+        "quality_score=74.6",
+        "compliance_score=72.3",
+        "reliability_score=91.5",
+        "risk_tier=medium"
+      ]
+    },
+    {
+      "type": "supplier_quality",
+      "severity": "medium",
+      "key": "supplier:32",
+      "label": "Specialty Enzymes & Probiotics",
+      "description": "Specialty Enzymes & Probiotics has a quality score of 76/100 and compliance score of 95/100, classified as medium-risk. Supplies 3 products.",
+      "recommendation": "Conduct quality audit of Specialty Enzymes & Probiotics and develop contingency sourcing for their 3 supplied products.",
+      "score": 0.813,
+      "n_companies_affected": 0,
+      "n_products_affected": 3,
+      "n_suppliers": 1,
+      "evidence": [
+        "quality_score=75.6",
+        "compliance_score=94.9",
+        "reliability_score=84.8",
+        "risk_tier=medium"
+      ]
+    },
+    {
+      "type": "supplier_quality",
+      "severity": "medium",
+      "key": "supplier:36",
+      "label": "TCI America",
+      "description": "TCI America has a quality score of 76/100 and compliance score of 77/100, classified as medium-risk. Supplies 1 products.",
+      "recommendation": "Conduct quality audit of TCI America and develop contingency sourcing for their 1 supplied products.",
+      "score": 0.783,
+      "n_companies_affected": 0,
+      "n_products_affected": 1,
+      "n_suppliers": 1,
+      "evidence": [
+        "quality_score=76.5",
+        "compliance_score=76.6",
+        "reliability_score=89.7",
+        "risk_tier=medium"
+      ]
+    },
+    {
+      "type": "supplier_quality",
+      "severity": "medium",
+      "key": "supplier:26",
+      "label": "Nutri Avenue",
+      "description": "Nutri Avenue has a quality score of 77/100 and compliance score of 79/100, classified as medium-risk. Supplies 7 products.",
+      "recommendation": "Conduct quality audit of Nutri Avenue and develop contingency sourcing for their 7 supplied products.",
+      "score": 0.77,
+      "n_companies_affected": 0,
+      "n_products_affected": 7,
+      "n_suppliers": 1,
+      "evidence": [
+        "quality_score=76.9",
+        "compliance_score=78.7",
+        "reliability_score=95.4",
+        "risk_tier=medium"
+      ]
+    },
+    {
+      "type": "supplier_quality",
+      "severity": "medium",
+      "key": "supplier:24",
+      "label": "Nutra Blend",
+      "description": "Nutra Blend has a quality score of 78/100 and compliance score of 97/100, classified as medium-risk. Supplies 9 products.",
+      "recommendation": "Conduct quality audit of Nutra Blend and develop contingency sourcing for their 9 supplied products.",
+      "score": 0.73,
+      "n_companies_affected": 0,
+      "n_products_affected": 9,
+      "n_suppliers": 1,
+      "evidence": [
+        "quality_score=78.1",
+        "compliance_score=96.7",
+        "reliability_score=81.9",
+        "risk_tier=medium"
+      ]
+    },
+    {
+      "type": "supplier_concentration",
+      "severity": "medium",
+      "key": "supplier:29",
+      "label": "Sawgrass Nutra Labs",
+      "description": "Sawgrass Nutra Labs is the sole supplier for 5 ingredients. Loss of this supplier would create critical shortages.",
+      "recommendation": "Develop alternative supplier relationships for the 5 ingredients solely sourced from Sawgrass Nutra Labs.",
+      "score": 0.65,
+      "n_companies_affected": 0,
+      "n_products_affected": 0,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole source for: organic-stevia-extract, organic-stevia-extract-leaf, organic-stevia, coconut-water-from-concentrate, organic-stevia-leaf-extract-rebaudioside-a",
+        "total ingredients offered: 5"
+      ]
+    },
+    {
+      "type": "supplier_concentration",
+      "severity": "medium",
+      "key": "supplier:6",
+      "label": "Balchem",
+      "description": "Balchem is the sole supplier for 5 ingredients. Loss of this supplier would create critical shortages.",
+      "recommendation": "Develop alternative supplier relationships for the 5 ingredients solely sourced from Balchem.",
+      "score": 0.65,
+      "n_companies_affected": 0,
+      "n_products_affected": 0,
+      "n_suppliers": 1,
+      "evidence": [
+        "sole source for: vitamin-k2-menaquinone-7, boron-amino-acid-chelate, magnesium-taurate, magnesium-amino-acid-chelate, magnesium-taurinate",
+        "total ingredients offered: 13"
+      ]
+    }
+  ],
+  "by_severity": {
+    "high": 20,
+    "medium": 69
+  },
+  "by_type": {
+    "single_source": 18,
+    "supplier_concentration": 4,
+    "critical_ingredient": 30,
+    "price_volatility": 27,
+    "supplier_quality": 10
+  },
+  "n_total": 89,
+  "partial": false
+}

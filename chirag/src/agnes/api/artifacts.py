@@ -23,6 +23,7 @@ from agnes.models.recommendation import (
     RecommendationReport,
     SourcingRecommendation,
 )
+from agnes.models.risk import SupplyRiskReport
 from agnes.models.substitutes import SubstituteCandidate, SubstituteCandidateReport
 from agnes.models.supply_network import SupplyNetworkBundle
 
@@ -48,6 +49,7 @@ class SummaryOut(BaseModel):
     evidence: dict[str, Any] | None = None
     assessments: dict[str, Any] | None = None
     recommendations: dict[str, Any] | None = None
+    risks: dict[str, Any] | None = None
 
 
 class RegistryPageOut(BaseModel):
@@ -112,6 +114,7 @@ class DashboardBundle(BaseModel):
     recommendations: RecommendationReport | None = None
     opportunity_details: list[OpportunityDetailOut]
     supply_network: SupplyNetworkBundle | None = None
+    risks: SupplyRiskReport | None = None
     missing: list[str]
 
 
@@ -253,6 +256,20 @@ def _build_summary(
         }
     except ArtifactMissingError:
         missing.append("recommendations")
+
+    try:
+        risks = loader.get_risks()
+        gen_by_name["risks"] = risks.generated_at
+        out.risks = {
+            "n_total": risks.n_total,
+            "by_severity": dict(risks.by_severity),
+            "by_type": dict(risks.by_type),
+            "schema_version": risks.schema_version,
+            "taxonomy_version": risks.taxonomy_version,
+            "partial": risks.partial,
+        }
+    except ArtifactMissingError:
+        missing.append("risks")
 
     out.artifacts = [
         _status_out(loader, name, gen_by_name.get(name))
@@ -533,6 +550,15 @@ def get_opportunity_detail(request: Request, source_key: str) -> OpportunityDeta
     return _build_opportunity_detail(loader, opp, rec)
 
 
+@router.get("/risks", response_model=SupplyRiskReport)
+def get_risks(request: Request) -> SupplyRiskReport:
+    loader = _loader(request)
+    try:
+        return loader.get_risks()
+    except ArtifactMissingError as exc:
+        raise _missing("risks") from exc
+
+
 @router.get("/supply-network", response_model=SupplyNetworkBundle)
 def get_supply_network(request: Request) -> SupplyNetworkBundle:
     """Return the full supply-network bundle (nodes + edges + aggregates)."""
@@ -592,6 +618,12 @@ def get_dashboard(request: Request) -> DashboardBundle:
         supply_network = None
         missing.append("supply_network")
 
+    try:
+        risks = loader.get_risks()
+    except ArtifactMissingError:
+        risks = None
+        missing.append("risks")
+
     return DashboardBundle(
         summary=summary,
         registry=registry,
@@ -601,6 +633,7 @@ def get_dashboard(request: Request) -> DashboardBundle:
         recommendations=recommendations,
         opportunity_details=opportunity_details,
         supply_network=supply_network,
+        risks=risks,
         missing=missing,
     )
 

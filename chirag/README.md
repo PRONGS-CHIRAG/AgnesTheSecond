@@ -83,6 +83,63 @@ auto-refreshes the rest of the UI on success. Docker is optional:
 docker compose up --build       # backend + frontend, shared outputs/ volume
 ```
 
+## End-to-end pipeline
+
+The full Phase 0–7 pipeline (including the optional mock procurement tables
+and Phase 6.5 risk register) can be driven with a single script:
+
+```bash
+# From the chirag/ directory
+bash scripts/run_all_phases.sh --seed-mock            # full run
+bash scripts/run_all_phases.sh --skip-phase5          # no Tavily key available
+```
+
+This writes deterministic JSON/CSV artifacts to `outputs/reports/`. Individual
+phases can still be re-run manually (see `scripts/phase*.py`).
+
+## Taim integration (Phase 6.5 + chat + procurement dashboard)
+
+The `taim/` project is kept as a reference; all ported logic lives under
+`chirag/src/agnes/` and must not import from `taim`. A CI guard enforces this:
+
+```bash
+bash chirag/scripts/check_no_taim_imports.sh
+```
+
+Ported features:
+
+- **Phase 6.5 supply-risk register** — `scripts/phase6_5_risks.py` →
+  `outputs/reports/supply_risks.json`, served at `GET /api/risks` and rendered
+  on `/risks`.
+- **Cost-savings signal** — `agnes.services.cost.compute_cost_signal` gates on
+  `spread ≥ 15%`, quality ≥ 75, compliance ≥ 75 (taim's rule verbatim). Wired
+  into Phase 7 via the new `savings_signal` weight in `phase7_final_weights`.
+- **Mock procurement tables** — `scripts/seed_procurement_mock.py --apply`
+  populates `Supplier_Rating`, `Price_Benchmark`, `Procurement_History` so the
+  cost signal and procurement dashboard have data to work with.
+- **Chat agent** — `POST /api/chat` (see `prompts/chat_agent.md`) exposes a
+  function-calling agent with six tools: guarded SQL, Phase 4/5/6.5/7 artifact
+  reads, and BOM inspection. Rendered on `/chat`.
+- **Procurement dashboard** — `GET /api/procurement/{overview,savings,suppliers}`
+  powered by `agnes.services.cost`; rendered on `/procurement`.
+
+### Versioning
+
+All ported schemas carry explicit version constants. Any change requires a
+version bump **plus** a migration or cache invalidation path — see the schema
+checklist in `.github/pull_request_template.md`.
+
+| Schema              | Constant location                              |
+|---------------------|------------------------------------------------|
+| Taxonomy            | `canonicalization/taxonomy.py::TAXONOMY_VERSION` |
+| Substitutes         | `models/substitutes.py::SUBSTITUTES_SCHEMA_VERSION` |
+| Evidence            | `models/evidence.py::EVIDENCE_SCHEMA_VERSION`  |
+| Assessment          | `models/assessment.py::ASSESSMENT_SCHEMA_VERSION` |
+| Risk                | `models/risk.py::RISK_SCHEMA_VERSION`          |
+| Recommendation      | `models/recommendation.py::RECOMMENDATION_SCHEMA_VERSION` |
+| Procurement         | `models/procurement.py::PROCUREMENT_SCHEMA_VERSION` |
+| Chat                | `models/chat.py::CHAT_SCHEMA_VERSION`          |
+
 ## Project docs
 
 - [plan.md](plan.md) — execution blueprint
@@ -92,9 +149,10 @@ docker compose up --build       # backend + frontend, shared outputs/ volume
 ## Layout
 
 - `src/agnes/` — Python package (data loader, retrieval, graph, agents, API)
-- `src/agnes/api/` — FastAPI transport layer (artifact endpoints, run manager, SSE)
+- `src/agnes/api/` — FastAPI transport layer (artifact, chat, procurement, run manager, SSE)
+- `src/agnes/services/` — deterministic ported services (`risk`, `cost`)
 - `frontend/` — Next.js 15 App Router + Tailwind demo UI
 - `data/raw/` — SQLite challenge database (not committed; copy from `hackathon-tumai/`)
-- `scripts/` — Phase 0 smoke scripts + Phase 1–7 CLIs
+- `scripts/` — Phase 0 smoke scripts + Phase 1–7 CLIs + `seed_procurement_mock.py` + `check_no_taim_imports.sh` + `run_all_phases.sh`
 - `notebooks/` — exploratory notebooks
 - `outputs/reports/` — generated Phase 1–7 artifacts (not committed)
